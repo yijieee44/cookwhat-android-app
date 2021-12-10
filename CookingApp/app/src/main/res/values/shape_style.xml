@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="follow_button" >
+        <item name="android:src">@drawable/whitecircle</item>
+    </style>
+    <style name="favourite_button" >
+        <item name="android:src">@drawable/roundedrecbtn</item>
+    </style>
+</resources>
