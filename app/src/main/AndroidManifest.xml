@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CookWhat">
         <activity
+            android:name=".Homepage"
+            android:exported="true" />
+        <activity
             android:name=".SearchActivity"
             android:exported="true">
             <intent-filter>
