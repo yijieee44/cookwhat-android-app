@@ -8,6 +8,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -26,6 +27,27 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = host.getNavController();
 
         setupBottomNavMenu(navController);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu
+        getMenuInflater().inflate(R.menu.action_nav_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_create) {
+            // direct to create activity
+            Intent intentCreateActivity = new Intent(this, CreateActivity.class);
+            startActivity(intentCreateActivity);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupBottomNavMenu(NavController navController) {

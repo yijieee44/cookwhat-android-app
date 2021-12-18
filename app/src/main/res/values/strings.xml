@@ -5,4 +5,7 @@
     <string name="home">Home</string>
     <string name="profile">Profile</string>
     <string name="search">Search</string>
+    <string name="create_recipe">Create Recipe</string>
+    <string name="add_utensils">Add Utensils</string>
+    <string name="add_ingredients">Add Ingredients</string>
 </resources>
