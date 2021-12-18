@@ -1,4 +1,4 @@
-package com.example.cookwhat;
+package com.example.cookwhat.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.example.cookwhat.model.IngredientModel;
+import com.example.cookwhat.R;
+import com.example.cookwhat.adapters.IngredientAdapter;
+import com.example.cookwhat.models.IngredientModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,9 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        // add a back icon on the action bar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ingredientModelList = new ArrayList<>();
         int size = name.length;

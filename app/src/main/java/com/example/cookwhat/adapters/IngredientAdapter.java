@@ -1,17 +1,17 @@
-package com.example.cookwhat;
+package com.example.cookwhat.adapters;
 
 import android.content.Context;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cookwhat.model.IngredientModel;
+import com.example.cookwhat.R;
+import com.example.cookwhat.models.IngredientModel;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<IngredientModel> ingredientList;
     private Context context;
 
-    IngredientAdapter(Context context, List<IngredientModel> ingredientList) {
+    public IngredientAdapter(Context context, List<IngredientModel> ingredientList) {
         this.ingredientList = ingredientList;
         this.context = context;
     }

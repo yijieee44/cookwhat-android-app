@@ -1,4 +1,4 @@
-package com.example.cookwhat.model;
+package com.example.cookwhat.models;
 
 public class IngredientModel {
     private String name;
