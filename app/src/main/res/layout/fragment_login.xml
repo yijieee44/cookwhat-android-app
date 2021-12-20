@@ -18,6 +18,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/IVLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-30dp"
+        android:rotation="90"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TVLogin"
+        app:srcCompat="@drawable/cat_welcome_back"
+        tools:src="@drawable/cat_welcome_back" />
+
     <TextView
         android:id="@+id/TVLogin"
         android:layout_width="wrap_content"
@@ -61,16 +72,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ETLoginUsername" />
-
-    <ImageView
-        android:id="@+id/IVLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="-30dp"
-        android:rotation="90"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TVLogin"
-        tools:src="@drawable/cat_welcome_back" />
 
     <Button
         android:id="@+id/BtnGo"

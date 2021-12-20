@@ -33,7 +33,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-//    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
+    private boolean isLoggedIn;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            isLoggedIn = true;
+        }
+        else{
+            isLoggedIn = false;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,11 +113,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu
-        getMenuInflater().inflate(R.menu.action_nav_menu, menu);
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        if(isLoggedIn) {
+            menu.add(0, 0, Menu.NONE, "Logout").setIcon(R.drawable.ic_baseline_logout_24);
+        }
         return true;
     }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu
+//        getMenuInflater().inflate(R.menu.action_nav_menu, menu);
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -116,6 +138,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intentCreateActivity);
             return true;
         }
+        else if(id == R.id.action_login){
+            Intent intentCreateActivity = new Intent(this, LoginActivity.class);
+            startActivity(intentCreateActivity);
+            return true;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
