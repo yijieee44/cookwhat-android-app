@@ -1,9 +1,7 @@
 package com.example.cookwhat.models;
 
-public class IngredientModel {
+public class UtensilModel {
     private String name;
-    private double quantity;
-    private String unit;
     private String memo;
     private String icon;
     private boolean required;
@@ -14,22 +12,6 @@ public class IngredientModel {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public double getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(double quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
     }
 
     public String getMemo() {

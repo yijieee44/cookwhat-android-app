@@ -48,7 +48,7 @@ public class SearchActivity extends AppCompatActivity {
             ingredientModels[i] = new IngredientModel();
             ingredientModels[i].setName(name[i]);
             ingredientModels[i].setQuantity(quantity[i]);
-            ingredientModels[i].setDescription(description[i]);
+            ingredientModels[i].setMemo(description[i]);
             ingredientModels[i].setUnit(unit[i]);
             ingredientModelList.add(ingredientModels[i]);
         }
