@@ -1,16 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="ViewRecipeActivity"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-<com.denzcoskun.imageslider.ImageSlider
-    android:id="@+id/image_slider"
-    android:layout_width="match_parent"
-    android:layout_height="250dp"   />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:orientation="vertical"
+        tools:context="ViewRecipeActivity">
 
+        <com.denzcoskun.imageslider.ImageSlider
+            android:id="@+id/image_slider"
+            android:layout_width="match_parent"
+            android:layout_height="250dp">
 
-</LinearLayout>
+        </com.denzcoskun.imageslider.ImageSlider>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+            <TextView
+                android:id="@+id/TVRecipeName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="149dp"
+                android:text="Chickpea Soup"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/BtnAddFav"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/BtnAddFav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="16dp"
+                android:drawableLeft="@drawable/ic_baseline_star_24"
+                android:text="99"
+                app:cornerRadius="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/TVOwnerPic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="41dp"
+                android:layout_marginTop="31dp"
+                android:layout_marginEnd="18dp"
+                android:src="@drawable/avatar_winter_custome_49_svgrepo_com"
+                app:layout_constraintEnd_toStartOf="@+id/TVOwnerUsername"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TVRecipeName" />
+
+            <TextView
+                android:id="@+id/TVOwnerUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="53dp"
+                android:layout_marginEnd="203dp"
+                android:text="@erica666"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TVRecipeName" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/TVRecipeDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\nXXXXXXX\nxxxxx\nxxxxxx\nXX" />
+
+        <Button
+            android:id="@+id/BtnINU"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:text="Ingredients and Utensils" />
+
+        <TextView
+            android:id="@+id/TVComments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Comments:"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/ETComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Leave a comment..."
+            android:inputType="textPersonName" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</ScrollView>
