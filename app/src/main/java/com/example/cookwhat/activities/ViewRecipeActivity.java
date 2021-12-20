@@ -1,4 +1,3 @@
-
 package com.example.cookwhat.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
