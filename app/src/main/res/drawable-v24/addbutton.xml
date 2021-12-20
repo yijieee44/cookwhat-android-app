@@ -5,13 +5,13 @@
             <item>
                 <shape android:shape="oval">
                     <size android:width="60dp" android:height="60dp"/>
-                    <solid android:color="@color/tertiary"/>
+                    <solid android:color="@color/nude"/>
 
                 </shape>
             </item>
 
             <item>
-                <bitmap android:src="@android:drawable/ic_input_add" android:tint="@color/primary">
+                <bitmap android:src="@android:drawable/ic_input_add" android:tint="@color/dark_yellow">
 
                 </bitmap>
             </item>

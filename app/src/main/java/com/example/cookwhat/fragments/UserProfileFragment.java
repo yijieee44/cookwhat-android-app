@@ -2,13 +2,25 @@ package com.example.cookwhat.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.CursorAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.cookwhat.R;
+import com.google.android.material.tabs.TabItem;
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,8 +38,11 @@ public class UserProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+
+    GridView tabcontent;
+
     public UserProfileFragment() {
-        // Required empty public constructor
+
     }
 
     /**
@@ -36,7 +51,7 @@ public class UserProfileFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment UserProfileFragment.
+     * @return A new instance of fragment UserProfile.
      */
     // TODO: Rename and change types and number of parameters
     public static UserProfileFragment newInstance(String param1, String param2) {
@@ -54,6 +69,70 @@ public class UserProfileFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+        TabItem secretRecipe = view.findViewById(R.id.TL_SecretRecipe);
+        TabItem aboutMe = view.findViewById(R.id.TL_AboutMe);
+
+        Button favCategory = view.findViewById(R.id.Btn_Favourite);
+
+        View.OnClickListener favCategoryOCL = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //navigate to fav category
+            }
+        };
+
+        favCategory.setOnClickListener(favCategoryOCL);
+
+        View.OnClickListener secretRecipeOCL = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                tabcontent = view.findViewById(R.id.tabcontent);
+
+
+                //CustomAdapter tabAdapter = new CustomAdapter(userData);   pass userID return recipeID, arg: recipe class
+                tabcontent.setAdapter(tabAdapter);
+
+                //method of click btn of tabcontent
+            }
+        };
+
+        secretRecipe.setOnClickListener(secretRecipeOCL);
+
+    }
+
+    private class CustomAdapter extends BaseAdapter{
+
+
+
+        private CustomAdapter(RecipeModel  Recipe){
+
+        }
+
+        @Override
+        public int getCount() {
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+
+
         }
     }
 

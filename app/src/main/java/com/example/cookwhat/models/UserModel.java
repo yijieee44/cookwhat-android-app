@@ -1,9 +1,9 @@
-package com.example.cookingapp;
+package com.example.cookwhat.models;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class UserData extends Recipe  {
+public class UserModel   {
 
 
     String userName;
@@ -11,11 +11,11 @@ public class UserData extends Recipe  {
     private ArrayList<String> prefer;
     private ArrayList<String> favouriteCategory;
     private ArrayList<String> favouriteFood;
-    private ArrayList<UserData> followers;
-    private ArrayList<UserData> followings;
-    private ArrayList<Recipe> createdRecipe;
+    private ArrayList<UserModel> followers;
+    private ArrayList<UserModel> followings;
 
-    public UserData(String userName, String emailAddr){
+
+    public UserModel(String userName, String emailAddr){
         this.userName = userName;
         this.emailAddr = emailAddr;
     }
@@ -32,11 +32,11 @@ public class UserData extends Recipe  {
         return favouriteFood;
     }
 
-    public ArrayList<UserData> getFollowers() {
+    public ArrayList<UserModel> getFollowers() {
         return followers;
     }
 
-    public ArrayList<UserData> getFollowings() {
+    public ArrayList<UserModel> getFollowings() {
         return followings;
     }
 
@@ -61,11 +61,11 @@ public class UserData extends Recipe  {
         this.favouriteFood.add(1,addFood);
     }
 
-    public void setFollowers(UserData followers) {
+    public void setFollowers(UserModel followers) {
         this.followers.add(followers) ;
     }
 
-    public void setFollowings(UserData followings) {
+    public void setFollowings(UserModel followings) {
         this.followings.add(followings);
     }
 
@@ -86,7 +86,7 @@ public class UserData extends Recipe  {
         return namelist;
     }
 
-    public UserData getSpecificFollower(String followername){
+    public UserModel getSpecificFollower(String followername){
         ArrayList<String> namelist = this.getFollowersNameList();
         if (namelist.contains(followername)){
             int p = this.followers.indexOf(followername);
@@ -104,7 +104,7 @@ public class UserData extends Recipe  {
         return namelist;
     }
 
-    public UserData getSpecificFollowing(String followingname){
+    public UserModel getSpecificFollowing(String followingname){
         ArrayList<String> namelist = this.getFollowingsNameList();
         if (namelist.contains(followingname)){
             int p = this.followings.indexOf(followingname);

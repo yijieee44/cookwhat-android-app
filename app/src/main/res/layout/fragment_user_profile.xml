@@ -1,14 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:elevation="10dp"
     tools:context=".fragments.UserProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <ImageView
+        android:id="@+id/IV_Profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/circle"
+        tools:layout_editor_absoluteX="29dp"
+        tools:layout_editor_absoluteY="36dp" />
 
-</FrameLayout>
+    <androidx.appcompat.widget.AppCompatButton
+
+        android:id="@+id/Btn_Follower"
+        android:layout_width="78dp"
+        android:layout_height="74dp"
+        android:background="@drawable/whitecircle"
+        android:fontFamily="@font/CandyJelly"
+        android:paddingTop="20dp"
+        android:text="88"
+        android:gravity="center"
+        android:textSize="30sp"
+        tools:layout_editor_absoluteX="154dp"
+        tools:layout_editor_absoluteY="36dp" />
+
+    <TextView
+        android:id="@+id/TV_Follower"
+        android:layout_width="82dp"
+        android:layout_height="30dp"
+        android:fontFamily="@font/CandyJelly"
+        android:paddingTop="8dp"
+        android:text="Followers"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        tools:layout_editor_absoluteX="154dp"
+        tools:layout_editor_absoluteY="110dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+
+        android:id="@+id/Btn_Following"
+        android:layout_width="78dp"
+        android:layout_height="74dp"
+        android:background="@drawable/whitecircle"
+        android:fontFamily="@font/CandyJelly"
+        android:paddingTop="20dp"
+        android:text="88"
+        android:gravity="center"
+        android:textSize="30sp"
+        tools:layout_editor_absoluteX="270dp"
+        tools:layout_editor_absoluteY="36dp" />
+
+    <TextView
+        android:id="@+id/TV_Following"
+        android:layout_width="98dp"
+        android:layout_height="30dp"
+        android:fontFamily="@font/CandyJelly"
+        android:paddingTop="8dp"
+        android:text="Followings"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        tools:layout_editor_absoluteX="270dp"
+        tools:layout_editor_absoluteY="110dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+
+        android:id="@+id/Btn_Favourite"
+        android:layout_width="182dp"
+        android:layout_height="49dp"
+        android:background="@drawable/roundedrecbtn"
+        android:drawableEnd="@drawable/favourite"
+        android:drawablePadding="0dp"
+        android:fontFamily="@font/CandyJelly"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:paddingRight="28dp"
+        android:paddingBottom="15dp"
+        android:text="see your"
+        android:gravity="center"
+        android:textColor="#744518"
+        android:textSize="28sp"
+        tools:layout_editor_absoluteX="166dp"
+        tools:layout_editor_absoluteY="152dp"
+        android:drawableRight="@drawable/favourite" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/TL_ProfileTab"
+        android:layout_width="376dp"
+        android:layout_height="55dp"
+        android:background="@drawable/roundedrec"
+        app:tabIndicator="@drawable/roundedrecselec"
+        app:tabIndicatorColor="@color/light_yellow"
+        app:tabMode="fixed"
+        app:tabTextAppearance="@style/tab_font"
+        app:tabTextColor="#744518"
+        tools:layout_editor_absoluteX="19dp"
+        tools:layout_editor_absoluteY="242dp">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/TL_SecretRecipe"
+            android:layout_width="188dp"
+            android:layout_height="50dp"
+            android:background="@color/light_yellow"
+            android:text="My Secret Recipe" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/TL_AboutMe"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/roundedrec"
+            android:backgroundTintMode="add"
+            android:text="About Me" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <GridView
+        android:id="@+id/tabcontent"
+        android:layout_width="381dp"
+        android:layout_height="433dp"
+        android:background="@drawable/roundedrecselec"
+
+        android:rotation="180"
+        tools:layout_editor_absoluteX="19dp"
+        tools:layout_editor_absoluteY="297dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
