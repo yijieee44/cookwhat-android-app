@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "54935119499",
+    "project_id": "cookwhat",
+    "storage_bucket": "cookwhat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:54935119499:android:6470dd61da2997bbf7d68e",
+        "android_client_info": {
+          "package_name": "com.example.cookwhat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "54935119499-nb867kgkq377rj8v3ct8vsvvo526t5n3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZcFx6ntNET4fNggsrWStUpGk-a83RJe0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "54935119499-nb867kgkq377rj8v3ct8vsvvo526t5n3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
