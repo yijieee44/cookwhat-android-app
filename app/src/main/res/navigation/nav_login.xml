@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_login"
+    app:startDestination="@id/DestGetStarted">
+
+    <fragment
+        android:id="@+id/DestGetStarted"
+        android:name="com.example.cookwhat.fragments.GetStartedFragment"
+        android:label="fragment_get_started"
+        tools:layout="@layout/fragment_get_started" />
+    <fragment
+        android:id="@+id/DestLogin"
+        android:name="com.example.cookwhat.fragments.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/DestRegister"
+        android:name="com.example.cookwhat.fragments.RegisterFragment"
+        android:label="Register"
+        tools:layout="@layout/fragment_register" />
+</navigation>
