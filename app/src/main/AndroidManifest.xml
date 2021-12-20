@@ -10,12 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CookWhat">
         <activity
+<<<<<<< HEAD
             android:name=".activities.LoginActivity"
             android:exported="true"/>
         <activity
             android:name=".activities.ViewRecipeActivity"
             android:exported="true" >
         </activity>
+=======
+            android:name="ViewRecipeActivity"
+            android:exported="false" />
+>>>>>>> refs/remotes/origin/main
         <activity
             android:name=".activities.MainActivity"
             android:exported="true"
