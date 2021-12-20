@@ -36,7 +36,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         String quantity = Double.toString(ingredientList.get(position).getQuantity()) + ingredientList.get(position).getUnit();
         ((ViewHolder) holder).textViewName.setText(ingredientList.get(position).getName());
-        ((ViewHolder) holder).textViewDescription.setText(ingredientList.get(position).getDescription());
+        ((ViewHolder) holder).textViewDescription.setText(ingredientList.get(position).getMemo());
         ((ViewHolder)holder).textViewQuantity.setText(quantity);
     }
 

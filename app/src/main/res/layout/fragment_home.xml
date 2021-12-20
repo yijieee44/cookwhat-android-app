@@ -1,266 +1,271 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".fragments.HomeFragment">
-
-    <TextView
-        android:id="@+id/TVWhatWeAreLovingNow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="What We're Loving Now"
-        android:textColor="@color/black"
-        android:textSize="30sp" />
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/LLHomepage1"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/BtnUser1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:backgroundTint="@android:color/white"
-            android:textColor="@color/black"
-            android:drawableLeft="@drawable/avatar_winter_custome_49_svgrepo_com"
-            android:text="User 1" />
-
-        <Button
-            android:id="@+id/BtnUser2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:backgroundTint="@android:color/white"
-            android:textColor="@color/black"
-            android:drawableLeft="@drawable/avatar_winter_custome_23_svgrepo_com"
-            android:text="User 2" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/LLHomepage2"
-        android:layout_width="match_parent"
-        android:layout_height="287dp"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:id="@+id/LLHomepage3"
-            android:layout_width="wrap_content"
-            android:layout_height="284dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/IVChickpeaSoup"
-                android:layout_width="205dp"
-                android:layout_height="165dp"
-                app:srcCompat="@drawable/basically_hammy_chickpea_soup" />
-
-            <TextView
-                android:id="@+id/TVChickpeaSoup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:text="Chickpea Soup"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/TVVegan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
-                android:text="Vegan" />
-
-            <Button
-                android:id="@+id/BtnLike1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:text="99" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/LLHomepage4"
-            android:layout_width="wrap_content"
-            android:layout_height="284dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/IVTomatoPizza2"
-                android:layout_width="wrap_content"
-                android:layout_height="165dp"
-                app:srcCompat="@drawable/tomatopizza" />
-
-            <TextView
-                android:id="@+id/TVTomatoPizza2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:text="Tomato Pizza"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/TVCheapEat2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
-                android:text="Cheap Eat" />
-
-            <Button
-                android:id="@+id/BtnLike2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:text="99" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/TVRecentlyViewed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Recently Viewed"
-        android:textColor="@color/black"
-        android:textSize="30sp" />
-
-    <LinearLayout
-        android:id="@+id/LLHomepage5"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/BtnUser3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:backgroundTint="@android:color/white"
-            android:drawableLeft="@drawable/avatar_winter_custome_49_svgrepo_com"
-            android:text="User 1"
-            android:textColor="@color/black" />
-
-        <Button
-            android:id="@+id/BtnUser4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:backgroundTint="@android:color/white"
-            android:drawableLeft="@drawable/avatar_winter_custome_23_svgrepo_com"
-            android:text="User 2"
-            android:textColor="@color/black" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/LLHomepage6"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        tools:context=".fragments.HomeFragment">
+
+        <TextView
+            android:id="@+id/TVWhatWeAreLovingNow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="What We're Loving Now"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
 
         <LinearLayout
-            android:id="@+id/LLHomepage7"
-            android:layout_width="wrap_content"
-            android:layout_height="284dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/IVChickpeaSoup2"
-                android:layout_width="205dp"
-                android:layout_height="165dp"
-                app:srcCompat="@drawable/basically_hammy_chickpea_soup" />
-
-            <TextView
-                android:id="@+id/TVChickpeaSoup2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:text="Chickpea Soup"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/TVVegan2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
-                android:text="Vegan" />
+            android:id="@+id/LLHomepage1"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal">
 
             <Button
-                android:id="@+id/BtnLike3"
+                android:id="@+id/BtnUser1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:text="99" />
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:backgroundTint="@android:color/white"
+                android:drawableLeft="@drawable/avatar_winter_custome_49_svgrepo_com"
+                android:text="User 1"
+                android:textColor="@color/black" />
+
+            <Button
+                android:id="@+id/BtnUser2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:backgroundTint="@android:color/white"
+                android:drawableLeft="@drawable/avatar_winter_custome_23_svgrepo_com"
+                android:text="User 2"
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/LLHomepage8"
-            android:layout_width="wrap_content"
-            android:layout_height="284dp"
-            android:orientation="vertical">
+            android:id="@+id/LLHomepage2"
+            android:layout_width="match_parent"
+            android:layout_height="287dp"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/IVTomatoPizza"
+            <LinearLayout
+                android:id="@+id/LLHomepage3"
                 android:layout_width="wrap_content"
-                android:layout_height="165dp"
-                app:srcCompat="@drawable/tomatopizza" />
+                android:layout_height="284dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/TVTomatoPizza"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:text="Tomato Pizza"
-                android:textSize="20sp" />
+                <ImageView
+                    android:id="@+id/IVChickpeaSoup"
+                    android:layout_width="205dp"
+                    android:layout_height="165dp"
+                    app:srcCompat="@drawable/basically_hammy_chickpea_soup" />
 
-            <TextView
-                android:id="@+id/TVCheapEat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
-                android:text="Cheap Eat" />
+                <TextView
+                    android:id="@+id/TVChickpeaSoup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="20dp"
+                    android:text="Chickpea Soup"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/TVVegan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="10dp"
+                    android:text="Vegan" />
+
+                <Button
+                    android:id="@+id/BtnLike1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="99" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LLHomepage4"
+                android:layout_width="wrap_content"
+                android:layout_height="284dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/IVTomatoPizza2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="165dp"
+                    app:srcCompat="@drawable/tomatopizza" />
+
+                <TextView
+                    android:id="@+id/TVTomatoPizza2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="20dp"
+                    android:text="Tomato Pizza"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/TVCheapEat2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="10dp"
+                    android:text="Cheap Eat" />
+
+                <Button
+                    android:id="@+id/BtnLike2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="99" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/TVRecentlyViewed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Recently Viewed"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
+
+        <LinearLayout
+            android:id="@+id/LLHomepage5"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:orientation="horizontal">
 
             <Button
-                android:id="@+id/BtnLike4"
+                android:id="@+id/BtnUser3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:text="99" />
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:backgroundTint="@android:color/white"
+                android:drawableLeft="@drawable/avatar_winter_custome_49_svgrepo_com"
+                android:text="User 1"
+                android:textColor="@color/black" />
 
+            <Button
+                android:id="@+id/BtnUser4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:backgroundTint="@android:color/white"
+                android:drawableLeft="@drawable/avatar_winter_custome_23_svgrepo_com"
+                android:text="User 2"
+                android:textColor="@color/black" />
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LLHomepage6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/LLHomepage7"
+                android:layout_width="wrap_content"
+                android:layout_height="284dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/IVChickpeaSoup2"
+                    android:layout_width="205dp"
+                    android:layout_height="165dp"
+                    app:srcCompat="@drawable/basically_hammy_chickpea_soup" />
+
+                <TextView
+                    android:id="@+id/TVChickpeaSoup2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="20dp"
+                    android:text="Chickpea Soup"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/TVVegan2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="10dp"
+                    android:text="Vegan" />
+
+                <Button
+                    android:id="@+id/BtnLike3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="99" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LLHomepage8"
+                android:layout_width="wrap_content"
+                android:layout_height="284dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/IVTomatoPizza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="165dp"
+                    app:srcCompat="@drawable/tomatopizza" />
+
+                <TextView
+                    android:id="@+id/TVTomatoPizza"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="20dp"
+                    android:text="Tomato Pizza"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/TVCheapEat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="10dp"
+                    android:text="Cheap Eat" />
+
+                <Button
+                    android:id="@+id/BtnLike4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="99" />
+
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>
