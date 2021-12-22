@@ -19,7 +19,8 @@
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="BottomSheetNotDraggable" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
-        <item name="behavior_draggable">false</item>
+    <style name="Theme.CookWhat.noActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimaryVariant">@color/dark_yellow</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
     </style>
 </resources>
