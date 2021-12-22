@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/BSIngredients"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:layout_marginBottom="10dp"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_rectangle"
+        android:drawableStart="@drawable/ic_baseline_search_24"
+        android:drawableTint="@color/grey"
+        android:ems="10"
+        android:hint="@string/find_or_custom_ingredients"
+        android:inputType="textPersonName" />
+
+    <GridView
+        android:id="@+id/Grid_Market_Ingredients"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:numColumns="4" />
+
+</LinearLayout>

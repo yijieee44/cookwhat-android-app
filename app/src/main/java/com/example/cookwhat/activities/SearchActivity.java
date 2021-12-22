@@ -7,11 +7,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.GridView;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.adapters.IngredientAdapter;
+import com.example.cookwhat.adapters.MarketIngredientAdapter;
 import com.example.cookwhat.models.IngredientModel;
+import com.example.cookwhat.utils.Constants;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +35,6 @@ public class SearchActivity extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
 
     RecyclerView utensilRecycleView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,5 +72,32 @@ public class SearchActivity extends AppCompatActivity {
 ////        utensilRecycleView.addItemDecoration(dividerItemDecoration);  //for divider
 //
 //        utensilRecycleView.setAdapter(new IngredientAdapter(context, ingredientModelList));
+    }
+
+    public void BtnIngredientsBottomSheet(View view) {
+
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(R.layout.bottom_sheet_ingredients);
+
+        try {
+            Field behaviorField = bottomSheetDialog.getClass().getDeclaredField("behavior");
+            behaviorField.setAccessible(true);
+            final BottomSheetBehavior behavior = (BottomSheetBehavior) behaviorField.get(bottomSheetDialog);
+            behavior.setDraggable(false);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+
+        int[] ingredients_icon = Constants.INGREDIENTS_ICON;
+        int[] ingredients_name = Constants.INGREDIENTS_NAME;
+
+        GridView ingredientsGridView = (GridView) bottomSheetDialog.findViewById(R.id.Grid_Market_Ingredients);
+        MarketIngredientAdapter marketIngredientAdapter = new MarketIngredientAdapter(SearchActivity.this, ingredients_name, ingredients_icon);
+        ingredientsGridView.setAdapter(marketIngredientAdapter);
+
+        bottomSheetDialog.show();
     }
 }

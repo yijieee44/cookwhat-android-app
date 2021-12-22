@@ -23,7 +23,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Add Ingredient" />
+        android:text="Add Ingredient"
+        android:onClick="BtnIngredientsBottomSheet"/>
+        android:onClick="BtnIngredientsBottomSheet"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/activity_search_ingredient_list"
