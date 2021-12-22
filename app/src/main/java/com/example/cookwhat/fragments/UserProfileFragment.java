@@ -3,6 +3,7 @@ package com.example.cookwhat.fragments;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -10,13 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CursorAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import com.example.cookwhat.ExpandableHeightGridView;
 import com.example.cookwhat.R;
-import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -37,12 +36,47 @@ public class UserProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    ArrayList<String> recipeName =new ArrayList<>();
+    ArrayList<Integer> Img = new ArrayList<>();
 
+    ExpandableHeightGridView tabcontent;
+    TextView textcontent;
+    LinearLayout ll;
+    ConstraintLayout cl, clmain;
 
-    GridView tabcontent;
 
     public UserProfileFragment() {
+        /*FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("recipe")
+                .whereEqualTo("username", "yuan")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for(QueryDocumentSnapshot document: task.getResult()){
+                                recipeName.add(document.getData().get("recipe_name").toString());
+                                System.out.println(document.getData().get("recipe_name"));
 
+                            }
+                        }
+
+                    }
+                });*/
+
+        /*for(int i=0; i<15; i++){
+            recipeName.add(Integer.toString(i));
+            Img.add(R.drawable.addbutton);
+        }
+        System.out.println("the constructor");*/
+
+    }
+
+
+    private ArrayList<String> getSecretRecipe(){
+        ArrayList<String> food = new ArrayList<>();
+
+        return food;
     }
 
     /**
@@ -74,8 +108,14 @@ public class UserProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
-        TabItem secretRecipe = view.findViewById(R.id.TL_SecretRecipe);
-        TabItem aboutMe = view.findViewById(R.id.TL_AboutMe);
+
+        //recipeName = getSecretRecipe();
+
+        System.out.println("");
+        System.out.println(recipeName.size());
+
+
+
 
         Button favCategory = view.findViewById(R.id.Btn_Favourite);
 
@@ -88,35 +128,90 @@ public class UserProfileFragment extends Fragment {
 
         favCategory.setOnClickListener(favCategoryOCL);
 
-        View.OnClickListener secretRecipeOCL = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                tabcontent = view.findViewById(R.id.tabcontent);
-
-
-                //CustomAdapter tabAdapter = new CustomAdapter(userData);   pass userID return recipeID, arg: recipe class
-                tabcontent.setAdapter(tabAdapter);
-
-                //method of click btn of tabcontent
-            }
-        };
-
-        secretRecipe.setOnClickListener(secretRecipeOCL);
-
-    }
-
-    private class CustomAdapter extends BaseAdapter{
-
-
-
-        private CustomAdapter(RecipeModel  Recipe){
+        if (recipeName.isEmpty()){
+            String noRecipe = "Nothing to show here.\nLet's get started on sharing your secret recipes!";
+            textcontent = view.findViewById(R.id.textView4);
+            textcontent.setText(noRecipe);
 
         }
 
+        else{
+            view.findViewById(R.id.textView4).setVisibility(View.INVISIBLE);
+            tabcontent = view.findViewById(R.id.tabcontent);
+            CustomAdapter recipeAdapter = new CustomAdapter();
+            tabcontent.setExpanded(true);
+            tabcontent.setAdapter(recipeAdapter);
+        }
+
+        cl = view.findViewById(R.id.CL_SecretRecipe);
+        cl.setVisibility(View.VISIBLE);
+
+        ll = view.findViewById(R.id.LL_AboutMe);
+        clmain = view.findViewById(R.id.CS_Main);
+
+        removeChild(ll);
+
+        TabLayout tabLayout = view.findViewById(R.id.TL_ProfileTab);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+                switch(tab.getPosition()){
+                    case 0:
+                    {
+                        removeChild(ll);
+                        addChild(cl, clmain);
+                        cl.setVisibility(View.VISIBLE);
+
+                        break;
+
+                    }
+                    case 1:
+                    {
+                        //ConstraintLayout csMain = view.findViewById(R.id.CS_Main);
+                        removeChild(cl);
+                        addChild(ll, clmain);
+                        ll.setVisibility(View.VISIBLE);
+
+                        break;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+
+
+
+
+    }
+
+    public void removeChild(ViewGroup viewgroup){
+        ((ViewGroup)viewgroup.getParent()).removeView(viewgroup);
+
+    }
+
+    public void addChild(ViewGroup child, ViewGroup parent){
+        parent.addView(child);
+    }
+
+    private class CustomAdapter extends BaseAdapter {
+
+
+
         @Override
         public int getCount() {
-            return 0;
+            return recipeName.size();
         }
 
         @Override
@@ -131,7 +226,15 @@ public class UserProfileFragment extends Fragment {
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
+            View view1 = getLayoutInflater().inflate(R.layout.row_data,null);
 
+            ImageView img = view1.findViewById(R.id.IV_favCategory);
+            TextView text = view1.findViewById(R.id.TV_favCategory);
+
+            img.setImageResource(Img.get(i));
+            text.setText(recipeName.get(i));
+
+            return view1;
 
         }
     }

@@ -2,133 +2,208 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/CS"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:elevation="10dp"
     tools:context=".fragments.UserProfileFragment">
 
-    <ImageView
-        android:id="@+id/IV_Profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/circle"
-        tools:layout_editor_absoluteX="29dp"
-        tools:layout_editor_absoluteY="36dp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.appcompat.widget.AppCompatButton
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/CS_Main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="10dp">
 
-        android:id="@+id/Btn_Follower"
-        android:layout_width="78dp"
-        android:layout_height="74dp"
-        android:background="@drawable/whitecircle"
-        android:fontFamily="@font/CandyJelly"
-        android:paddingTop="20dp"
-        android:text="88"
-        android:gravity="center"
-        android:textSize="30sp"
-        tools:layout_editor_absoluteX="154dp"
-        tools:layout_editor_absoluteY="36dp" />
+            <ImageView
+                android:id="@+id/IV_Profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:src="@drawable/circle"
+                app:layout_constraintEnd_toStartOf="@+id/Btn_Follower"
+                app:layout_constraintHorizontal_bias="0.535"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/TV_Follower"
-        android:layout_width="82dp"
-        android:layout_height="30dp"
-        android:fontFamily="@font/CandyJelly"
-        android:paddingTop="8dp"
-        android:text="Followers"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        tools:layout_editor_absoluteX="154dp"
-        tools:layout_editor_absoluteY="110dp" />
+            <androidx.appcompat.widget.AppCompatButton
 
-    <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/Btn_Follower"
+                android:layout_width="78dp"
+                android:layout_height="74dp"
+                android:layout_marginTop="36dp"
+                android:layout_marginEnd="44dp"
+                android:background="@drawable/whitecircle"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:text="88"
+                android:textSize="30sp"
+                app:layout_constraintEnd_toStartOf="@+id/Btn_Following"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        android:id="@+id/Btn_Following"
-        android:layout_width="78dp"
-        android:layout_height="74dp"
-        android:background="@drawable/whitecircle"
-        android:fontFamily="@font/CandyJelly"
-        android:paddingTop="20dp"
-        android:text="88"
-        android:gravity="center"
-        android:textSize="30sp"
-        tools:layout_editor_absoluteX="270dp"
-        tools:layout_editor_absoluteY="36dp" />
+            <TextView
+                android:id="@+id/TV_Follower"
+                android:layout_width="82dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="32dp"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                android:text="Followers"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/TV_Following"
+                app:layout_constraintTop_toBottomOf="@+id/Btn_Follower" />
 
-    <TextView
-        android:id="@+id/TV_Following"
-        android:layout_width="98dp"
-        android:layout_height="30dp"
-        android:fontFamily="@font/CandyJelly"
-        android:paddingTop="8dp"
-        android:text="Followings"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        tools:layout_editor_absoluteX="270dp"
-        tools:layout_editor_absoluteY="110dp" />
+            <androidx.appcompat.widget.AppCompatButton
 
-    <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/Btn_Following"
+                android:layout_width="78dp"
+                android:layout_height="74dp"
+                android:layout_marginTop="36dp"
+                android:layout_marginEnd="52dp"
+                android:background="@drawable/whitecircle"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:text="88"
+                android:textSize="30sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        android:id="@+id/Btn_Favourite"
-        android:layout_width="182dp"
-        android:layout_height="49dp"
-        android:background="@drawable/roundedrecbtn"
-        android:drawableEnd="@drawable/favourite"
-        android:drawablePadding="0dp"
-        android:fontFamily="@font/CandyJelly"
-        android:paddingLeft="15dp"
-        android:paddingTop="15dp"
-        android:paddingRight="28dp"
-        android:paddingBottom="15dp"
-        android:text="see your"
-        android:gravity="center"
-        android:textColor="#744518"
-        android:textSize="28sp"
-        tools:layout_editor_absoluteX="166dp"
-        tools:layout_editor_absoluteY="152dp"
-        android:drawableRight="@drawable/favourite" />
+            <TextView
+                android:id="@+id/TV_Following"
+                android:layout_width="98dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="40dp"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                android:text="Followings"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Btn_Following" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/TL_ProfileTab"
-        android:layout_width="376dp"
-        android:layout_height="55dp"
-        android:background="@drawable/roundedrec"
-        app:tabIndicator="@drawable/roundedrecselec"
-        app:tabIndicatorColor="@color/light_yellow"
-        app:tabMode="fixed"
-        app:tabTextAppearance="@style/tab_font"
-        app:tabTextColor="#744518"
-        tools:layout_editor_absoluteX="19dp"
-        tools:layout_editor_absoluteY="242dp">
+            <androidx.appcompat.widget.AppCompatButton
 
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/TL_SecretRecipe"
-            android:layout_width="188dp"
-            android:layout_height="50dp"
-            android:background="@color/light_yellow"
-            android:text="My Secret Recipe" />
+                android:id="@+id/Btn_Favourite"
+                android:layout_width="182dp"
+                android:layout_height="49dp"
+                android:layout_marginStart="168dp"
+                android:layout_marginTop="160dp"
+                android:background="@drawable/roundedrecbtn"
+                android:drawableEnd="@drawable/favourite"
+                android:drawableRight="@drawable/favourite"
+                android:drawablePadding="0dp"
+                android:gravity="center"
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="28dp"
+                android:paddingBottom="15dp"
+                android:text="see your"
+                android:textColor="#744518"
+                android:textSize="28sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/TL_AboutMe"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:background="@drawable/roundedrec"
-            android:backgroundTintMode="add"
-            android:text="About Me" />
+            <LinearLayout
+                android:id="@+id/LL_AboutMe"
+                android:layout_width="match_parent"
+                android:layout_height="375dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TL_ProfileTab">
 
-    </com.google.android.material.tabs.TabLayout>
+                <TextView
+                    android:id="@+id/TV_Preferences"
+                    android:layout_width="150dp"
+                    android:layout_height="37dp"
+                    android:text="Preference" />
 
-    <GridView
-        android:id="@+id/tabcontent"
-        android:layout_width="381dp"
-        android:layout_height="433dp"
-        android:background="@drawable/roundedrecselec"
+                <TextView
+                    android:id="@+id/TV_EmailAddr"
+                    android:layout_width="156dp"
+                    android:layout_height="57dp"
+                    android:text="email_addr" />
 
-        android:rotation="180"
-        tools:layout_editor_absoluteX="19dp"
-        tools:layout_editor_absoluteY="297dp" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/CL_SecretRecipe"
+                android:layout_width="match_parent"
+                android:layout_height="375dp"
+                android:layout_marginTop="285dp"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="45dp"
+                    android:layout_marginTop="130dp"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.example.cookwhat.ExpandableHeightGridView
+                    android:id="@+id/tabcontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:horizontalSpacing="1dp"
+                    android:isScrollContainer="false"
+                    android:numColumns="2"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="1dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </com.example.cookwhat.ExpandableHeightGridView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/TL_ProfileTab"
+                android:layout_width="376dp"
+                android:layout_height="55dp"
+
+                android:layout_marginStart="16dp"
+
+                android:layout_marginTop="220dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tabMode="fixed"
+                app:tabTextColor="#744518">
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/TL_SecretRecipe"
+                    android:layout_width="188dp"
+                    android:layout_height="50dp"
+                    android:text="My Secret Recipe" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/TL_AboutMe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+
+                    android:backgroundTintMode="add"
+                    android:text="About Me" />
+
+            </com.google.android.material.tabs.TabLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
