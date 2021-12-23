@@ -1,13 +1,19 @@
 package com.example.cookwhat.activities;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.GridView;
 
 import com.example.cookwhat.R;
@@ -102,6 +108,7 @@ public class SearchActivity extends AppCompatActivity {
 
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_ingredients);
+        int screenHeight =  Resources.getSystem().getDisplayMetrics().heightPixels;
 
         try {
             Field behaviorField = bottomSheetDialog.getClass().getDeclaredField("behavior");
@@ -114,13 +121,44 @@ public class SearchActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        int[] ingredientsIcon = Constants.INGREDIENTS_ICON;
+        int[] ingredientsName = Constants.INGREDIENTS_NAME;
 
-        int[] ingredients_icon = Constants.INGREDIENTS_ICON;
-        int[] ingredients_name = Constants.INGREDIENTS_NAME;
+
+
 
         GridView ingredientsGridView = (GridView) bottomSheetDialog.findViewById(R.id.Grid_Market_Ingredients);
-        MarketIngredientAdapter marketIngredientAdapter = new MarketIngredientAdapter(SearchActivity.this, ingredients_name, ingredients_icon);
+        MarketIngredientAdapter marketIngredientAdapter = new MarketIngredientAdapter(SearchActivity.this, ingredientsName, ingredientsIcon);
         ingredientsGridView.setAdapter(marketIngredientAdapter);
+//        ingredientsGridView.setMinimumHeight((int) (screenHeight * 0.75));
+
+        EditText searchIngredients = (EditText) bottomSheetDialog.findViewById(R.id.EditTextSearchIngredient);
+        searchIngredients.addTextChangedListener(new TextWatcher() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            public void afterTextChanged(Editable s) {
+                List<Integer> searchIcon = new ArrayList<>();
+                List<Integer> searchName = new ArrayList<>();
+
+                for(int i=0; i<ingredientsName.length; i++) {
+                    if(getResources().getString(ingredientsName[i]).toLowerCase().contains(s.toString().toLowerCase())) {
+                        searchIcon.add(ingredientsIcon[i]);
+                        searchName.add(ingredientsName[i]);
+                    }
+                }
+
+
+                int[] searchIconArray = searchIcon.stream().mapToInt(i -> i).toArray();
+                int[] searchNameArray = searchName.stream().mapToInt(i -> i).toArray();
+
+                MarketIngredientAdapter marketIngredientAdapter = new MarketIngredientAdapter(SearchActivity.this, searchNameArray, searchIconArray);
+                ingredientsGridView.setAdapter(marketIngredientAdapter);
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
 
         bottomSheetDialog.show();
     }
