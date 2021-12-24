@@ -9,7 +9,8 @@
     <string name="add_utensils">Add Utensils</string>
     <string name="add_ingredients">Add Ingredients</string>
     <string name="ingredients_market">Ingredients Market</string>
-    <string name="find_or_custom_ingredients">Find or create custom ingredients</string>
+    <string name="find_ingredients">Find ingredients</string>
+    <string name="cant_find_ingredients">Ingredient Not found? Add this</string>
 
     <string name="i0000_acorn">Acorn</string>
     <string name="i0001_ajinomoto">Ajinomoto</string>
