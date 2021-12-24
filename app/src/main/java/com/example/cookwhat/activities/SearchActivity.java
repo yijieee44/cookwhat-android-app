@@ -8,11 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 
@@ -108,7 +110,6 @@ public class SearchActivity extends AppCompatActivity {
 
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_ingredients);
-        int screenHeight =  Resources.getSystem().getDisplayMetrics().heightPixels;
 
         try {
             Field behaviorField = bottomSheetDialog.getClass().getDeclaredField("behavior");
@@ -124,13 +125,34 @@ public class SearchActivity extends AppCompatActivity {
         int[] ingredientsIcon = Constants.INGREDIENTS_ICON;
         int[] ingredientsName = Constants.INGREDIENTS_NAME;
 
-
-
-
         GridView ingredientsGridView = (GridView) bottomSheetDialog.findViewById(R.id.Grid_Market_Ingredients);
         MarketIngredientAdapter marketIngredientAdapter = new MarketIngredientAdapter(SearchActivity.this, ingredientsName, ingredientsIcon);
         ingredientsGridView.setAdapter(marketIngredientAdapter);
-//        ingredientsGridView.setMinimumHeight((int) (screenHeight * 0.75));
+
+        List<Integer> prevSelGridItem = new ArrayList<Integer>();
+
+        ingredientsGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            View viewPrev;
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                try {
+                    if (prevSelGridItem.contains(position)) {
+                        viewPrev = (View) ingredientsGridView.getChildAt(position);
+                        prevSelGridItem.remove(Integer.valueOf(position));
+                        viewPrev.setBackgroundColor(Color.TRANSPARENT);
+                    } else {
+                        viewPrev = (View) ingredientsGridView.getChildAt(position);
+                        view.setBackgroundColor(getResources().getColor(R.color.light_yellow));
+                        prevSelGridItem.add(position);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
 
         EditText searchIngredients = (EditText) bottomSheetDialog.findViewById(R.id.EditTextSearchIngredient);
         searchIngredients.addTextChangedListener(new TextWatcher() {
@@ -145,7 +167,6 @@ public class SearchActivity extends AppCompatActivity {
                         searchName.add(ingredientsName[i]);
                     }
                 }
-
 
                 int[] searchIconArray = searchIcon.stream().mapToInt(i -> i).toArray();
                 int[] searchNameArray = searchName.stream().mapToInt(i -> i).toArray();
