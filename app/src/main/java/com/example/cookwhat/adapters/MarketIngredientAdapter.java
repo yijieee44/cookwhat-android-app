@@ -32,6 +32,7 @@ public class MarketIngredientAdapter extends BaseAdapter {
         this.image = image;
     }
 
+
     @Override
     public int getCount() {
         return marketIngredientsName.length;

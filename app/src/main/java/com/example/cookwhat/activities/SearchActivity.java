@@ -142,7 +142,22 @@ public class SearchActivity extends AppCompatActivity {
 
         GridView ingredientsGridView = (GridView) bottomSheetDialog.findViewById(R.id.Grid_Market_Ingredients);
         LinearLayout ingredientLayoutCantFind = (LinearLayout) bottomSheetDialog.findViewById(R.id.LayoutIngCantFind);
-        MarketIngredientAdapter marketIngredientAdapter = new MarketIngredientAdapter(SearchActivity.this, ingredientsName, ingredientsIcon);
+        MarketIngredientAdapter marketIngredientAdapter = new MarketIngredientAdapter(SearchActivity.this, ingredientsName, ingredientsIcon) {
+             @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+
+                int color = Color.TRANSPARENT; // Transparent
+                 if (selIngredientsItem.contains(displayIngredientItem.get(position))) {
+                     color = getResources().getColor(R.color.light_yellow);
+                 }
+
+                view.setBackgroundColor(color);
+
+                return view;
+             }
+        };
+
         ingredientsGridView.setAdapter(marketIngredientAdapter);
 
         ingredientsGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -228,6 +243,26 @@ public class SearchActivity extends AppCompatActivity {
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
+
+        ChipGroup chipGroup = (ChipGroup) bottomSheetDialog.findViewById(R.id.ChipGroupCustomIngredient);
+
+        for (int i=0; i<selCustomIngredients.size(); i++) {
+            String chipItem = selCustomIngredients.get(i);
+            Chip chip = new Chip(SearchActivity.this);
+            chip.setText(chipItem);
+            chip.setChipBackgroundColorResource(R.color.light_yellow);
+            chip.setCloseIconVisible(true);
+            chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    chipGroup.removeView(chip);
+                    selCustomIngredients.remove(chipItem);
+                }
+            });
+            chip.setTextColor(getResources().getColor(R.color.black));
+
+            chipGroup.addView(chip);
+        }
 
 
         bottomSheetDialog.show();
