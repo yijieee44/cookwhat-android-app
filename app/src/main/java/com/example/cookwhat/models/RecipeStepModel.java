@@ -4,6 +4,11 @@ public class RecipeStepModel {
     String image;
     String step;
 
+    public RecipeStepModel(String image, String step) {
+        this.image = image;
+        this.step = step;
+    }
+
     public String getImage() {
         return image;
     }

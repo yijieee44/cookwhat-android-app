@@ -1,7 +1,10 @@
 package com.example.cookwhat.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,18 +14,28 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.cookwhat.R;
+import com.example.cookwhat.adapters.EditPhotosAdapter;
+import com.example.cookwhat.models.RecipeStepModel;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,8 +44,10 @@ import java.util.ArrayList;
  */
 public class CreateShowGalleryFragment extends Fragment {
     ImageSlider imageSlider;
-    ArrayList<SlideModel> selected_images = new ArrayList<>();
+    ArrayList<SlideModel> selectedImages = new ArrayList<>();
     int MAX_IMAGES_ALLOWED = 9;
+    Dialog editDialog;
+    List<RecipeStepModel> recipeStepModels = new ArrayList<>();
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -46,25 +61,27 @@ public class CreateShowGalleryFragment extends Fragment {
                             int count = data.getClipData().getItemCount();
 
                             // limit to 9 photos
-                            if(selected_images.size() + count > MAX_IMAGES_ALLOWED) {
+                            if(selectedImages.size() + count > MAX_IMAGES_ALLOWED) {
                                 Toast.makeText(getActivity(), "Only " + MAX_IMAGES_ALLOWED + " images/videos allowed.", Toast.LENGTH_LONG).show();
-                                count = MAX_IMAGES_ALLOWED - selected_images.size();
+                                count = MAX_IMAGES_ALLOWED - selectedImages.size();
                             }
 
                             for (int i = 0; i < count; i++) {
                                 Uri imageUrl = data.getClipData().getItemAt(i).getUri();
-                                selected_images.add(new SlideModel(imageUrl.toString(), null,null));
+                                selectedImages.add(new SlideModel(imageUrl.toString(), null,null));
+                                recipeStepModels.add(new RecipeStepModel(imageUrl.toString(), ""));
                             }
-                            imageSlider.setImageList(selected_images);
+                            imageSlider.setImageList(selectedImages);
                         } else if(data.getData() != null) {
                             Uri imagePath = data.getData();
 
                             // limit to 9 photos
-                            if(selected_images.size() >= 9) {
+                            if(selectedImages.size() >= 9) {
                                 Toast.makeText(getActivity(), "Only " + MAX_IMAGES_ALLOWED + " images/videos allowed.", Toast.LENGTH_LONG).show();
                             } else {
-                                selected_images.add(new SlideModel(imagePath.toString(), null, null));
-                                imageSlider.setImageList(selected_images);
+                                selectedImages.add(new SlideModel(imagePath.toString(), null, null));
+                                recipeStepModels.add(new RecipeStepModel(imagePath.toString(), ""));
+                                imageSlider.setImageList(selectedImages);
                             }
                         }
                     }
@@ -117,6 +134,8 @@ public class CreateShowGalleryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_create_show_gallery, container, false);
 
+        editDialog = new Dialog(getActivity());
+
         Button button = (Button) view.findViewById(R.id.BtnAddImages);
         button.setOnClickListener(new View.OnClickListener()
         {
@@ -124,6 +143,16 @@ public class CreateShowGalleryFragment extends Fragment {
             public void onClick(View v)
             {
                 getImagesFromGallery();
+            }
+        });
+
+        Button editButton = (Button) view.findViewById(R.id.BtnEditImages);
+        editButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                showEditDialog();
             }
         });
 
@@ -143,5 +172,42 @@ public class CreateShowGalleryFragment extends Fragment {
         i.setAction(Intent.ACTION_GET_CONTENT);
 
         activityResultLauncher.launch(Intent.createChooser(i, "Select Picture"));
+    }
+
+    public void showEditDialog() {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+
+        editDialog.setCancelable(true);
+        editDialog.setContentView(R.layout.dialog_edit_photos);
+
+        if(recipeStepModels.size()>0) {
+            RecyclerView photosRecyclerView = (RecyclerView) editDialog.findViewById(R.id.RVPhotos);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());;
+            photosRecyclerView.setLayoutManager(linearLayoutManager);
+            photosRecyclerView.setAdapter(new EditPhotosAdapter(getContext(), recipeStepModels));
+
+            editDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    EditPhotosAdapter editPhotosAdapter = (EditPhotosAdapter) photosRecyclerView.getAdapter();
+                    List<RecipeStepModel> newRecipeStepModel = editPhotosAdapter.getRecipeStepModels();
+                    List<SlideModel> newSlideModel = new ArrayList<>();
+
+                    for(RecipeStepModel model : newRecipeStepModel) {
+                        newSlideModel.add(new SlideModel(model.getImage(), null,null));
+                    }
+
+                    imageSlider.setImageList(newSlideModel);
+                }
+            });
+
+        } else {
+            TextView noPhotoTextView = (TextView) editDialog.findViewById(R.id.TVNoPhoto);
+            noPhotoTextView.setVisibility(View.VISIBLE);
+        }
+
+        editDialog.show();
+
     }
 }
