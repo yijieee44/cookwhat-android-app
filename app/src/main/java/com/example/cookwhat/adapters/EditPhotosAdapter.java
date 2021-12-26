@@ -53,7 +53,9 @@ public class EditPhotosAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             @Override
             public void onDelete(int p) {
-
+                recipeStepModels.remove(p);
+                notifyItemRemoved(p);
+                notifyItemRangeChanged(p, recipeStepModels.size());
             }
 
             public void swapItems(int itemAIndex, int itemBIndex) {
