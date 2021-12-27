@@ -8,11 +8,48 @@
     android:orientation="vertical"
     tools:context=".activities.CreateActivity">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <androidx.fragment.app.FragmentContainerView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/fragment_container_view"
+        android:id="@+id/FragmentContainerCreate"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="com.example.cookwhat.fragments.CreateShowGalleryFragment" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/FABNext"
+            android:layout_width="442dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="25dp"
+            android:clickable="true"
+            android:src="@drawable/ic_baseline_chevron_right_24"
+            app:elevation="8dp"
+            app:fabSize="auto"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:backgroundTint="@color/dark_yellow"
+            app:tint="@color/white" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/FABBack"
+            android:layout_width="442dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:layout_marginBottom="25dp"
+            android:clickable="true"
+            android:src="@drawable/ic_baseline_chevron_left_24"
+            app:elevation="8dp"
+            app:fabSize="auto"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:backgroundTint="@color/dark_yellow"
+            app:tint="@color/white" />
+    </FrameLayout>
 
 </LinearLayout>

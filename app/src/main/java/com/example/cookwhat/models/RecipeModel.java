@@ -1,17 +1,18 @@
 package com.example.cookwhat.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeModel {
-    int id;
-    int userId;
-    int num_fav;
-    String title;
-    List<String> tags;
-    List<IngredientModel> ingredients;
-    List<UtensilModel> utensils;
-    List<RecipeCommentModel> comments;
-    List<RecipeStepModel> steps;
+    int id = 0;
+    int userId = 0;
+    int num_fav = 0;
+    String title = "";
+    List<String> tags = new ArrayList<>();
+    List<IngredientModel> ingredients = new ArrayList<>();
+    List<UtensilModel> utensils = new ArrayList<>();
+    List<RecipeCommentModel> comments = new ArrayList<>();
+    List<RecipeStepModel> steps = new ArrayList<>();
 
     public int getId() {
         return id;

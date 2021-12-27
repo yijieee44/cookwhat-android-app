@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/FragmentCreateGallery"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -15,11 +22,10 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            >
+            android:layout_marginRight="5dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/BtnAddImages"
@@ -53,8 +59,7 @@
         <com.denzcoskun.imageslider.ImageSlider
             android:id="@+id/CreateImageSlider"
             android:layout_width="match_parent"
-            android:layout_height="200dp">
-        </com.denzcoskun.imageslider.ImageSlider>
+            android:layout_height="200dp"></com.denzcoskun.imageslider.ImageSlider>
     </LinearLayout>
 
     <Button
@@ -87,3 +92,4 @@
         android:layout_height="match_parent" />
 
 </LinearLayout>
+</ScrollView>

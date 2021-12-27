@@ -30,7 +30,9 @@ import android.widget.Toast;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.cookwhat.R;
+import com.example.cookwhat.activities.CreateActivity;
 import com.example.cookwhat.adapters.EditPhotosAdapter;
+import com.example.cookwhat.models.RecipeModel;
 import com.example.cookwhat.models.RecipeStepModel;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -48,6 +50,7 @@ public class CreateShowGalleryFragment extends Fragment {
     int MAX_IMAGES_ALLOWED = 9;
     Dialog editDialog;
     List<RecipeStepModel> recipeStepModels = new ArrayList<>();
+
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -85,6 +88,10 @@ public class CreateShowGalleryFragment extends Fragment {
                             }
                         }
                     }
+                    RecipeModel recipeFromActivity = ((CreateActivity)getActivity()).getNewRecipe();
+                    recipeFromActivity.setSteps(recipeStepModels);
+
+                    ((CreateActivity)getActivity()).setNewRecipe(recipeFromActivity);
                 }
             });
 
@@ -135,6 +142,7 @@ public class CreateShowGalleryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_create_show_gallery, container, false);
 
         editDialog = new Dialog(getActivity());
+        recipeStepModels = ((CreateActivity)getActivity()).getNewRecipe().getSteps();
 
         Button button = (Button) view.findViewById(R.id.BtnAddImages);
         button.setOnClickListener(new View.OnClickListener()
@@ -158,8 +166,13 @@ public class CreateShowGalleryFragment extends Fragment {
 
         imageSlider = view.findViewById(R.id.CreateImageSlider);
 
-        ArrayList<SlideModel> images = new ArrayList<>();
-        imageSlider.setImageList(images);
+        List<SlideModel> newSlideModel = new ArrayList<>();
+
+        for(RecipeStepModel model : recipeStepModels) {
+            newSlideModel.add(new SlideModel(model.getImage(), null,null));
+        }
+
+        imageSlider.setImageList(newSlideModel);
 
         return view;
 
@@ -191,14 +204,19 @@ public class CreateShowGalleryFragment extends Fragment {
                 @Override
                 public void onCancel(DialogInterface dialog) {
                     EditPhotosAdapter editPhotosAdapter = (EditPhotosAdapter) photosRecyclerView.getAdapter();
-                    List<RecipeStepModel> newRecipeStepModel = editPhotosAdapter.getRecipeStepModels();
+                    recipeStepModels = editPhotosAdapter.getRecipeStepModels();
                     List<SlideModel> newSlideModel = new ArrayList<>();
 
-                    for(RecipeStepModel model : newRecipeStepModel) {
+                    for(RecipeStepModel model : recipeStepModels) {
                         newSlideModel.add(new SlideModel(model.getImage(), null,null));
                     }
 
                     imageSlider.setImageList(newSlideModel);
+
+                    RecipeModel recipeFromActivity = ((CreateActivity)getActivity()).getNewRecipe();
+                    recipeFromActivity.setSteps(recipeStepModels);
+
+                    ((CreateActivity)getActivity()).setNewRecipe(recipeFromActivity);
                 }
             });
 
@@ -206,6 +224,11 @@ public class CreateShowGalleryFragment extends Fragment {
             TextView noPhotoTextView = (TextView) editDialog.findViewById(R.id.TVNoPhoto);
             noPhotoTextView.setVisibility(View.VISIBLE);
         }
+
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.75);
+
+        editDialog.getWindow().setLayout(width, height);
 
         editDialog.show();
 
