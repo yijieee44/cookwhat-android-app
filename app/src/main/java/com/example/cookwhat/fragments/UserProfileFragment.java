@@ -1,7 +1,9 @@
 package com.example.cookwhat.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -16,7 +18,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.example.cookwhat.ExpandableHeightGridView;
 import com.example.cookwhat.R;
+import com.example.cookwhat.followPopUp;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -46,7 +54,15 @@ public class UserProfileFragment extends Fragment {
 
 
     public UserProfileFragment() {
-        /*FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        System.out.println("constructor");
+
+    }
+
+
+    private void getSecretRecipe(){
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("recipe")
                 .whereEqualTo("username", "yuan")
                 .get()
@@ -56,27 +72,15 @@ public class UserProfileFragment extends Fragment {
                         if (task.isSuccessful()){
                             for(QueryDocumentSnapshot document: task.getResult()){
                                 recipeName.add(document.getData().get("recipe_name").toString());
-                                System.out.println(document.getData().get("recipe_name"));
 
                             }
-                        }
+                    }
 
                     }
-                });*/
+                });
 
-        /*for(int i=0; i<15; i++){
-            recipeName.add(Integer.toString(i));
-            Img.add(R.drawable.addbutton);
-        }
-        System.out.println("the constructor");*/
+        System.out.println(recipeName.size());
 
-    }
-
-
-    private ArrayList<String> getSecretRecipe(){
-        ArrayList<String> food = new ArrayList<>();
-
-        return food;
     }
 
     /**
@@ -104,20 +108,40 @@ public class UserProfileFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        getSecretRecipe();
+        for(int i=0; i<recipeName.size(); i++){
+            //recipeName.add(Integer.toString(i));
+            Img.add(R.drawable.addbutton);
+        }
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
 
-        //recipeName = getSecretRecipe();
-
-        System.out.println("");
-        System.out.println(recipeName.size());
-
-
-
-
         Button favCategory = view.findViewById(R.id.Btn_Favourite);
+        Button follower = view.findViewById(R.id.Btn_Follower);
+        Button following = view.findViewById(R.id.Btn_Following);
+
+        View.OnClickListener followerOCL = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), followPopUp.class);
+                intent.putExtra("message","follower");
+                startActivity(intent);
+            }
+        };
+
+        View.OnClickListener followingOCL = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), followPopUp.class);
+                intent.putExtra("message","following");
+                startActivity(intent);
+            }
+        };
+
+        follower.setOnClickListener(followerOCL);
+        following.setOnClickListener(followingOCL);
 
         View.OnClickListener favCategoryOCL = new View.OnClickListener() {
             @Override
@@ -134,7 +158,6 @@ public class UserProfileFragment extends Fragment {
             textcontent.setText(noRecipe);
 
         }
-
         else{
             view.findViewById(R.id.textView4).setVisibility(View.INVISIBLE);
             tabcontent = view.findViewById(R.id.tabcontent);
@@ -162,17 +185,14 @@ public class UserProfileFragment extends Fragment {
                         removeChild(ll);
                         addChild(cl, clmain);
                         cl.setVisibility(View.VISIBLE);
-
                         break;
 
                     }
                     case 1:
                     {
-                        //ConstraintLayout csMain = view.findViewById(R.id.CS_Main);
                         removeChild(cl);
                         addChild(ll, clmain);
                         ll.setVisibility(View.VISIBLE);
-
                         break;
                     }
                 }
@@ -191,9 +211,6 @@ public class UserProfileFragment extends Fragment {
         });
 
 
-
-
-
     }
 
     public void removeChild(ViewGroup viewgroup){
@@ -206,8 +223,6 @@ public class UserProfileFragment extends Fragment {
     }
 
     private class CustomAdapter extends BaseAdapter {
-
-
 
         @Override
         public int getCount() {

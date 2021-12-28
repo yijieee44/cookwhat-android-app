@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.models.IngredientModel;
+import com.example.cookwhat.models.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -92,7 +93,12 @@ public class MainActivity extends AppCompatActivity {
 //                    }
 //                });
 
+
         // bind NavHostFragment with NavController
+
+
+
+
         NavHostFragment host = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.NHFMain);
         NavController navController = host.getNavController();
 
