@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CookWhat">
         <activity
+            android:theme="@style/Theme.CookWhat.noActionBar"
             android:name=".activities.LoginActivity"
             android:exported="true"/>
         <activity

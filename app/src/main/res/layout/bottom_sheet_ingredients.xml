@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/BSIngredients"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:layout_marginBottom="10dp"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="30dp">
+        <EditText
+            android:id="@+id/EditTextSearchIngredient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:background="@drawable/rounded_rectangle"
+            android:drawableStart="@drawable/ic_baseline_search_24"
+            android:drawableTint="@color/grey"
+            android:ems="10"
+            android:hint="@string/find_ingredients"
+            android:inputType="textPersonName"
+            android:layout_marginBottom="10dp"/>
+    </FrameLayout>
+
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/ChipGroupCustomIngredient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="700dp">
+    <GridView
+        android:id="@+id/Grid_Market_Ingredients"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="200dp"
+        android:layout_weight="1"
+        android:numColumns="4" />
+
+        <LinearLayout
+            android:id="@+id/LayoutIngCantFind"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cant_find_ingredients">
+
+            </TextView>
+
+            <Button
+                android:id="@+id/BtnCustomIngredients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/i0067_others"
+                android:onClick="BtnAddCustom"
+                android:textColor="@color/grey"
+                android:textAllCaps="false"
+                app:strokeColor="@color/grey"
+                app:strokeWidth="2px" />
+        </LinearLayout>
+    </FrameLayout>
+
+
+
+</LinearLayout>
