@@ -15,8 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.cookwhat.R;
-import com.example.cookwhat.activities.LoginActivity;
-import com.example.cookwhat.activities.MainActivity;
+
+import MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

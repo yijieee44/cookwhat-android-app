@@ -1,6 +1,5 @@
 package com.example.cookwhat.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,18 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.cookwhat.R;
-import com.example.cookwhat.activities.LoginActivity;
-import com.example.cookwhat.activities.MainActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.example.cookwhat.models.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.auth.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +35,7 @@ public class RegisterFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    public UserModel user;
 
     public RegisterFragment() {
         mAuth = FirebaseAuth.getInstance();
@@ -54,8 +47,8 @@ public class RegisterFragment extends Fragment {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Log.d("WARNING", "Login already"+currentUser.getUid());
+        if (currentUser != null) {
+            Log.d("WARNING", "Login already" + currentUser.getUid());
         }
     }
 
@@ -97,8 +90,8 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Button BtnRegister = view.findViewById(R.id.BtnGo2);
-        View.OnClickListener OCLRegister = new View.OnClickListener(){
+        Button BtnNext = view.findViewById(R.id.button3);
+        View.OnClickListener OCLNext = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText editTextEmail = view.findViewById(R.id.ETRegisterEmail);
@@ -107,73 +100,19 @@ public class RegisterFragment extends Fragment {
                 String password = editTextPassword.getText().toString();
                 EditText editTextUsername = view.findViewById(R.id.ETRegisterUsername);
                 String username = editTextUsername.getText().toString();
-                Log.d("SUCCESS", email);
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d("SUCCESS", "createUserWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    user.sendEmailVerification()
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Log.d("SUCCESS", "Email sent.");
-                                                    }
-                                                }
-                                            });
-                                    Toast.makeText(getActivity(), "Successfully registered!!",
-                                            Toast.LENGTH_SHORT).show();
 
-                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                            .setDisplayName(username)
-                                            .build();
+                user = new UserModel(username, email, password);
 
-                                    user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                Log.d("SUCCESS", "Updated profile");
-                                            }
-                                        }
-                                    });;
-
-                                    mAuth.signInWithEmailAndPassword(email, password)
-                                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                                    if (task.isSuccessful()) {
-                                                        // Sign in success, update UI with the signed-in user's information
-                                                        Log.d("SUCCESS", "signInWithEmail:success");
-                                                        FirebaseUser user = mAuth.getCurrentUser();
-                                                        Intent intentMainActivity = new Intent(getActivity(), MainActivity.class);
-                                                        intentMainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                        startActivity(intentMainActivity);
-
-                                                    } else {
-                                                        // If sign in fails, display a message to the user.
-                                                        Log.w("ERROR", "signInWithEmail:failure", task.getException());
-
-                                                    }
-                                                }
-                                            });
-
-                                } else {
-                                    Log.w("ERROR", "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(getActivity(), "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-
-                                }
-                            }
-                        });
+                Bundle bundle = new Bundle();
+                bundle.putString("username", username);
+                bundle.putString("password", password);
+                bundle.putString("email", email);
+                Navigation.findNavController(view).navigate(R.id.DestRegisterComplete, bundle);
 
             }
         };
 
-        BtnRegister.setOnClickListener(OCLRegister);
+        BtnNext.setOnClickListener(OCLNext);
 
     }
 }

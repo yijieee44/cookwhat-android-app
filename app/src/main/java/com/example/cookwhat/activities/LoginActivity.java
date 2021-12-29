@@ -1,8 +1,9 @@
-package com.example.cookwhat.activities;
-
+package com.example.cookwhat.activities
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
 
@@ -17,6 +18,10 @@ public class LoginActivity extends AppCompatActivity {
 
         NavHostFragment host = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.NHFLogin);
         NavController navController = host.getNavController();
+
+
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration);
 
     }
 }

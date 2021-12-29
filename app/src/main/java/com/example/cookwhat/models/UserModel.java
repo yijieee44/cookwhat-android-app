@@ -13,40 +13,18 @@ public class UserModel   {
     private ArrayList<String> favouriteFood;
     private ArrayList<UserModel> followers;
     private ArrayList<UserModel> followings;
+    private ArrayList<String> userId;
+    private ArrayList<Integer> profilePic;
+    private ArrayList<Integer> profilePicBackground;
+    private String password;
 
 
-    public UserModel(String userName, String emailAddr){
+    public UserModel(String userName, String emailAddr,String password){
         this.userName = userName;
         this.emailAddr = emailAddr;
+        this.password = password;
     }
 
-    private ArrayList<String> getPrefer() {
-        return prefer;
-    }
-
-    public ArrayList<String> getFavouriteCategory() {
-        return favouriteCategory;
-    }
-
-    public ArrayList<String> getFavouriteFood() {
-        return favouriteFood;
-    }
-
-    public ArrayList<UserModel> getFollowers() {
-        return followers;
-    }
-
-    public ArrayList<UserModel> getFollowings() {
-        return followings;
-    }
-
-    public String getEmailAddr() {
-        return emailAddr;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
 
     public void setFavouriteCategory(String addCategory) {
         this.favouriteCategory.add(1,addCategory);
@@ -77,6 +55,18 @@ public class UserModel   {
         this.userName = userName;
     }
 
+    public void setUserId(ArrayList<String> userId) {
+        this.userId = userId;
+    }
+
+    public void setProfilePic(ArrayList<Integer>profilePic){
+        this.profilePic = profilePic;
+    }
+
+    public void setProfilePicBackground(ArrayList<Integer> profilePicBackground) {
+        this.profilePicBackground = profilePicBackground;
+    }
+
     public ArrayList <String> getFollowersNameList(){
         ArrayList<String>namelist = new ArrayList<>();
         for (int i =0; i<this.followers.size();i++){
@@ -84,6 +74,11 @@ public class UserModel   {
         }
         Collections.sort(namelist);
         return namelist;
+    }
+
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public UserModel getSpecificFollower(String followername){
@@ -113,6 +108,49 @@ public class UserModel   {
         return null;
     }
 
+    public ArrayList<String> getUserId() {
+        return userId;
+    }
+
+    public ArrayList<Integer> getProfilePic() {
+        return profilePic;
+    }
+
+    public ArrayList<Integer> getProfilePicBackground() {
+        return profilePicBackground;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    private ArrayList<String> getPrefer() {
+        return prefer;
+    }
+
+    public ArrayList<String> getFavouriteCategory() {
+        return favouriteCategory;
+    }
+
+    public ArrayList<String> getFavouriteFood() {
+        return favouriteFood;
+    }
+
+    public ArrayList<UserModel> getFollowers() {
+        return followers;
+    }
+
+    public ArrayList<UserModel> getFollowings() {
+        return followings;
+    }
+
+    public String getEmailAddr() {
+        return emailAddr;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
 
 
 }
