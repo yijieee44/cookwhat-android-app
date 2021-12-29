@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FavouriteCategory">
+
+    <androidx.gridlayout.widget.GridLayout
+        android:layout_width="377dp"
+        android:layout_height="432dp"
+        android:background="@drawable/roundrec_board"
+        android:padding="15dp"
+        tools:layout_editor_absoluteX="18dp"
+        tools:layout_editor_absoluteY="83dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="89dp"
+            android:background="@drawable/addbutton"
+            app:layout_column="0"
+            app:layout_row="0" />
+
+    </androidx.gridlayout.widget.GridLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button3"
+        android:layout_width="82dp"
+        android:layout_height="84dp"
+        android:background="@drawable/backbutton"
+        tools:layout_editor_absoluteX="164dp"
+        tools:layout_editor_absoluteY="562dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

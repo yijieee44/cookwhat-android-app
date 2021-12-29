@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:elevation="10dp"
+    tools:context=".UserProfile">
+
+    <ImageView
+        android:id="@+id/IV_Profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/circle"
+        tools:layout_editor_absoluteX="29dp"
+        tools:layout_editor_absoluteY="36dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+
+        android:id="@+id/Btn_Follower"
+        android:layout_width="78dp"
+        android:layout_height="74dp"
+        android:background="@drawable/whitecircle"
+        android:fontFamily="@font/CandyJelly"
+        android:paddingTop="20dp"
+        android:text="88"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        tools:layout_editor_absoluteX="154dp"
+        tools:layout_editor_absoluteY="36dp" />
+
+    <TextView
+        android:id="@+id/TV_Follower"
+        android:layout_width="82dp"
+        android:layout_height="30dp"
+        android:fontFamily="@font/CandyJelly"
+        android:paddingTop="8dp"
+        android:text="Followers"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        tools:layout_editor_absoluteX="154dp"
+        tools:layout_editor_absoluteY="110dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+
+        android:id="@+id/Btn_Following"
+        android:layout_width="78dp"
+        android:layout_height="74dp"
+        android:background="@drawable/whitecircle"
+        android:fontFamily="@font/CandyJelly"
+        android:paddingTop="20dp"
+        android:text="88"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        tools:layout_editor_absoluteX="270dp"
+        tools:layout_editor_absoluteY="36dp" />
+
+    <TextView
+        android:id="@+id/TV_Following"
+        android:layout_width="98dp"
+        android:layout_height="30dp"
+        android:fontFamily="@font/CandyJelly"
+        android:paddingTop="8dp"
+        android:text="Followings"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        tools:layout_editor_absoluteX="270dp"
+        tools:layout_editor_absoluteY="110dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+
+        android:id="@+id/Btn_Favourite"
+        android:layout_width="182dp"
+        android:layout_height="49dp"
+        android:background="@drawable/roundedrecbtn"
+        android:drawableEnd="@drawable/favourite"
+        android:drawablePadding="0dp"
+        android:fontFamily="@font/CandyJelly"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:paddingRight="28dp"
+        android:paddingBottom="15dp"
+        android:text="see your"
+        android:textAlignment="center"
+        android:textColor="#744518"
+        android:textSize="28sp"
+        tools:layout_editor_absoluteX="166dp"
+        tools:layout_editor_absoluteY="152dp" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/TL_ProfileTab"
+        android:layout_width="376dp"
+        android:layout_height="55dp"
+        android:background="@drawable/roundedrec"
+        app:tabIndicator="@drawable/roundedrecselec"
+        app:tabIndicatorColor="@color/secondary"
+        app:tabMode="fixed"
+        app:tabTextAppearance="@style/tab_font"
+        app:tabTextColor="#744518"
+        tools:layout_editor_absoluteX="19dp"
+        tools:layout_editor_absoluteY="223dp">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/TI_Tab1"
+            android:layout_width="188dp"
+            android:layout_height="50dp"
+            android:background="@color/secondary"
+            android:text="My Secret Recipe" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/T1_Tab2"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/roundedrec"
+            android:backgroundTintMode="add"
+            android:text="About Me" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <ScrollView
+        android:layout_width="376dp"
+        android:layout_height="355dp"
+        android:background="@drawable/roundedrecselec"
+        android:rotation="180"
+        tools:layout_editor_absoluteX="19dp"
+        tools:layout_editor_absoluteY="285dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:isScrollContainer="false"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"></LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
