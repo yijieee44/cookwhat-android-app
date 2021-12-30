@@ -14,8 +14,8 @@ public class UserModel   {
     private ArrayList<UserModel> followers;
     private ArrayList<UserModel> followings;
     private ArrayList<String> userId;
-    private ArrayList<Integer> profilePic;
-    private ArrayList<Integer> profilePicBackground;
+    private Integer profilePic;
+    private Integer profilePicBackground;
     private String password;
 
 
@@ -25,6 +25,8 @@ public class UserModel   {
         this.password = password;
     }
 
+    public UserModel() {
+    }
 
     public void setFavouriteCategory(String addCategory) {
         this.favouriteCategory.add(1,addCategory);
@@ -59,11 +61,11 @@ public class UserModel   {
         this.userId = userId;
     }
 
-    public void setProfilePic(ArrayList<Integer>profilePic){
+    public void setProfilePic(Integer profilePic){
         this.profilePic = profilePic;
     }
 
-    public void setProfilePicBackground(ArrayList<Integer> profilePicBackground) {
+    public void setProfilePicBackground(Integer profilePicBackground) {
         this.profilePicBackground = profilePicBackground;
     }
 
@@ -112,11 +114,11 @@ public class UserModel   {
         return userId;
     }
 
-    public ArrayList<Integer> getProfilePic() {
+    public Integer getProfilePic() {
         return profilePic;
     }
 
-    public ArrayList<Integer> getProfilePicBackground() {
+    public Integer getProfilePicBackground() {
         return profilePicBackground;
     }
 

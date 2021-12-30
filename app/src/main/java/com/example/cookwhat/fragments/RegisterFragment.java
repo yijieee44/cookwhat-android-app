@@ -1,12 +1,6 @@
 package com.example.cookwhat.fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +8,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.cookwhat.R;
+import com.example.cookwhat.activities.MainActivity;
 import com.example.cookwhat.models.UserModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,7 +34,8 @@ public class RegisterFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    public UserModel user;
+    UserModel newUser = ((MainActivity)getActivity()).getUser();
+
 
     public RegisterFragment() {
         mAuth = FirebaseAuth.getInstance();
@@ -94,20 +94,41 @@ public class RegisterFragment extends Fragment {
         View.OnClickListener OCLNext = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                EditText editTextUsername = view.findViewById(R.id.ETRegisterUsername);
+                String username = editTextUsername.getText().toString();
                 EditText editTextEmail = view.findViewById(R.id.ETRegisterEmail);
                 String email = editTextEmail.getText().toString();
                 EditText editTextPassword = view.findViewById(R.id.ETRegisterPassword);
                 String password = editTextPassword.getText().toString();
-                EditText editTextUsername = view.findViewById(R.id.ETRegisterUsername);
-                String username = editTextUsername.getText().toString();
 
-                user = new UserModel(username, email, password);
 
-                Bundle bundle = new Bundle();
-                bundle.putString("username", username);
-                bundle.putString("password", password);
-                bundle.putString("email", email);
-                Navigation.findNavController(view).navigate(R.id.DestRegisterComplete, bundle);
+                if (username==null){
+                    editTextUsername.setHint("Username must be filled!");
+                    editTextUsername.setHintTextColor(Integer.parseInt("@color/red"));
+                }
+
+                if (email==null){
+                    editTextEmail.setHint("Email must be filled!");
+                    editTextEmail.setHintTextColor(Integer.parseInt("@color/red"));
+                }
+
+                if (password==null){
+                    editTextPassword.setHint("Username must be filled!");
+                    editTextPassword.setHintTextColor(Integer.parseInt("@color/red"));
+                }
+
+                else{
+                    newUser.setUserName(username);
+                    newUser.setEmailAddr(email);
+                    newUser.setPassword(password);
+
+                    ((MainActivity)getActivity()).setUser(newUser);
+                    //Navigation.findNavController(view).navigate(R.id.DestRegisterComplete);
+                }
+
+
+
 
             }
         };

@@ -3,15 +3,9 @@ package com.example.cookwhat;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import com.example.cookwhat.fragments.UserProfileFragment;
 
 import java.util.ArrayList;
 
@@ -55,8 +49,6 @@ public class followPopUp extends Activity {
         int height = dm.heightPixels;
 
        getWindow().setLayout((int)(width*.8),(int)(height*.6));
-
-
 
     }
     }

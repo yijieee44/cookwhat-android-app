@@ -2,11 +2,6 @@ package com.example.cookwhat.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +9,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.cookwhat.R;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-import MainActivity;
+import com.example.cookwhat.R;
+import com.example.cookwhat.activities.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -100,7 +98,7 @@ public class LoginFragment extends Fragment {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d("SUCCESS", "signInWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    Intent intentMainActivity = new Intent(getActivity(), MainActivity.class);
+                                    Intent intentMainActivity = new Intent(getActivity(), LoginActivity.class);
                                     intentMainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intentMainActivity);
 

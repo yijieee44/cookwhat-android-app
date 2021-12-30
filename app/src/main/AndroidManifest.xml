@@ -12,7 +12,9 @@
         <activity
             android:theme="@style/Theme.CookWhat.noActionBar"
             android:name=".activities.LoginActivity"
-            android:exported="true"/>
+            android:exported="true">
+
+        </activity>
         <activity
             android:name=".activities.ViewRecipeActivity"
             android:exported="true" >
@@ -26,6 +28,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".activities.SearchActivity"
@@ -37,7 +40,10 @@
             android:exported="true"
             android:label="@string/create_recipe"
             android:parentActivityName=".activities.MainActivity" />
+
         <activity android:name=".followPopUp" android:theme="@style/CustomTheme"></activity>
+
+
     </application>
 
 </manifest>

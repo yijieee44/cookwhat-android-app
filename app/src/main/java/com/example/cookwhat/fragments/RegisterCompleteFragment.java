@@ -1,8 +1,9 @@
 package com.example.cookwhat.fragments;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,26 +11,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-
 import com.example.cookwhat.R;
 import com.example.cookwhat.adapters.ProfilePicAdapter;
 import com.example.cookwhat.models.UserModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -56,10 +43,16 @@ public class RegisterCompleteFragment extends Fragment {
     List<Integer> profilepic;
 
     public RegisterCompleteFragment() {
-        username = getArguments().getString("username");
+        /*username = getArguments().getString("username");
         password = getArguments().getString("password");
         email = getArguments().getString("email");
-        userModel = new UserModel(username, email, password);
+        userModel = new UserModel(username, email, password);*/
+
+        profilepic =  new ArrayList<>();
+        profilepic.add(R.drawable.profile_pic_01);
+        profilepic.add(R.drawable.profile_pic_02);
+        profilepic.add(R.drawable.profile_pic_03);
+        profilepic.add(R.drawable.profile_pic_04);
 
         // Required empty public constructor
     }
@@ -107,8 +100,6 @@ public class RegisterCompleteFragment extends Fragment {
         LinearLayoutManager recycleViewLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         profilePicRV.setLayoutManager(recycleViewLayoutManager);
 
-        Context context= getContext();
-        profilepic = getDrawable(Arrays.asList(getResources().getStringArray(R.array.profile_pic)),context);
         ProfilePicAdapter adapter = new ProfilePicAdapter(profilepic);
 
         LinearLayoutManager HorizontalScroll = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
@@ -117,18 +108,16 @@ public class RegisterCompleteFragment extends Fragment {
         profilePicRV.setAdapter(adapter);
 
 
-        Button BtnRegister = view.findViewById(R.id.button3);
-        View.OnClickListener OCLRegister = new View.OnClickListener(){
+
+
+
+        //Button BtnRegister = view.findViewById(R.id.button3);
+        /*View.OnClickListener OCLRegister = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                EditText editTextEmail = view.findViewById(R.id.ETRegisterEmail);
-                String email = editTextEmail.getText().toString();
-                EditText editTextPassword = view.findViewById(R.id.ETRegisterPassword);
-                String password = editTextPassword.getText().toString();
-                EditText editTextUsername = view.findViewById(R.id.ETRegisterUsername);
-                String username = editTextUsername.getText().toString();
-                Log.d("SUCCESS", email);
-                mAuth.createUserWithEmailAndPassword(email, password)
+
+                //Log.d("SUCCESS", email);
+               /* mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -193,11 +182,13 @@ public class RegisterCompleteFragment extends Fragment {
             }
         };
 
-        BtnRegister.setOnClickListener(OCLRegister);
+        BtnRegister.setOnClickListener(OCLRegister);*/
 
     }
 
-    public static List<Integer> getDrawable(List<String> name, Context context) {
+
+
+    /*public static List<Integer> getDrawable(List<String> name, Context context) {
         List<Integer> img = new ArrayList<>();
         for(int i =0 ; i<name.size(); i++){
             int resourceId = context.getResources().getIdentifier(name.get(i), "drawable", context.getPackageName());
@@ -206,5 +197,5 @@ public class RegisterCompleteFragment extends Fragment {
 
         return img;
 
-    }
+    }*/
 }
