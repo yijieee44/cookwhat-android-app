@@ -2,10 +2,10 @@ package com.example.cookwhat.models;
 
 public class IngredientModel {
     private String name;
-    private double quantity;
+    private Double quantity;
     private String unit;
     private String memo;
-    private String icon;
+    private int icon;
     private boolean required;
 
     public String getName() {
@@ -16,11 +16,11 @@ public class IngredientModel {
         this.name = name;
     }
 
-    public double getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(double quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 
@@ -48,11 +48,11 @@ public class IngredientModel {
         this.required = required;
     }
 
-    public String getIcon() {
+    public int getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(int icon) {
         this.icon = icon;
     }
 }

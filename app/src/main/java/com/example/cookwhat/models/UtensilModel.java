@@ -3,7 +3,7 @@ package com.example.cookwhat.models;
 public class UtensilModel {
     private String name;
     private String memo;
-    private String icon;
+    private int icon;
     private boolean required;
 
     public String getName() {
@@ -30,11 +30,11 @@ public class UtensilModel {
         this.required = required;
     }
 
-    public String getIcon() {
+    public int getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(int icon) {
         this.icon = icon;
     }
 }

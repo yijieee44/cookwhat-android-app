@@ -144,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Log.d("HELLOWORLD", "ID: " + id);
         if (id == MENU_ADD) {
             // direct to create activity
             Intent intentCreateActivity = new Intent(this, CreateActivity.class);

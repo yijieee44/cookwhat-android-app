@@ -234,4 +234,34 @@ public class Constants {
         R.string.i0112_yeast,
         R.string.i0113_zucchini,
     };
+
+
+    public static int [] UTENSILS_ICON = {
+            R.drawable.u0000_big_pot,
+            R.drawable.u0001_blender,
+            R.drawable.u0002_coffee_maker,
+            R.drawable.u0003_grater,
+            R.drawable.u0004_knife,
+            R.drawable.u0005_rice_cooker,
+            R.drawable.u0006_rolling_pin,
+            R.drawable.u0007_toaster,
+            R.drawable.u0008_water_heater,
+            R.drawable.u0009_oven,
+            R.drawable.u0010_microwave,
+    };
+
+    public static int[] UTENSILS_NAME = {
+            R.string.u0000_big_pot,
+            R.string.u0001_blender,
+            R.string.u0002_coffee_maker,
+            R.string.u0003_grater,
+            R.string.u0004_knife,
+            R.string.u0005_rice_cooker,
+            R.string.u0006_rolling_pin,
+            R.string.u0007_toaster,
+            R.string.u0008_water_heater,
+            R.string.u0009_oven,
+            R.string.u0010_microwave,
+    };
+
 }

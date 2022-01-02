@@ -132,4 +132,17 @@
     <string name="i0111_yam">Yam</string>
     <string name="i0112_yeast">Yeast</string>
     <string name="i0113_zucchini">Zucchini</string>
+
+    <string name="u0000_big_pot">Big Pot</string>
+    <string name="u0001_blender">Blender</string>
+    <string name="u0002_coffee_maker">Coffee Maker</string>
+    <string name="u0003_grater">Grater</string>
+    <string name="u0004_knife">Knife</string>
+    <string name="u0005_rice_cooker">Blender</string>
+    <string name="u0006_rolling_pin">Rolling Pin</string>
+    <string name="u0007_toaster">Toaster</string>
+    <string name="u0008_water_heater">Water Heater</string>
+    <string name="u0009_oven">Oven</string>
+    <string name="u0010_microwave">Microwave</string>
+
 </resources>
