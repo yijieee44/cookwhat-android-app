@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cookwhat.activities.ViewRecipeActivity;
-import com.example.cookwhat.fragments.HomeFragment;
 import com.example.cookwhat.models.RecipeModel;
 import com.example.cookwhat.models.UserModel;
 import com.squareup.picasso.Picasso;
