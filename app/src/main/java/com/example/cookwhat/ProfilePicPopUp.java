@@ -41,22 +41,22 @@ public class ProfilePicPopUp extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Integer oldprofile;
-                UserModel newUser = ((MainActivity)getActivity()).getUser();
-
-                oldprofile = newUser.getProfilePic();
-
-                if(oldprofile != null ){
-
-                }
-                newUser.setProfilePic(position);
-                System.out.println(newUser.getProfilePic());
-
-                View profilePicItem = inflater.inflate(R.layout.profile_pic_item,null);
-
-                newUser.setProfilePic(position+1);
-                ImageView img = profilePicItem.findViewById(R.id.IV_ProfilePic);
-                //tick.setVisibility(View.VISIBLE);
-                ((MainActivity)getActivity()).setUser(newUser);
+//                UserModel newUser = ((MainActivity)getActivity()).getUser();
+//
+//                oldprofile = newUser.getProfilePic();
+//
+//                if(oldprofile != null ){
+//
+//                }
+//                newUser.setProfilePic(position);
+//                System.out.println(newUser.getProfilePic());
+//
+//                View profilePicItem = inflater.inflate(R.layout.profile_pic_item,null);
+//
+//                newUser.setProfilePic(position+1);
+//                ImageView img = profilePicItem.findViewById(R.id.IV_ProfilePic);
+//                //tick.setVisibility(View.VISIBLE);
+//                ((MainActivity)getActivity()).setUser(newUser);
 
                 setConfirm(true);
 
@@ -83,4 +83,5 @@ public class ProfilePicPopUp extends DialogFragment {
     public boolean getConfirm(){
         return this.sendConfirm;
     }
+
 }

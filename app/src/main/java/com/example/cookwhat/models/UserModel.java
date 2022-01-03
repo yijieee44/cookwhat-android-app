@@ -13,7 +13,7 @@ public class UserModel   {
     private ArrayList<String> favouriteFood;
     private ArrayList<UserModel> followers;
     private ArrayList<UserModel> followings;
-    private ArrayList<String> userId;
+    private String userId;
     private Integer profilePic;
     private Integer profilePicBackground;
     private String password;
@@ -41,12 +41,20 @@ public class UserModel   {
         this.favouriteFood.add(1,addFood);
     }
 
-    public void setFollowers(UserModel followers) {
+    public void addFollowers(UserModel followers) {
         this.followers.add(followers) ;
     }
 
-    public void setFollowings(UserModel followings) {
+    public void addFollowings(UserModel followings) {
         this.followings.add(followings);
+    }
+
+    public void setFollowers(ArrayList<UserModel> followers) {
+        this.followers = followers;
+    }
+
+    public void setFollowings(ArrayList<UserModel> followings) {
+        this.followings = followings;
     }
 
     public void setPrefer(String prefer) {
@@ -57,7 +65,7 @@ public class UserModel   {
         this.userName = userName;
     }
 
-    public void setUserId(ArrayList<String> userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -110,7 +118,7 @@ public class UserModel   {
         return null;
     }
 
-    public ArrayList<String> getUserId() {
+    public String getUserId() {
         return userId;
     }
 

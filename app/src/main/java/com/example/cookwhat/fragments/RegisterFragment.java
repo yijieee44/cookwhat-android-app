@@ -11,6 +11,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.activities.MainActivity;
@@ -34,12 +35,12 @@ public class RegisterFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    UserModel newUser = ((MainActivity)getActivity()).getUser();
+//    UserModel newUser = ((MainActivity)getActivity()).getUser();
 
 
     public RegisterFragment() {
         mAuth = FirebaseAuth.getInstance();
-        // Required empty public constructor
+
     }
 
     @Override
@@ -119,12 +120,19 @@ public class RegisterFragment extends Fragment {
                 }
 
                 else{
-                    newUser.setUserName(username);
-                    newUser.setEmailAddr(email);
-                    newUser.setPassword(password);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("username", username);
+                    bundle.putString("password", password);
+                    bundle.putString("email", email);
 
-                    ((MainActivity)getActivity()).setUser(newUser);
-                    //Navigation.findNavController(view).navigate(R.id.DestRegisterComplete);
+
+
+//                    newUser.setUserName(username);
+//                    newUser.setEmailAddr(email);
+//                    newUser.setPassword(password);
+//
+//                    ((MainActivity)getActivity()).setUser(newUser);
+                    Navigation.findNavController(view).navigate(R.id.DestRegisterComplete, bundle);
                 }
 
 

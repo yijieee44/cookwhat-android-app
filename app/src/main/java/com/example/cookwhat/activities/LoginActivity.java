@@ -9,9 +9,17 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.cookwhat.R;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
 
+    ;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
 
 
     @Override
@@ -23,8 +31,8 @@ public class LoginActivity extends AppCompatActivity {
         NavController navController = host.getNavController();
 
 
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration);
+//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+//        NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration);
 
     }
 }
