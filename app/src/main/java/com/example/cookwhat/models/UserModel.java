@@ -5,7 +5,8 @@ import java.util.Collections;
 
 public class UserModel   {
 
-
+    int userId;
+    String profilePicPath;
     String userName;
     String emailAddr;
     private ArrayList<String> prefer;
@@ -13,13 +14,13 @@ public class UserModel   {
     private ArrayList<String> favouriteFood;
     private ArrayList<UserModel> followers;
     private ArrayList<UserModel> followings;
-    private ArrayList<String> userId;
     private Integer profilePic;
     private Integer profilePicBackground;
     private String password;
 
 
-    public UserModel(String userName, String emailAddr,String password){
+
+    public UserModel(String userName, String emailAddr, String password){
         this.userName = userName;
         this.emailAddr = emailAddr;
         this.password = password;
@@ -27,6 +28,8 @@ public class UserModel   {
 
     public UserModel() {
     }
+
+    public int getUserId() { return userId; }
 
     public void setFavouriteCategory(String addCategory) {
         this.favouriteCategory.add(1,addCategory);
@@ -57,10 +60,6 @@ public class UserModel   {
         this.userName = userName;
     }
 
-    public void setUserId(ArrayList<String> userId) {
-        this.userId = userId;
-    }
-
     public void setProfilePic(Integer profilePic){
         this.profilePic = profilePic;
     }
@@ -68,6 +67,8 @@ public class UserModel   {
     public void setProfilePicBackground(Integer profilePicBackground) {
         this.profilePicBackground = profilePicBackground;
     }
+
+    public void setUserId(int userId) { this.userId = userId; }
 
     public ArrayList <String> getFollowersNameList(){
         ArrayList<String>namelist = new ArrayList<>();
@@ -108,10 +109,6 @@ public class UserModel   {
             return this.followings.get(p);
         }
         return null;
-    }
-
-    public ArrayList<String> getUserId() {
-        return userId;
     }
 
     public Integer getProfilePic() {

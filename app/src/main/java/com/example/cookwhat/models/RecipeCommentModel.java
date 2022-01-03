@@ -1,11 +1,10 @@
 package com.example.cookwhat.models;
 
-import java.time.Instant;
 
 public class RecipeCommentModel {
     int userId;
     int recipeId;
-    Instant createdTime;
+    String createdTime;
     String comment;
 
     public int getUserId() {
@@ -24,13 +23,11 @@ public class RecipeCommentModel {
         this.recipeId = recipeId;
     }
 
-    public Instant getCreatedTime() {
+    public String getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Instant createdTime) {
-        this.createdTime = createdTime;
-    }
+    public void setCreatedTime(String createdTime) { this.createdTime = createdTime; }
 
     public String getComment() {
         return comment;
