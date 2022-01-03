@@ -2,57 +2,32 @@ package com.example.cookwhat.activities;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 
 import com.example.cookwhat.R;
-import com.example.cookwhat.adapters.IngredientAdapter;
-import com.example.cookwhat.adapters.MarketIngredientAdapter;
-import com.example.cookwhat.adapters.UtensilAdapter;
 import com.example.cookwhat.fragments.CreateCaptionFragment;
+import com.example.cookwhat.fragments.CreatePreviewFragment;
 import com.example.cookwhat.fragments.CreateShowGalleryFragment;
-import com.example.cookwhat.models.IngredientModel;
 import com.example.cookwhat.models.RecipeModel;
-import com.example.cookwhat.models.RecipeStepModel;
-import com.example.cookwhat.models.UtensilModel;
-import com.example.cookwhat.utils.Constants;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class CreateActivity extends AppCompatActivity {
     RecipeModel newRecipe = new RecipeModel();
+    FragmentManager fragmentManager;
+    FloatingActionButton backButton;
+    FloatingActionButton nextButton;
+
 
     public RecipeModel getNewRecipe() {
         return newRecipe;
@@ -67,10 +42,10 @@ public class CreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
 
-        FloatingActionButton backButton = (FloatingActionButton) findViewById(R.id.FABBack);
-        FloatingActionButton nextButton = (FloatingActionButton) findViewById(R.id.FABNext);
+        backButton = (FloatingActionButton) findViewById(R.id.FABBack);
+        nextButton = (FloatingActionButton) findViewById(R.id.FABNext);
 
         backButton.setEnabled(false);
         backButton.setClickable(false);
@@ -79,16 +54,13 @@ public class CreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
+                // Show Gallery < Caption < Preview
                 Fragment currentFragment = fragmentManager.findFragmentById(R.id.FragmentContainerCreate);
                 if (currentFragment instanceof CreateCaptionFragment) {
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.FragmentContainerCreate, new CreateShowGalleryFragment());
-                    fragmentTransaction.commit();
+                    toShowGallery();
 
-                    backButton.setEnabled(false);
-                    backButton.setClickable(false);
-                    nextButton.setEnabled(true);
-                    nextButton.setClickable(true);
+                } else if (currentFragment instanceof CreatePreviewFragment) {
+                    toCreateCaption();
                 }
             }
         });
@@ -98,19 +70,23 @@ public class CreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
+                // Show Gallery > Caption > Preview
                 Fragment currentFragment = fragmentManager.findFragmentById(R.id.FragmentContainerCreate);
                 if (currentFragment instanceof CreateShowGalleryFragment) {
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.FragmentContainerCreate, new CreateCaptionFragment());
-                    fragmentTransaction.commit();
+                    toCreateCaption();
 
-                    nextButton.setEnabled(false);
-                    nextButton.setClickable(false);
-                    backButton.setEnabled(true);
-                    backButton.setClickable(true);
+                } else if (currentFragment instanceof CreateCaptionFragment) {
+                   toPreview();
                 }
             }
         });
+
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+        );
+
+        FragmentContainerView fragmentContainer = (FragmentContainerView) findViewById(R.id.FragmentContainerCreate);
 
         // hide floating button when keyboard is visible
         KeyboardVisibilityEvent.setEventListener(
@@ -121,12 +97,55 @@ public class CreateActivity extends AppCompatActivity {
                         if(isOpen) {
                             nextButton.setVisibility(View.GONE);
                             backButton.setVisibility(View.GONE);
+                            params.setMargins(0,0,0,0);
+                            fragmentContainer.setLayoutParams(params);
                         } else {
                             nextButton.setVisibility(View.VISIBLE);
                             backButton.setVisibility(View.VISIBLE);
+                            params.setMargins(0,0,0,80);
+                            fragmentContainer.setLayoutParams(params);
                         }
                     }
                 });
+    }
+
+    private void toShowGallery() {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.FragmentContainerCreate, new CreateShowGalleryFragment());
+        fragmentTransaction.commit();
+
+        backButton.setEnabled(false);
+        backButton.setClickable(false);
+        nextButton.setEnabled(true);
+        nextButton.setClickable(true);
+
+        nextButton.setImageDrawable(ContextCompat.getDrawable(CreateActivity.this, R.drawable.ic_baseline_chevron_right_24));
+    }
+
+    private void toCreateCaption() {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.FragmentContainerCreate, new CreateCaptionFragment());
+        fragmentTransaction.commit();
+
+        backButton.setEnabled(true);
+        backButton.setClickable(true);
+        nextButton.setEnabled(true);
+        nextButton.setClickable(true);
+
+        nextButton.setImageDrawable(ContextCompat.getDrawable(CreateActivity.this, R.drawable.ic_baseline_chevron_right_24));
+    }
+
+    private void toPreview() {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.FragmentContainerCreate, new CreatePreviewFragment());
+        fragmentTransaction.commit();
+
+        nextButton.setEnabled(false);
+        nextButton.setClickable(false);
+        backButton.setEnabled(true);
+        backButton.setClickable(true);
+
+        nextButton.setImageDrawable(ContextCompat.getDrawable(CreateActivity.this, R.drawable.ic_baseline_check_24));
     }
 
 
