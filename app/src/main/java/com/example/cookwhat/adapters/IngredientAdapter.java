@@ -2,22 +2,29 @@ package com.example.cookwhat.adapters;
 
 import android.content.Context;
 import android.os.Build;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cookwhat.R;
+import com.example.cookwhat.fragments.IngredientDetailDialogFragment;
 import com.example.cookwhat.models.IngredientModel;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
     private List<IngredientModel> ingredientList;
     private Context context;
 
@@ -28,6 +35,15 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public void addIngredient(IngredientModel ingredient){
         ingredientList.add(ingredient);
+        this.notifyDataSetChanged();
+    }
+
+    public List<IngredientModel> getIngredientList() {
+        return ingredientList;
+    }
+
+    public void editIngredient(int position, IngredientModel ingredientModel){
+        ingredientList.set(position, ingredientModel);
         this.notifyDataSetChanged();
     }
 
@@ -48,6 +64,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ingredient_layout, parent, false);
         return new ViewHolder(view, viewType);
     }
@@ -55,24 +72,39 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        DecimalFormat format = new DecimalFormat("0.#");
         IngredientModel ingredientModel = ingredientList.get(position);
         ((ViewHolder) holder).textViewName.setText(ingredientModel.getName());
         ((ViewHolder)holder).icon.setImageResource(ingredientModel.getIcon());
         if(ingredientModel.getMemo() != null){
-            ((ViewHolder) holder).textViewDescription.setText(ingredientModel.getMemo());
+            String text = ingredientModel.getMemo();
+            if(ingredientModel.getMemo().length() > 25){
+                text = ingredientModel.getMemo().substring(0, 25)+"...";
+            }
+
+            ((ViewHolder) holder).textViewDescription.setText(text);
         }
 
-        if(ingredientModel.getQuantity() == null){
+        if(ingredientModel.getQuantity() == null && ingredientModel.getWeight() == null){
             ((ViewHolder)holder).multiplySymbol.setVisibility(View.INVISIBLE);
         }
-        else{
+        else if(ingredientModel.getQuantity() != null){
             ((ViewHolder)holder).multiplySymbol.setVisibility(View.VISIBLE);
-            String quantity = ingredientModel.getQuantity().toString();
-            if(ingredientModel.getUnit() != null) {
-                quantity += ingredientModel.getUnit();
+            String quantity = format.format(ingredientModel.getQuantity()) + " ";
+            if(ingredientModel.getUnitQuantity() != null) {
+                quantity += ingredientModel.getUnitQuantity();
             }
             ((ViewHolder)holder).textViewQuantity.setText(quantity);
         }
+        else if( ingredientModel.getWeight() != null){
+            ((ViewHolder)holder).multiplySymbol.setVisibility(View.VISIBLE);
+            String weight = format.format(ingredientModel.getWeight()) + " ";
+            if(ingredientModel.getUnitWeight() != null) {
+                weight += ingredientModel.getUnitWeight();
+            }
+            ((ViewHolder)holder).textViewQuantity.setText(weight);
+        }
+
     }
 
     @Override
@@ -93,7 +125,13 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             textViewDescription = itemView.findViewById(R.id.TVDescription);
             multiplySymbol = itemView.findViewById(R.id.TVMultiply);
 
-
         }
+
+
+
+
     }
+
+
+
 }

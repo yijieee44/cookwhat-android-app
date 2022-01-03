@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@drawable/outline_field"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".fragments.IngredientDetailDialogFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2">
+
+        <ImageView
+            android:id="@+id/IVIngredientIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/beer" />
+
+        <TextView
+            android:id="@+id/TVIngredientName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="@string/hello_blank_fragment"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="2"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="Quantity: "
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/ETQuantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="@drawable/outline_field"
+            android:ems="10"
+            android:gravity="right"
+            android:includeFontPadding="true"
+            android:inputType="numberDecimal"
+            android:padding="5dp" />
+
+        <Spinner
+            android:id="@+id/IngredientQuantitySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="2"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="2"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="Weight:"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/ETWeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="@drawable/outline_field"
+            android:ems="10"
+            android:gravity="right"
+            android:includeFontPadding="true"
+            android:inputType="numberDecimal"
+            android:padding="5dp" />
+
+        <Spinner
+            android:id="@+id/IngredientWeightSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="2"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/ETIngredientMemo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="5"
+        android:background="@drawable/outline_field"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Memo (any substitute ingredient, what brand do you recommend...)"
+        android:includeFontPadding="true"
+        android:inputType="textMultiLine"
+        android:lines="5"
+        android:maxLines="5"
+        android:padding="5dp" />
+
+    <ImageButton
+        android:id="@+id/BtnIngredientDetailSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:background="@null"
+        android:src="@drawable/done_outline" />
+
+</LinearLayout>

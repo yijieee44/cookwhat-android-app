@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="quantity">
+        <item>pcs</item>
+    </string-array>
+
+    <string-array name="weight">
+        <item>kg</item>
+        <item>g</item>
+    </string-array>
+</resources>
