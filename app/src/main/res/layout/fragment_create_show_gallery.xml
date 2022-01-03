@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
     android:id="@+id/FragmentCreateGallery"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -63,7 +62,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/BtnSelectIngredient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -71,7 +70,7 @@
         android:text="@string/add_ingredients" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/activity_search_ingredient_list"
+        android:id="@+id/activity_create_ingredient_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp">
@@ -79,7 +78,7 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/BtnSelectUtensil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -87,7 +86,7 @@
         android:text="@string/add_utensils" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/activity_search_utensil_list"
+        android:id="@+id/activity_create_utensil_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

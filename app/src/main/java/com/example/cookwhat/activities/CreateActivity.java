@@ -1,28 +1,55 @@
 package com.example.cookwhat.activities;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.LinearLayout;
 
 import com.example.cookwhat.R;
+import com.example.cookwhat.adapters.IngredientAdapter;
+import com.example.cookwhat.adapters.MarketIngredientAdapter;
+import com.example.cookwhat.adapters.UtensilAdapter;
 import com.example.cookwhat.fragments.CreateCaptionFragment;
 import com.example.cookwhat.fragments.CreateShowGalleryFragment;
+import com.example.cookwhat.models.IngredientModel;
 import com.example.cookwhat.models.RecipeModel;
 import com.example.cookwhat.models.RecipeStepModel;
+import com.example.cookwhat.models.UtensilModel;
+import com.example.cookwhat.utils.Constants;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CreateActivity extends AppCompatActivity {
     RecipeModel newRecipe = new RecipeModel();
@@ -101,4 +128,6 @@ public class CreateActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
 }

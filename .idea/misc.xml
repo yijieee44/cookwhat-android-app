@@ -3,9 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/activity_create.xml" value="0.20260416666666667" />
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/activity_search.xml" value="0.23369565217391305" />
         <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/bottom_sheet_ingredients.xml" value="0.4" />
         <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/bottom_sheet_utensils.xml" value="0.20885416666666667" />
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/fragment_create_caption.xml" value="0.20260416666666667" />
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/fragment_create_show_gallery.xml" value="0.20260416666666667" />
         <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/ingredient_layout.xml" value="0.18385416666666668" />
         <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/utensil_layout.xml" value="0.23369565217391305" />
         <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/widget_market_ingredients.xml" value="0.1359375" />
