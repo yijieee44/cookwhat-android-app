@@ -255,6 +255,7 @@ public class CreateShowGalleryFragment extends Fragment {
         ingredientRecycleView.setLayoutManager(linearLayoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(ingredientRecycleView.getContext(), linearLayoutManager.getOrientation());
         ingredientRecycleView.addItemDecoration(dividerItemDecoration);  //for divider
+        ingredientRecycleView.setNestedScrollingEnabled(false);
         ingredientAdapter = new IngredientAdapter(context, ingredientModelList);
         ingredientRecycleView.setAdapter(ingredientAdapter);
 
@@ -262,6 +263,7 @@ public class CreateShowGalleryFragment extends Fragment {
         utensilRecycleView = (RecyclerView) view.findViewById(R.id.activity_create_utensil_list);
         utensilRecycleView.setLayoutManager(linearLayoutManager1);
         utensilRecycleView.addItemDecoration(dividerItemDecoration);  //for divider
+        utensilRecycleView.setNestedScrollingEnabled(false);
         utensilAdapter = new UtensilAdapter(context, utensilModelList);
         utensilRecycleView.setAdapter(utensilAdapter);
 

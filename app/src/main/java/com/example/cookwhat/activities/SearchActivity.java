@@ -109,6 +109,7 @@ public class SearchActivity extends AppCompatActivity {
         ingredientRecycleView.setLayoutManager(linearLayoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(ingredientRecycleView.getContext(), linearLayoutManager.getOrientation());
         ingredientRecycleView.addItemDecoration(dividerItemDecoration);  //for divider
+        ingredientRecycleView.setNestedScrollingEnabled(false);
         ingredientAdapter = new IngredientAdapter(context, ingredientModelList);
         ingredientRecycleView.setAdapter(ingredientAdapter);
 
@@ -116,6 +117,7 @@ public class SearchActivity extends AppCompatActivity {
         utensilRecycleView = (RecyclerView) findViewById(R.id.activity_search_utensil_list);
         utensilRecycleView.setLayoutManager(linearLayoutManager1);
         utensilRecycleView.addItemDecoration(dividerItemDecoration);  //for divider
+        utensilRecycleView.setNestedScrollingEnabled(false);
         utensilAdapter = new UtensilAdapter(context, utensilModelList);
         utensilRecycleView.setAdapter(utensilAdapter);
     }
