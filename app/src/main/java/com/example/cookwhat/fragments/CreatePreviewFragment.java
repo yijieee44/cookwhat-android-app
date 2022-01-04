@@ -31,6 +31,8 @@ import com.example.cookwhat.models.IngredientModel;
 import com.example.cookwhat.models.RecipeModel;
 import com.example.cookwhat.models.RecipeStepModel;
 import com.example.cookwhat.models.UtensilModel;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +50,7 @@ public class CreatePreviewFragment extends Fragment {
     int currImageIndex = 0;
     ImageSlider imageSlider;
     Dialog INUDialog;
+    ChipGroup chipGroup;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -150,6 +153,20 @@ public class CreatePreviewFragment extends Fragment {
                 showINUDialog();
             }
         });
+
+
+        // tag
+        chipGroup = (ChipGroup) view.findViewById(R.id.ChipGroupTag);
+
+        for (String tag : recipeModel.getTags()) {
+            Chip chip = new Chip(getActivity());
+            chip.setText(tag);
+            chip.setChipBackgroundColorResource(R.color.light_yellow);
+            chip.setTextColor(getResources().getColor(R.color.black));
+
+            chipGroup.addView(chip);
+        }
+
 
         return view;
     }
