@@ -73,15 +73,13 @@ public class CreateShowGalleryFragment extends Fragment {
     int MAX_IMAGES_ALLOWED = 9;
     Dialog editDialog;
     List<RecipeStepModel> recipeStepModels = new ArrayList<>();
+    RecipeModel recipeModel;
 
     RecyclerView ingredientRecycleView;
     RecyclerView utensilRecycleView;
 
-
     List<IngredientModel> ingredientModelList;
     List<UtensilModel> utensilModelList;
-    IngredientModel[] ingredientModels;
-    UtensilModel[] utensilModels;
     Context context;
     LinearLayoutManager linearLayoutManager;
     LinearLayoutManager linearLayoutManager1;
@@ -191,7 +189,8 @@ public class CreateShowGalleryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_create_show_gallery, container, false);
 
         editDialog = new Dialog(getActivity());
-        recipeStepModels = ((CreateActivity)getActivity()).getNewRecipe().getSteps();
+        recipeModel = ((CreateActivity)getActivity()).getNewRecipe();
+        recipeStepModels = recipeModel.getSteps();
 
         Button button = (Button) view.findViewById(R.id.BtnAddImages);
         button.setOnClickListener(new View.OnClickListener()
@@ -250,7 +249,8 @@ public class CreateShowGalleryFragment extends Fragment {
             }
         });
 
-        ingredientModelList = new ArrayList<>();
+        // set list
+        ingredientModelList = recipeModel.getIngredients();
         ingredientRecycleView = (RecyclerView) view.findViewById(R.id.activity_create_ingredient_list);
         ingredientRecycleView.setLayoutManager(linearLayoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(ingredientRecycleView.getContext(), linearLayoutManager.getOrientation());
@@ -258,12 +258,13 @@ public class CreateShowGalleryFragment extends Fragment {
         ingredientAdapter = new IngredientAdapter(context, ingredientModelList);
         ingredientRecycleView.setAdapter(ingredientAdapter);
 
-        utensilModelList = new ArrayList<>();
+        utensilModelList = recipeModel.getUtensils();
         utensilRecycleView = (RecyclerView) view.findViewById(R.id.activity_create_utensil_list);
         utensilRecycleView.setLayoutManager(linearLayoutManager1);
         utensilRecycleView.addItemDecoration(dividerItemDecoration);  //for divider
         utensilAdapter = new UtensilAdapter(context, utensilModelList);
         utensilRecycleView.setAdapter(utensilAdapter);
+
 
         return view;
 
@@ -393,6 +394,8 @@ public class CreateShowGalleryFragment extends Fragment {
                         IngredientModel ingredientModel = new IngredientModel();
                         ingredientModel.setName(getString(ingredientsName[position]));
                         ingredientAdapter.removeIngredient(ingredientModel);
+
+                        recipeModel.setIngredients(ingredientAdapter.getIngredientList());
                     } else {
                         viewPrev = (View) ingredientsGridView.getChildAt(position);
                         view.setBackgroundColor(getResources().getColor(R.color.light_yellow));
@@ -401,6 +404,8 @@ public class CreateShowGalleryFragment extends Fragment {
                         ingredientModel.setName(getString(ingredientsName[position]));
                         ingredientModel.setIcon(ingredientsIcon[position]);
                         ingredientAdapter.addIngredient(ingredientModel);
+
+                        recipeModel.setIngredients(ingredientAdapter.getIngredientList());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -563,6 +568,7 @@ public class CreateShowGalleryFragment extends Fragment {
                         utensilModel.setName(getString(utensilsName[position]));
                         utensilAdapter.removeUtensil(utensilModel);
 
+                        recipeModel.setUtensils(utensilAdapter.getUtensilList());
                     } else {
                         viewPrev = (View) utensilsGridView.getChildAt(position);
                         view.setBackgroundColor(getResources().getColor(R.color.light_yellow));
@@ -571,6 +577,8 @@ public class CreateShowGalleryFragment extends Fragment {
                         utensilModel.setName(getString(utensilsName[position]));
                         utensilModel.setIcon(utensilsIcon[position]);
                         utensilAdapter.addUtensil(utensilModel);
+
+                        recipeModel.setUtensils(utensilAdapter.getUtensilList());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -27,6 +27,10 @@ public class UtensilAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.context = context;
     }
 
+    public List<UtensilModel> getUtensilList() {
+        return utensilList;
+    }
+
     public void addUtensil(UtensilModel utensil){
         utensilList.add(utensil);
         this.notifyDataSetChanged();

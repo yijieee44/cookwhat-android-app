@@ -27,7 +27,7 @@ public class CreateActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
     FloatingActionButton backButton;
     FloatingActionButton nextButton;
-
+    
 
     public RecipeModel getNewRecipe() {
         return newRecipe;
@@ -58,7 +58,7 @@ public class CreateActivity extends AppCompatActivity {
                 Fragment currentFragment = fragmentManager.findFragmentById(R.id.FragmentContainerCreate);
                 if (currentFragment instanceof CreateCaptionFragment) {
                     toShowGallery();
-
+                    
                 } else if (currentFragment instanceof CreatePreviewFragment) {
                     toCreateCaption();
                 }
@@ -74,7 +74,7 @@ public class CreateActivity extends AppCompatActivity {
                 Fragment currentFragment = fragmentManager.findFragmentById(R.id.FragmentContainerCreate);
                 if (currentFragment instanceof CreateShowGalleryFragment) {
                     toCreateCaption();
-
+                    
                 } else if (currentFragment instanceof CreateCaptionFragment) {
                    toPreview();
                 }
@@ -108,7 +108,7 @@ public class CreateActivity extends AppCompatActivity {
                     }
                 });
     }
-
+    
     private void toShowGallery() {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.FragmentContainerCreate, new CreateShowGalleryFragment());
@@ -121,7 +121,7 @@ public class CreateActivity extends AppCompatActivity {
 
         nextButton.setImageDrawable(ContextCompat.getDrawable(CreateActivity.this, R.drawable.ic_baseline_chevron_right_24));
     }
-
+    
     private void toCreateCaption() {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.FragmentContainerCreate, new CreateCaptionFragment());
@@ -134,7 +134,7 @@ public class CreateActivity extends AppCompatActivity {
 
         nextButton.setImageDrawable(ContextCompat.getDrawable(CreateActivity.this, R.drawable.ic_baseline_chevron_right_24));
     }
-
+    
     private void toPreview() {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.FragmentContainerCreate, new CreatePreviewFragment());

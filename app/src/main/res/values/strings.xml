@@ -6,7 +6,9 @@
     <string name="profile">Profile</string>
     <string name="search">Search</string>
     <string name="create_recipe">Create Recipe</string>
+    <string name="utensils">Utensils</string>
     <string name="add_utensils">Add Utensils</string>
+    <string name="ingredients">Ingredients</string>
     <string name="add_ingredients">Add Ingredients</string>
     <string name="ingredients_market">Ingredients Market</string>
     <string name="find_ingredients">Find ingredients</string>
@@ -15,6 +17,8 @@
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
     <string name="no_photo_selected">No photo selected</string>
+    <string name="no_ingredient_needed">No ingredients needed</string>
+    <string name="no_utensils_needed">No utensils needed</string>
     <string name="title">Title</string>
     <string name="create_caption_instruction">Add a caption to this photo, leave it blank if the caption is same as the previous photo...</string>
     <string name="add_tag">Add Tag</string>
