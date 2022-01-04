@@ -120,8 +120,8 @@ public class CreatePreviewFragment extends Fragment {
                     currImageIndex = position;
                     String currImageCaption = recipeStepModels.get(currImageIndex).getStep();
 
-                    if (currImageCaption.isEmpty()) {
-                        for (int i = currImageIndex; i > 0; i--) {
+                    if (currImageCaption.isEmpty() && currImageIndex!=0) {
+                        for (int i = currImageIndex; i >= 0; i--) {
                             if (!recipeStepModels.get(i).getStep().isEmpty()) {
                                 currImageCaption = recipeStepModels.get(i).getStep();
                                 break;

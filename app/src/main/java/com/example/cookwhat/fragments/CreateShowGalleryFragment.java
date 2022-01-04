@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.interfaces.ItemChangeListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.cookwhat.R;
 import com.example.cookwhat.activities.CreateActivity;
@@ -69,7 +70,6 @@ import java.util.stream.Collectors;
  */
 public class CreateShowGalleryFragment extends Fragment {
     ImageSlider imageSlider;
-    ArrayList<SlideModel> selectedImages = new ArrayList<>();
     int MAX_IMAGES_ALLOWED = 9;
     Dialog editDialog;
     List<RecipeStepModel> recipeStepModels = new ArrayList<>();
@@ -98,6 +98,8 @@ public class CreateShowGalleryFragment extends Fragment {
     IngredientAdapter ingredientAdapter;
     UtensilAdapter utensilAdapter;
 
+    LinearLayout noPhotoDescription;
+
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -105,6 +107,8 @@ public class CreateShowGalleryFragment extends Fragment {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     Intent data = result.getData();
+                    ArrayList<SlideModel> selectedImages = new ArrayList<>();
+
                     if(result.getResultCode() == Activity.RESULT_OK) {
                         if(data.getClipData() != null) {
                             ClipData mClipData = data.getClipData();
@@ -118,9 +122,13 @@ public class CreateShowGalleryFragment extends Fragment {
 
                             for (int i = 0; i < count; i++) {
                                 Uri imageUrl = data.getClipData().getItemAt(i).getUri();
-                                selectedImages.add(new SlideModel(imageUrl.toString(), null,null));
                                 recipeStepModels.add(new RecipeStepModel(imageUrl.toString(), ""));
                             }
+
+                            for(RecipeStepModel model : recipeStepModels) {
+                                selectedImages.add(new SlideModel(model.getImage(), null,null));
+                            }
+
                             imageSlider.setImageList(selectedImages);
                         } else if(data.getData() != null) {
                             Uri imagePath = data.getData();
@@ -129,10 +137,23 @@ public class CreateShowGalleryFragment extends Fragment {
                             if(selectedImages.size() >= 9) {
                                 Toast.makeText(getActivity(), "Only " + MAX_IMAGES_ALLOWED + " images/videos allowed.", Toast.LENGTH_LONG).show();
                             } else {
-                                selectedImages.add(new SlideModel(imagePath.toString(), null, null));
                                 recipeStepModels.add(new RecipeStepModel(imagePath.toString(), ""));
+
+                                for(RecipeStepModel model : recipeStepModels) {
+                                    selectedImages.add(new SlideModel(model.getImage(), null,null));
+                                }
+
                                 imageSlider.setImageList(selectedImages);
                             }
+                        }
+
+                        if (selectedImages.size() > 0) {
+                            noPhotoDescription.setVisibility(View.GONE);
+                            imageSlider.setVisibility(View.VISIBLE);
+
+                        } else {
+                            noPhotoDescription.setVisibility(View.VISIBLE);
+                            imageSlider.setVisibility(View.GONE);
                         }
                     }
                     RecipeModel recipeFromActivity = ((CreateActivity)getActivity()).getNewRecipe();
@@ -220,7 +241,17 @@ public class CreateShowGalleryFragment extends Fragment {
             newSlideModel.add(new SlideModel(model.getImage(), null,null));
         }
 
+        noPhotoDescription = (LinearLayout) view.findViewById(R.id.NoPhotoDescription);
+
         imageSlider.setImageList(newSlideModel);
+        if (newSlideModel.size() > 0) {
+            noPhotoDescription.setVisibility(View.GONE);
+            imageSlider.setVisibility(View.VISIBLE);
+
+        } else {
+            noPhotoDescription.setVisibility(View.VISIBLE);
+            imageSlider.setVisibility(View.GONE);
+        }
 
         context = view.getContext();
         linearLayoutManager = new LinearLayoutManager(context);
@@ -297,13 +328,23 @@ public class CreateShowGalleryFragment extends Fragment {
                 public void onCancel(DialogInterface dialog) {
                     EditPhotosAdapter editPhotosAdapter = (EditPhotosAdapter) photosRecyclerView.getAdapter();
                     recipeStepModels = editPhotosAdapter.getRecipeStepModels();
+
                     List<SlideModel> newSlideModel = new ArrayList<>();
 
                     for(RecipeStepModel model : recipeStepModels) {
                         newSlideModel.add(new SlideModel(model.getImage(), null,null));
                     }
 
+
                     imageSlider.setImageList(newSlideModel);
+                    if (newSlideModel.size() > 0) {
+                        noPhotoDescription.setVisibility(View.GONE);
+                        imageSlider.setVisibility(View.VISIBLE);
+
+                    } else {
+                        noPhotoDescription.setVisibility(View.VISIBLE);
+                        imageSlider.setVisibility(View.GONE);
+                    }
 
                     RecipeModel recipeFromActivity = ((CreateActivity)getActivity()).getNewRecipe();
                     recipeFromActivity.setSteps(recipeStepModels);
