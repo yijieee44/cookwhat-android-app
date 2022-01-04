@@ -1,21 +1,26 @@
 package com.example.cookwhat.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class UserModel   {
 
-    int userId;
-    String profilePicPath;
-    String userName;
-    String emailAddr;
+    private String userId;
+    private int profilePic;
+    private String userName;
+    private String emailAddr;
+    @JsonIgnore
     private ArrayList<String> prefer;
+    @JsonIgnore
     private ArrayList<String> favouriteCategory;
-    private ArrayList<String> favouriteFood;
+    @JsonIgnore
+    private ArrayList<RecipeModel> favouriteFood;
+    @JsonIgnore
     private ArrayList<UserModel> followers;
+    @JsonIgnore
     private ArrayList<UserModel> followings;
-    private Integer profilePic;
-    private Integer profilePicBackground;
     private String password;
 
 
@@ -29,7 +34,7 @@ public class UserModel   {
     public UserModel() {
     }
 
-    public int getUserId() { return userId; }
+    public String getUserId() { return userId; }
 
     public void setFavouriteCategory(String addCategory) {
         this.favouriteCategory.add(1,addCategory);
@@ -39,7 +44,7 @@ public class UserModel   {
         this.emailAddr = emailAddr;
     }
 
-    public void setFavouriteFood(String addFood) {
+    public void setFavouriteFood(RecipeModel addFood) {
 
         this.favouriteFood.add(1,addFood);
     }
@@ -60,15 +65,11 @@ public class UserModel   {
         this.userName = userName;
     }
 
-    public void setProfilePic(Integer profilePic){
+    public void setProfilePic(int profilePic){
         this.profilePic = profilePic;
     }
 
-    public void setProfilePicBackground(Integer profilePicBackground) {
-        this.profilePicBackground = profilePicBackground;
-    }
-
-    public void setUserId(int userId) { this.userId = userId; }
+    public void setUserId(String userId) { this.userId = userId; }
 
     public ArrayList <String> getFollowersNameList(){
         ArrayList<String>namelist = new ArrayList<>();
@@ -111,12 +112,8 @@ public class UserModel   {
         return null;
     }
 
-    public Integer getProfilePic() {
+    public int getProfilePic() {
         return profilePic;
-    }
-
-    public Integer getProfilePicBackground() {
-        return profilePicBackground;
     }
 
     public String getPassword() {
@@ -131,7 +128,7 @@ public class UserModel   {
         return favouriteCategory;
     }
 
-    public ArrayList<String> getFavouriteFood() {
+    public ArrayList<RecipeModel> getFavouriteFood() {
         return favouriteFood;
     }
 

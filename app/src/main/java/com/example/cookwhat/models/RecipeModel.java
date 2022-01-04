@@ -4,29 +4,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeModel {
-    int id = 0;
-    int userId = 0;
-    int num_fav = 0;
-    String title = "";
-    List<String> tags = new ArrayList<>();
-    List<IngredientModel> ingredients = new ArrayList<>();
-    List<UtensilModel> utensils = new ArrayList<>();
-    List<RecipeCommentModel> comments = new ArrayList<>();
-    List<RecipeStepModel> steps = new ArrayList<>();
+    private String id = "";
+    private String userId = "";
+    private int num_fav = 0;
+    private String title = "";
+    private List<String> tags = new ArrayList<>();
+    private List<IngredientModel> ingredients = new ArrayList<>();
+    private List<UtensilModel> utensils = new ArrayList<>();
+    private List<RecipeCommentModel> comments = new ArrayList<>();
+    private List<RecipeStepModel> steps = new ArrayList<>();
 
-    public int getId() {
+    public RecipeModel() {
+
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
