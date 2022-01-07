@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/CS_Favourite"
+    android:layout_width="400dp"
+    android:layout_height="120dp"
+    android:background="@drawable/roundedrec_nude"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="0dp">
+
+    <ImageView
+        android:id="@+id/IV_FavouriteImage"
+        android:layout_width="120dp"
+        android:layout_height="104dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/dish" />
+
+    <TextView
+        android:id="@+id/TV_FavouriteName"
+        android:layout_width="241dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/IV_FavouriteImage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/TV_Tag3"
+        android:layout_width="68dp"
+        android:layout_height="17dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="160dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TV_Tag2" />
+
+    <TextView
+        android:id="@+id/TV_Tag1"
+        android:layout_width="68dp"
+        android:layout_height="17dp"
+        android:layout_marginEnd="160dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TV_FavouriteName" />
+
+    <ImageView
+        android:id="@+id/IV_Tag1"
+        android:layout_width="24dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintEnd_toStartOf="@+id/TV_Tag1"
+        app:layout_constraintTop_toBottomOf="@+id/TV_FavouriteName"
+        app:srcCompat="@drawable/ic_tag_svgrepo_com"
+        tools:ignore="VectorDrawableCompat" />
+
+    <ImageView
+        android:id="@+id/IV_Tag2"
+        android:layout_width="24dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/TV_Tag3"
+        app:layout_constraintTop_toBottomOf="@+id/IV_Tag3"
+        app:srcCompat="@drawable/ic_tag_svgrepo_com"
+        tools:ignore="VectorDrawableCompat" />
+
+    <TextView
+        android:id="@+id/TV_Tag2"
+        android:layout_width="68dp"
+        android:layout_height="17dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="160dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TV_Tag1" />
+
+    <ImageView
+        android:id="@+id/IV_Tag3"
+        android:layout_width="24dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/TV_Tag3"
+        app:layout_constraintTop_toBottomOf="@+id/IV_Tag1"
+        app:srcCompat="@drawable/ic_tag_svgrepo_com"
+        tools:ignore="VectorDrawableCompat" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

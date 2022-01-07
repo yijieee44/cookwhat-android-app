@@ -6,13 +6,13 @@
     app:startDestination="@id/DestUserProfile">
 
     <fragment
-        android:id="@+id/DestUserProfile"
-        android:name="com.example.cookwhat.fragments.UserProfileFragment"
-        android:label="fragment_user_profile"
-        tools:layout="@layout/fragment_user_profile" />
-    <fragment
         android:id="@+id/DestHome"
         android:name="com.example.cookwhat.fragments.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/DestUserProfile"
+        android:name="com.example.cookwhat.fragments.UserProfileFragment"
+        android:label="fragment_user_profile"
+        tools:layout="@layout/fragment_user_profile" />
 </navigation>

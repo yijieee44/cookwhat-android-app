@@ -4,26 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_yellow">
+    android:layout_gravity="center"
+    android:background="@drawable/roundrec_board"
+    tools:layout_editor_absoluteX="-32dp"
+    tools:layout_editor_absoluteY="-80dp">
+
+
+    <ListView
+        android:id="@+id/LV_Follow"
+        android:layout_width="378dp"
+        android:layout_height="307dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="56dp"
+        android:isScrollContainer="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </ListView>
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="415dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="-35dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/roundedrec" />
 
     <TextView
         android:id="@+id/TV_FollowTitle"
         android:layout_width="167dp"
         android:layout_height="34dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:text="TextView"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ListView
-        android:id="@+id/LV_Follow"
-        android:layout_width="388dp"
-        android:layout_height="660dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="12dp"
-        android:isScrollContainer="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" ></ListView>
 </androidx.constraintlayout.widget.ConstraintLayout>

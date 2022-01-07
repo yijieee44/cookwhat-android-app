@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:elevation="10dp"
-    tools:context=".fragments.UserProfileFragment">
+    tools:context=".fragments.ViewProfileFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,25 +16,25 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/CS_Main"
+            android:id="@+id/CS_Follow"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:elevation="10dp">
 
             <ImageView
-                android:id="@+id/IV_Profile"
+                android:id="@+id/IV_FollowProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="36dp"
                 android:src="@drawable/circle"
-                app:layout_constraintEnd_toStartOf="@+id/Btn_Follower"
-                app:layout_constraintHorizontal_bias="0.535"
+                app:layout_constraintEnd_toStartOf="@+id/Btn_FollowFollower"
+                app:layout_constraintHorizontal_bias="0.461"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
 
-                android:id="@+id/Btn_Follower"
+                android:id="@+id/Btn_FollowFollower"
                 android:layout_width="78dp"
                 android:layout_height="74dp"
                 android:layout_marginTop="36dp"
@@ -44,11 +44,11 @@
                 android:paddingTop="20dp"
                 android:text="88"
                 android:textSize="30sp"
-                app:layout_constraintEnd_toStartOf="@+id/Btn_Following"
+                app:layout_constraintEnd_toStartOf="@+id/Btn_FollowFollowing"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/TV_Follower"
+                android:id="@+id/TV_FollowFollower"
                 android:layout_width="82dp"
                 android:layout_height="30dp"
                 android:layout_marginEnd="32dp"
@@ -57,12 +57,12 @@
                 android:text="Followers"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@+id/TV_Following"
-                app:layout_constraintTop_toBottomOf="@+id/Btn_Follower" />
+                app:layout_constraintEnd_toStartOf="@+id/TV_FollowFollowing"
+                app:layout_constraintTop_toBottomOf="@+id/Btn_FollowFollower" />
 
             <androidx.appcompat.widget.AppCompatButton
 
-                android:id="@+id/Btn_Following"
+                android:id="@+id/Btn_FollowFollowing"
                 android:layout_width="78dp"
                 android:layout_height="74dp"
                 android:layout_marginTop="36dp"
@@ -76,7 +76,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/TV_Following"
+                android:id="@+id/TV_FollowFollowing"
                 android:layout_width="98dp"
                 android:layout_height="30dp"
                 android:layout_marginEnd="40dp"
@@ -86,48 +86,36 @@
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Btn_Following" />
+                app:layout_constraintTop_toBottomOf="@+id/Btn_FollowFollowing" />
 
-            <androidx.appcompat.widget.AppCompatButton
-
-                android:id="@+id/Btn_Favourite"
-                android:layout_width="182dp"
-                android:layout_height="49dp"
-                android:layout_marginStart="168dp"
-                android:layout_marginTop="160dp"
-                android:background="@drawable/roundedrecbtn"
-                android:drawableEnd="@drawable/favourite"
-                android:drawableRight="@drawable/favourite"
-                android:drawablePadding="0dp"
-                android:gravity="center"
-                android:paddingLeft="15dp"
-                android:paddingTop="15dp"
-                android:paddingRight="28dp"
-                android:paddingBottom="15dp"
-                android:text="see your"
-                android:textColor="#744518"
-                android:textSize="28sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <Button
+                android:id="@+id/Btn_ShowFollow"
+                android:layout_width="296dp"
+                android:layout_height="59dp"
+                android:layout_marginStart="56dp"
+                android:layout_marginBottom="12dp"
+                android:text="Follow"
+                app:layout_constraintBottom_toTopOf="@+id/TL_FollowProfileTab"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <LinearLayout
-                android:id="@+id/LL_AboutMe"
+                android:id="@+id/LL_FollowAboutMe"
                 android:layout_width="match_parent"
                 android:layout_height="375dp"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
                 android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/TL_ProfileTab">
+                app:layout_constraintTop_toBottomOf="@+id/TL_FollowProfileTab">
 
                 <TextView
-                    android:id="@+id/TV_Preferences"
+                    android:id="@+id/TV_FollowPreferences"
                     android:layout_width="150dp"
                     android:layout_height="37dp"
                     android:text="Preference" />
 
                 <TextView
-                    android:id="@+id/TV_EmailAddr"
+                    android:id="@+id/TV_FollowEmailAddr"
                     android:layout_width="156dp"
                     android:layout_height="57dp"
                     android:text="email_addr" />
@@ -135,7 +123,7 @@
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/CL_SecretRecipe"
+                android:id="@+id/CL_FollowSecretRecipe"
                 android:layout_width="match_parent"
                 android:layout_height="375dp"
                 android:layout_marginTop="285dp"
@@ -155,7 +143,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.example.cookwhat.ExpandableHeightGridView
-                    android:id="@+id/tabcontent"
+                    android:id="@+id/FollowTabContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:horizontalSpacing="1dp"
@@ -170,7 +158,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.tabs.TabLayout
-                android:id="@+id/TL_ProfileTab"
+                android:id="@+id/TL_FollowProfileTab"
                 android:layout_width="376dp"
                 android:layout_height="55dp"
 
@@ -183,13 +171,13 @@
                 app:tabTextColor="#744518">
 
                 <com.google.android.material.tabs.TabItem
-                    android:id="@+id/TL_SecretRecipe"
+                    android:id="@+id/TL_FollowSecretRecipe"
                     android:layout_width="188dp"
                     android:layout_height="50dp"
                     android:text="My Secret Recipe" />
 
                 <com.google.android.material.tabs.TabItem
-                    android:id="@+id/TL_AboutMe"
+                    android:id="@+id/TL_FollowAboutMe"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
 

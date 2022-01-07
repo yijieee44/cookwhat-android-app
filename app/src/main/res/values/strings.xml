@@ -132,4 +132,6 @@
     <string name="i0111_yam">Yam</string>
     <string name="i0112_yeast">Yeast</string>
     <string name="i0113_zucchini">Zucchini</string>
+    <string name="delete">Delete</string>
+    <string name="move">Move</string>
 </resources>

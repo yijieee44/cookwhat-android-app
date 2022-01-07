@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_user"
+    app:startDestination="@id/DestUser">
+    <fragment
+        android:id="@+id/DestUser"
+        android:name="com.example.cookwhat.fragments.UserProfileFragment"
+        android:label="fragment_user_profile"
+        tools:layout="@layout/fragment_user_profile" />
+    <fragment
+        android:id="@+id/DestViewProfile"
+        android:name="com.example.cookwhat.fragments.ViewProfileFragment"
+        android:label="fragment_view_profile"
+        tools:layout="@layout/fragment_view_profile" />
+    <fragment
+        android:id="@+id/DestFavourite"
+        android:name="com.example.cookwhat.fragments.FavouriteFragment"
+        android:label="fragment_favourite"
+        tools:layout="@layout/fragment_favourite" />
+    <fragment
+        android:id="@+id/DestFavouriteCategory"
+        android:name="com.example.cookwhat.fragments.FavouriteCategoryFragment"
+        android:label="fragment_favourite_category"
+        tools:layout="@layout/fragment_favourite_category" />
+</navigation>
