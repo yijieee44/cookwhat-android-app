@@ -4,9 +4,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home">Home</string>
     <string name="profile">Profile</string>
+    <string name="view">View</string>
     <string name="search">Search</string>
     <string name="create_recipe">Create Recipe</string>
+    <string name="utensils">Utensils</string>
     <string name="add_utensils">Add Utensils</string>
+    <string name="ingredients">Ingredients</string>
     <string name="add_ingredients">Add Ingredients</string>
     <string name="ingredients_market">Ingredients Market</string>
     <string name="find_ingredients">Find ingredients</string>
@@ -15,9 +18,15 @@
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
     <string name="no_photo_selected">No photo selected</string>
+    <string name="no_ingredient_needed">No ingredients needed</string>
+    <string name="no_utensils_needed">No utensils needed</string>
     <string name="title">Title</string>
+    <string name="recipe_caption">Recipe Caption______________________________________________________________________________________________________________________________</string>
     <string name="create_caption_instruction">Add a caption to this photo, leave it blank if the caption is same as the previous photo...</string>
     <string name="add_tag">Add Tag</string>
+    <string name="add_photo">&lt;&lt; Add photo</string>
+    <string name="preview">Preview</string>
+    <string name="edit_sequence_and_delete">&lt;&lt; Edit sequence and delete</string>
 
     <string name="i0000_acorn">Acorn</string>
     <string name="i0001_ajinomoto">Ajinomoto</string>
@@ -132,6 +141,16 @@
     <string name="i0111_yam">Yam</string>
     <string name="i0112_yeast">Yeast</string>
     <string name="i0113_zucchini">Zucchini</string>
-    <string name="delete">Delete</string>
-    <string name="move">Move</string>
+    <string name="u0000_big_pot">Big Pot</string>
+    <string name="u0001_blender">Blender</string>
+    <string name="u0002_coffee_maker">Coffee Maker</string>
+    <string name="u0003_grater">Grater</string>
+    <string name="u0004_knife">Knife</string>
+    <string name="u0005_rice_cooker">Blender</string>
+    <string name="u0006_rolling_pin">Rolling Pin</string>
+    <string name="u0007_toaster">Toaster</string>
+    <string name="u0008_water_heater">Water Heater</string>
+    <string name="u0009_oven">Oven</string>
+    <string name="u0010_microwave">Microwave</string>
+
 </resources>

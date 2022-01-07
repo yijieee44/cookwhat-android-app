@@ -92,7 +92,7 @@ public class CreateCaptionFragment extends Fragment {
 
         // set captions
         editCaption = (EditText) view.findViewById(R.id.ETCreateRecipeCaption);
-        if (recipeStepModels.size() > 0) {
+        if (recipeStepModels.size() > currImageIndex) {
             editCaption.setText(recipeStepModels.get(currImageIndex).getStep());
             editCaption.setSelection(editCaption.getText().length());
         }
@@ -118,9 +118,6 @@ public class CreateCaptionFragment extends Fragment {
             @Override
             public void onItemChanged(int position) {
                 if (recipeStepModels.size() > position) {
-                    //store previous captions
-                    String currText = editCaption.getText().toString();
-
                     currImageIndex = position;
                     editCaption.setText(recipeStepModels.get(currImageIndex).getStep());
                     editCaption.setSelection(editCaption.getText().length());
@@ -142,6 +139,25 @@ public class CreateCaptionFragment extends Fragment {
         buttonAddTag = (Button) view.findViewById(R.id.BtnAddTag);
 
         chipGroup = (ChipGroup) view.findViewById(R.id.ChipGroupTag);
+
+        for (String tag : recipeActivity.getTags()) {
+            Chip chip = new Chip(getActivity());
+            chip.setText(tag);
+            chip.setChipBackgroundColorResource(R.color.light_yellow);
+            chip.setCloseIconVisible(true);
+            chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    chipGroup.removeView(chip);
+                    List<String> prevTags = recipeActivity.getTags();
+                    prevTags.remove(tag);
+                    recipeActivity.setTags(prevTags);
+                }
+            });
+            chip.setTextColor(getResources().getColor(R.color.black));
+
+            chipGroup.addView(chip);
+        }
 
         buttonAddTag.setOnClickListener(new View.OnClickListener() {
             @Override

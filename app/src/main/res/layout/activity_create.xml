@@ -17,6 +17,7 @@
         android:id="@+id/FragmentContainerCreate"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
         android:name="com.example.cookwhat.fragments.CreateShowGalleryFragment" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -24,11 +25,10 @@
             android:layout_width="442dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:layout_marginBottom="25dp"
             android:clickable="true"
             android:src="@drawable/ic_baseline_chevron_right_24"
             app:elevation="8dp"
-            app:fabSize="auto"
+            app:fabSize="mini"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,11 +40,10 @@
             android:layout_width="442dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|left"
-            android:layout_marginBottom="25dp"
             android:clickable="true"
             android:src="@drawable/ic_baseline_chevron_left_24"
             app:elevation="8dp"
-            app:fabSize="auto"
+            app:fabSize="mini"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

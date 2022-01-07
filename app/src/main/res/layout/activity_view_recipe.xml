@@ -22,7 +22,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp">
+            android:layout_height="82dp">
 
             <TextView
                 android:id="@+id/TVRecipeName"
@@ -30,10 +30,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="12dp"
-                android:layout_marginEnd="149dp"
-                android:text="Chickpea Soup"
+                android:text="@string/title"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@+id/BtnAddFav"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,7 +39,7 @@
                 android:id="@+id/BtnAddFav"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
                 android:drawableLeft="@drawable/ic_baseline_star_24"
                 android:text="99"
@@ -49,41 +47,47 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/TVOwnerPic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="41dp"
-                android:layout_marginTop="31dp"
-                android:layout_marginEnd="18dp"
-                android:src="@drawable/avatar_winter_custome_49_svgrepo_com"
-                app:layout_constraintEnd_toStartOf="@+id/TVOwnerUsername"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/TVRecipeName" />
-
             <TextView
                 android:id="@+id/TVOwnerUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="53dp"
-                android:layout_marginEnd="203dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@erica666"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TVRecipeName" />
+
+            <ImageButton
+                android:id="@+id/IBOwnerPic"
+                android:layout_width="59dp"
+                android:layout_height="54dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="40dp"
+                android:background="@null"
+                app:layout_constraintEnd_toStartOf="@+id/BtnAddFav"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_account_circle_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/TVRecipeDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\nXXXXXXX\nxxxxx\nxxxxxx\nXX" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/recipe_caption"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/BtnINU"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="25dp"
             android:layout_marginBottom="20dp"
             android:text="Ingredients and Utensils" />
 
@@ -91,6 +95,8 @@
             android:id="@+id/TVComments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text="Comments:"
             android:textSize="18sp" />
 
@@ -98,12 +104,17 @@
             android:id="@+id/ETComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:ems="10"
             android:hint="Leave a comment..."
             android:inputType="textPersonName" />
 
         <ListView
+            android:id="@+id/LV1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            tools:listitem="@layout/list_comment" />
     </LinearLayout>
 </ScrollView>

@@ -46,12 +46,6 @@ public class SearchActivity extends AppCompatActivity {
     RecyclerView ingredientRecycleView;
     RecyclerView utensilRecycleView;
 
-    String[] name = {"Ingredient 1", "Ingredient 2", "Ingredient 3"};
-    String[] name1 = {"Utensil 1", "Utensil 2", "Utensil 3"};
-    String[] description = {"Description 1","Description 2","Description 3"};
-    String[] description1 = {"Description 1","Description 2","Description 3"};
-    double[] quantity = {200, 100, 120};
-    String[] unit = {"g", "g", "g"};
 
     List<IngredientModel> ingredientModelList;
     List<UtensilModel> utensilModelList;
@@ -61,28 +55,35 @@ public class SearchActivity extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     LinearLayoutManager linearLayoutManager1;
     EditText searchIngredients;
+
+    EditText searchUtensils;
     BottomSheetDialog bottomSheetDialog;
 
     List<Integer> selIngredientsItem = new ArrayList<Integer>();
     List<Integer> selUtensilsItem = new ArrayList<Integer>();
     List<Integer> displayIngredientItem = new ArrayList<Integer>();
-
+    List<Integer> displayUtensilItem = new ArrayList<Integer>();
     List<String> selCustomIngredients = new ArrayList<String>();
+    List<String> selCustomUtensils = new ArrayList<String>();
 
-
+    IngredientAdapter ingredientAdapter;
+    UtensilAdapter utensilAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        int[] ingredientsIcon = Constants.INGREDIENTS_ICON;
+        int[] ingredientsName = Constants.INGREDIENTS_NAME;
 
         // add a back icon on the action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ingredientModelList = new ArrayList<>();
         utensilModelList = new ArrayList<>();
-        int size = name.length;
-        int size1 = name1.length;
-        ingredientModels = new IngredientModel[size];
+        int size = selIngredientsItem.size();
+        int sizeCustom = selCustomIngredients.size();
+        ingredientModels = new IngredientModel[size + sizeCustom];
         utensilModels = new UtensilModel[size];
         context = SearchActivity.this;
         linearLayoutManager = new LinearLayoutManager(this);
@@ -91,31 +92,32 @@ public class SearchActivity extends AppCompatActivity {
 
         for (int i = 0; i < size; i++) {
             ingredientModels[i] = new IngredientModel();
-            ingredientModels[i].setName(name[i]);
-            ingredientModels[i].setQuantity(quantity[i]);
-            ingredientModels[i].setMemo(description[i]);
-            ingredientModels[i].setUnit(unit[i]);
+            ingredientModels[i].setName(getString(ingredientsName[selIngredientsItem.get(i)]));
+            ingredientModels[i].setQuantity(Double.valueOf(1));
+            ingredientModels[i].setMemo("Description");
+            ingredientModels[i].setUnit("g");
+            ingredientModels[i].setIcon(ingredientsIcon[selIngredientsItem.get(i)]);
             ingredientModelList.add(ingredientModels[i]);
 
-            utensilModels[i] = new UtensilModel();
-            utensilModels[i].setName(name1[i]);
-            utensilModels[i].setMemo(description1[i]);
-            utensilModelList.add(utensilModels[i]);
+//            utensilModels[i] = new UtensilModel();
+//            utensilModels[i].setName(name1[i]);
+//            utensilModels[i].setMemo(description1[i]);
+//            utensilModelList.add(utensilModels[i]);
         }
 
         ingredientRecycleView = (RecyclerView) findViewById(R.id.activity_search_ingredient_list);
         ingredientRecycleView.setLayoutManager(linearLayoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(ingredientRecycleView.getContext(), linearLayoutManager.getOrientation());
         ingredientRecycleView.addItemDecoration(dividerItemDecoration);  //for divider
-
-        ingredientRecycleView.setAdapter(new IngredientAdapter(context, ingredientModelList));
+        ingredientAdapter = new IngredientAdapter(context, ingredientModelList);
+        ingredientRecycleView.setAdapter(ingredientAdapter);
 
 
         utensilRecycleView = (RecyclerView) findViewById(R.id.activity_search_utensil_list);
         utensilRecycleView.setLayoutManager(linearLayoutManager1);
         utensilRecycleView.addItemDecoration(dividerItemDecoration);  //for divider
-
-        utensilRecycleView.setAdapter(new UtensilAdapter(context, utensilModelList));
+        utensilAdapter = new UtensilAdapter(context, utensilModelList);
+        utensilRecycleView.setAdapter(utensilAdapter);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -171,10 +173,19 @@ public class SearchActivity extends AppCompatActivity {
                         viewPrev = (View) ingredientsGridView.getChildAt(position);
                         selIngredientsItem.remove(Integer.valueOf(displayIngredientItem.get(position)));
                         viewPrev.setBackgroundColor(Color.TRANSPARENT);
+
+                        IngredientModel ingredientModel = new IngredientModel();
+                        ingredientModel.setName(getString(ingredientsName[position]));
+                        ingredientAdapter.removeIngredient(ingredientModel);
+                        ingredientAdapter.notifyDataSetChanged();
                     } else {
                         viewPrev = (View) ingredientsGridView.getChildAt(position);
                         view.setBackgroundColor(getResources().getColor(R.color.light_yellow));
                         selIngredientsItem.add(displayIngredientItem.get(position));
+                        IngredientModel ingredientModel = new IngredientModel();
+                        ingredientModel.setName(getString(ingredientsName[position]));
+                        ingredientModel.setIcon(ingredientsIcon[position]);
+                        ingredientAdapter.addIngredient(ingredientModel);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -268,6 +279,165 @@ public class SearchActivity extends AppCompatActivity {
         bottomSheetDialog.show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void BtnUtensilsBottomSheet(View view) {
+
+        bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(R.layout.bottom_sheet_utensils);
+
+        try {
+            Field behaviorField = bottomSheetDialog.getClass().getDeclaredField("behavior");
+            behaviorField.setAccessible(true);
+            final BottomSheetBehavior behavior = (BottomSheetBehavior) behaviorField.get(bottomSheetDialog);
+            behavior.setDraggable(false);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        int[] utensilsIcon = Constants.UTENSILS_ICON;
+        int[] utensilsName = Constants.UTENSILS_NAME;
+
+        displayUtensilItem = Arrays.stream(utensilsIcon).boxed().collect(Collectors.toList());
+
+        GridView utensilsGridView = (GridView) bottomSheetDialog.findViewById(R.id.Grid_Market_Utensils);
+        LinearLayout utensilLayoutCantFind = (LinearLayout) bottomSheetDialog.findViewById(R.id.LayoutUntCantFind);
+        MarketIngredientAdapter marketIngredientAdapter = new MarketIngredientAdapter(SearchActivity.this, utensilsName, utensilsIcon) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+
+                int color = Color.TRANSPARENT; // Transparent
+                if (selUtensilsItem.contains(displayUtensilItem.get(position))) {
+                    color = getResources().getColor(R.color.light_yellow);
+                }
+
+                view.setBackgroundColor(color);
+
+                return view;
+            }
+        };
+
+        utensilsGridView.setAdapter(marketIngredientAdapter);
+
+        utensilsGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            View viewPrev;
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                try {
+                    if (selUtensilsItem.contains(displayUtensilItem.get(position))) {
+                        viewPrev = (View) utensilsGridView.getChildAt(position);
+                        selUtensilsItem.remove(Integer.valueOf(displayUtensilItem.get(position)));
+                        viewPrev.setBackgroundColor(Color.TRANSPARENT);
+
+                        UtensilModel utensilModel = new UtensilModel();
+                        utensilModel.setName(getString(utensilsName[position]));
+                        utensilAdapter.removeUtensil(utensilModel);
+
+                    } else {
+                        viewPrev = (View) utensilsGridView.getChildAt(position);
+                        view.setBackgroundColor(getResources().getColor(R.color.light_yellow));
+                        selUtensilsItem.add(displayUtensilItem.get(position));
+                        UtensilModel utensilModel = new UtensilModel();
+                        utensilModel.setName(getString(utensilsName[position]));
+                        utensilModel.setIcon(utensilsIcon[position]);
+                        utensilAdapter.addUtensil(utensilModel);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+        searchUtensils = (EditText) bottomSheetDialog.findViewById(R.id.EditTextSearchUtensil);
+        searchUtensils.addTextChangedListener(new TextWatcher() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            public void afterTextChanged(Editable s) {
+                displayUtensilItem.clear();
+                List<Integer> searchName = new ArrayList<>();
+                List<Integer> selectedIndex = new ArrayList<>();
+
+                int newIndex = 0;
+                for(int i=0; i<utensilsName.length; i++) {
+                    if(getResources().getString(utensilsName[i]).toLowerCase().contains(s.toString().toLowerCase())) {
+                        displayUtensilItem.add(utensilsIcon[i]);
+                        searchName.add(utensilsName[i]);
+
+                        if (selUtensilsItem.contains(displayUtensilItem.get(newIndex))) {
+                            selectedIndex.add(newIndex);
+                        }
+
+                        newIndex++;
+                    }
+                }
+
+                if (displayUtensilItem.size() > 0) {
+                    utensilsGridView.setVisibility(View.VISIBLE);
+                    utensilLayoutCantFind.setVisibility(View.GONE);
+
+                    int[] searchIconArray = displayUtensilItem.stream().mapToInt(i -> i).toArray();
+                    int[] searchNameArray = searchName.stream().mapToInt(i -> i).toArray();
+
+                    MarketIngredientAdapter marketIngredientAdapter = new MarketIngredientAdapter(SearchActivity.this, searchNameArray, searchIconArray) {
+                        @Override
+                        public View getView(int position, View convertView, ViewGroup parent) {
+                            View view = super.getView(position, convertView, parent);
+
+                            int color = Color.TRANSPARENT; // Transparent
+                            if (selectedIndex.contains(position)) {
+                                color = getResources().getColor(R.color.light_yellow); // Opaque Blue
+                            }
+
+                            view.setBackgroundColor(color);
+
+                            return view;
+                        }
+                    };
+
+
+                    utensilsGridView.setAdapter(marketIngredientAdapter);
+                } else {
+                    utensilsGridView.setVisibility(View.GONE);
+                    utensilLayoutCantFind.setVisibility(View.VISIBLE);
+                    Button btnCustomUtensil = (Button) utensilLayoutCantFind.findViewById(R.id.BtnCustomUtensils);
+                    btnCustomUtensil.setText(s.toString());
+                }
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
+        ChipGroup chipGroup = (ChipGroup) bottomSheetDialog.findViewById(R.id.ChipGroupCustomUtensil);
+
+        for (int i=0; i<selCustomUtensils.size(); i++) {
+            String chipItem = selCustomUtensils.get(i);
+            Chip chip = new Chip(SearchActivity.this);
+            chip.setText(chipItem);
+            chip.setChipBackgroundColorResource(R.color.light_yellow);
+            chip.setCloseIconVisible(true);
+            chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    chipGroup.removeView(chip);
+                    selCustomUtensils.remove(chipItem);
+                }
+            });
+            chip.setTextColor(getResources().getColor(R.color.black));
+
+            chipGroup.addView(chip);
+        }
+
+
+        bottomSheetDialog.show();
+    }
+
     public void BtnAddCustom(View view) {
         ChipGroup chipGroup = (ChipGroup) bottomSheetDialog.findViewById(R.id.ChipGroupCustomIngredient);
         String newItem = searchIngredients.getText().toString();
@@ -288,6 +458,29 @@ public class SearchActivity extends AppCompatActivity {
 
             chipGroup.addView(chip);
             selCustomIngredients.add(newItem);
+        }
+    }
+
+    public void BtnAddCustomUtensil(View view) {
+        ChipGroup chipGroup = (ChipGroup) bottomSheetDialog.findViewById(R.id.ChipGroupCustomUtensil);
+        String newItem = searchUtensils.getText().toString();
+
+        if (!selCustomUtensils.contains(newItem)) {
+            Chip chip = new Chip(this);
+            chip.setText(newItem);
+            chip.setChipBackgroundColorResource(R.color.light_yellow);
+            chip.setCloseIconVisible(true);
+            chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    chipGroup.removeView(chip);
+                    selCustomIngredients.remove(newItem);
+                }
+            });
+            chip.setTextColor(getResources().getColor(R.color.black));
+
+            chipGroup.addView(chip);
+            selCustomUtensils.add(newItem);
         }
     }
 }

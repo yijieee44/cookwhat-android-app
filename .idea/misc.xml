@@ -1,43 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-<<<<<<< HEAD
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/activity_search.xml" value="0.264" />
-        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/ingredient_layout.xml" value="0.42397914856646396" />
-        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/layout/activity_homepage.xml" value="0.33" />
-        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/layout/activity_main.xml" value="0.28804347826086957" />
-        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/layout/activity_search.xml" value="0.20625" />
-        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/layout/ingredient_layout.xml" value="0.28804347826086957" />
-        <entry key="..\:/Users/user/Documents/Sem 7/cookwhat-android-app/app/src/main/res/drawable-v24/addbutton.xml" value="0.1" />
-        <entry key="..\:/Users/user/Documents/Sem 7/cookwhat-android-app/app/src/main/res/drawable-v24/backbutton.xml" value="0.1" />
-        <entry key="..\:/Users/user/Documents/Sem 7/cookwhat-android-app/app/src/main/res/drawable-v24/circle.xml" value="0.1" />
-        <entry key="..\:/Users/user/Documents/Sem 7/cookwhat-android-app/app/src/main/res/drawable-v24/ic_launcher_background.xml" value="0.1" />
-        <entry key="..\:/Users/user/Documents/Sem 7/cookwhat-android-app/app/src/main/res/drawable-v24/roundedrec.xml" value="0.1" />
-        <entry key="..\:/Users/user/Documents/Sem 7/cookwhat-android-app/app/src/main/res/drawable-v24/roundedrecbtn.xml" value="0.1" />
-        <entry key="..\:/Users/user/Documents/Sem 7/cookwhat-android-app/app/src/main/res/drawable-v24/roundedrecselec.xml" value="0.1" />
-        <entry key="..\:/Users/user/Documents/Sem 7/cookwhat-android-app/app/src/main/res/drawable-v24/roundrec_board.xml" value="0.1" />
-        <entry key="..\:/Users/user/Documents/Sem 7/cookwhat-android-app/app/src/main/res/drawable-v24/whitecircle.xml" value="0.1" />
-        <entry key="..\:/Users/user/Documents/Sem 7/cookwhat-android-app/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
-        <entry key="..\:/Users/user/Documents/Sem 7/cookwhat-android-app/app/src/main/res/layout-v21/activity_user.xml" value="0.13020833333333334" />
-        <entry key="..\:/Users/user/Documents/Sem 7/cookwhat-android-app/app/src/main/res/layout/activity_search.xml" value="0.13020833333333334" />
-        <entry key="..\:/Users/user/Documents/Sem 7/cookwhat-android-app/app/src/main/res/layout/activity_user.xml" value="0.13020833333333334" />
-        <entry key="..\:/Users/user/Documents/Sem 7/cookwhat-android-app/app/src/main/res/layout/fragment_favourite_category.xml" value="0.13020833333333334" />
-        <entry key="..\:/Users/user/Documents/Sem 7/cookwhat-android-app/app/src/main/res/layout/fragment_home.xml" value="0.13020833333333334" />
-        <entry key="..\:/Users/user/Documents/Sem 7/cookwhat-android-app/app/src/main/res/layout/fragment_user_profile.xml" value="0.2" />
+        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/drawable-v24/ic_launcher_background.xml" value="0.1537037037037037" />
+        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/drawable/avatar_winter_custome_23_svgrepo_com.xml" value="0.1962962962962963" />
+        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/drawable/avatar_winter_custome_49_svgrepo_com.xml" value="0.2921875" />
+        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.1537037037037037" />
+        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/drawable/next_button.xml" value="0.1537037037037037" />
+        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/drawable/rounded_rectangle.xml" value="0.2921875" />
+        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/layout/activity_search.xml" value="0.1" />
+        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/layout/activity_view_recipe.xml" value="0.5" />
+        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/layout/custom_grid_layout.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/layout/dialog_edit_photos.xml" value="0.1" />
+        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/layout/fragment_create_preview.xml" value="0.16" />
+        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/layout/fragment_home.xml" value="0.22" />
+        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/layout/fragment_register_complete.xml" value="0.1" />
+        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/layout/list_comment.xml" value="0.33" />
+        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/layout/profile_pic_item.xml" value="0.1" />
+        <entry key="..\:/Users/melis/cookwhat-android-app/app/src/main/res/layout/row_data.xml" value="0.1" />
       </map>
     </option>
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
-  <component name="ProjectType">
-    <option name="id" value="Android" />
-  </component>
-=======
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/build/classes" />
-  </component>
->>>>>>> 76f6a9c7c21d053835bf94e6e8ac3fa424d0df7d
 </project>

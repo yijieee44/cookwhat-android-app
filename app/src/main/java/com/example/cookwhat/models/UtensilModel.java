@@ -1,10 +1,15 @@
 package com.example.cookwhat.models;
 
 public class UtensilModel {
+    private String recipeId;
     private String name;
     private String memo;
-    private String icon;
+    private int icon;
     private boolean required;
+
+    public String getRecipeId() { return recipeId; }
+
+    public void setRecipeId(String recipeId) { this.recipeId = recipeId; }
 
     public String getName() {
         return name;
@@ -30,11 +35,11 @@ public class UtensilModel {
         this.required = required;
     }
 
-    public String getIcon() {
+    public int getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(int icon) {
         this.icon = icon;
     }
 }

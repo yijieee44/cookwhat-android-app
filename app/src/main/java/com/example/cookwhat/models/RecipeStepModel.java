@@ -1,8 +1,12 @@
 package com.example.cookwhat.models;
 
 public class RecipeStepModel {
-    String image;
-    String step;
+    private String image;
+    private String step;
+
+    public RecipeStepModel(){
+
+    }
 
     public RecipeStepModel(String image, String step) {
         this.image = image;

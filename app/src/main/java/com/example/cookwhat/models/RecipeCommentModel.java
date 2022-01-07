@@ -1,36 +1,33 @@
 package com.example.cookwhat.models;
 
-import java.time.Instant;
 
 public class RecipeCommentModel {
-    int userId;
-    int recipeId;
-    Instant createdTime;
-    String comment;
+    private String userId;
+    private String recipeId;
+    private String createdTime;
+    private String comment;
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public int getRecipeId() {
+    public String getRecipeId() {
         return recipeId;
     }
 
-    public void setRecipeId(int recipeId) {
+    public void setRecipeId(String recipeId) {
         this.recipeId = recipeId;
     }
 
-    public Instant getCreatedTime() {
+    public String getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Instant createdTime) {
-        this.createdTime = createdTime;
-    }
+    public void setCreatedTime(String createdTime) { this.createdTime = createdTime; }
 
     public String getComment() {
         return comment;
