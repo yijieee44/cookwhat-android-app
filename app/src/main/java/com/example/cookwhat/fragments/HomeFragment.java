@@ -93,16 +93,16 @@ public class HomeFragment extends Fragment {
         recipeModel1.setTitle("Turkey Sucks");
         recipeModel1.setTags(tags);
         recipeModel1.setNum_fav(6);
-        recipeModel1.setId(9999111);
-        recipeModel1.setUserId(12345);
+        recipeModel1.setId("1");
+        recipeModel1.setUserId("1");
         recipeModel1.setSteps(steps1);
 
         RecipeModel recipeModel2 = new RecipeModel();
         recipeModel2.setTitle("Turkey Yums");
         recipeModel2.setTags(tags);
         recipeModel2.setNum_fav(10);
-        recipeModel2.setId(9999111);
-        recipeModel2.setUserId(12345);
+        recipeModel2.setId("2");
+        recipeModel2.setUserId("2");
         recipeModel2.setSteps(steps2);
 
         ArrayList<RecipeModel> recipeModelsArray = new ArrayList<>();

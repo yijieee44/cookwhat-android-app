@@ -2,24 +2,24 @@ package com.example.cookwhat.models;
 
 
 public class RecipeCommentModel {
-    int userId;
-    int recipeId;
-    String createdTime;
-    String comment;
+    private String userId;
+    private String recipeId;
+    private String createdTime;
+    private String comment;
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public int getRecipeId() {
+    public String getRecipeId() {
         return recipeId;
     }
 
-    public void setRecipeId(int recipeId) {
+    public void setRecipeId(String recipeId) {
         this.recipeId = recipeId;
     }
 

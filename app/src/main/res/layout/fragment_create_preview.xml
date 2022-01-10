@@ -18,6 +18,15 @@
             android:orientation="vertical"
             tools:context="ViewRecipeActivity">
 
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/preview"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
             <com.denzcoskun.imageslider.ImageSlider
                 android:id="@+id/CreateImageSlider"
                 android:layout_width="match_parent"
@@ -42,6 +51,17 @@
                 android:layout_width="match_parent"
                 android:layout_marginBottom="10dp"
                 android:layout_height="wrap_content" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/ChipGroupTag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
 
             <Button
                 android:id="@+id/BtnINU"

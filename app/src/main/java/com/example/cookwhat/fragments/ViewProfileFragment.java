@@ -13,7 +13,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import com.example.cookwhat.ExpandableHeightGridView;
 import com.example.cookwhat.R;
@@ -22,13 +21,12 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link UserProfileFragment#newInstance} factory method to
+ * Use the {@link ViewProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UserProfileFragment extends Fragment {
+public class ViewProfileFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,48 +36,27 @@ public class UserProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    ArrayList<String> recipeName =new ArrayList<>();
-    ArrayList<Integer> Img = new ArrayList<>();
+    String selectedUserID;
+    Boolean haveFollowed = false;
+    Boolean isFollowing = false;
+    ArrayList<String> recipeName;
+    ArrayList<Integer> Img;
     ArrayList<String> followerList = new ArrayList<>();
     ArrayList<String> followingList = new ArrayList<>();
 
-    ExpandableHeightGridView tabcontent;
-    TextView textcontent;
-    LinearLayout ll;
-    ConstraintLayout cl, clmain;
+    public ViewProfileFragment() {
+        //Fetch selectedUserID info
+        //Fetch follower of selectedUserID
+        //Fetch following of selectedID
+        //If else to set havefollowed
+        //If else to set isfollowing
 
-
-    public UserProfileFragment() {
-
-        //throw arraylist of usermodels of following and followers from db
-
-
+        //Fetch selectedUserID created recipe
+        //set recipeName
+        //set Image
+        //set recipe model list
 
     }
-    //method to create arraylist of follower and following namelist
-
-   /* private void getSecretRecipe(){
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("recipe")
-                .whereEqualTo("username", "yuan")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            for(QueryDocumentSnapshot document: task.getResult()){
-                                recipeName.add(document.getData().get("recipe_name").toString());
-
-                            }
-                    }
-
-                    }
-                });
-
-        System.out.println(recipeName.size());
-
-    }*/
 
     /**
      * Use this factory method to create a new instance of
@@ -87,11 +64,11 @@ public class UserProfileFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment UserProfile.
+     * @return A new instance of fragment ViewProfile.
      */
     // TODO: Rename and change types and number of parameters
-    public static UserProfileFragment newInstance(String param1, String param2) {
-        UserProfileFragment fragment = new UserProfileFragment();
+    public static ViewProfileFragment newInstance(String param1, String param2) {
+        ViewProfileFragment fragment = new ViewProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -106,74 +83,97 @@ public class UserProfileFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        for(int i=0; i<recipeName.size(); i++){
-            recipeName.add(Integer.toString(i));
-            Img.add(R.drawable.addbutton);
-        }
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-        Button favCategory = view.findViewById(R.id.Btn_Favourite);
-        Button follower = view.findViewById(R.id.Btn_Follower);
-        Button following = view.findViewById(R.id.Btn_Following);
+        Button showFollow = view.findViewById(R.id.Btn_ShowFollow);
+
+        if(haveFollowed == true){
+            showFollow.setText("Unfollow");
+        }
+        else{
+            showFollow.setText("Follow");
+        }
+
+        View.OnClickListener showFollowOCL = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String showFollowText = showFollow.getText().toString();
+
+                if (showFollowText.equals("Unfollow")){
+                    //remove existing following
+                    showFollow.setText("Follow");
+                }
+                else{
+                    //add new following
+                    showFollow.setText("Unfollow");
+                }
+            }
+        };
+
+        showFollow.setOnClickListener(showFollowOCL);
+
+
+        Button follower = view.findViewById(R.id.Btn_FollowFollower);
+        Button following = view.findViewById(R.id.Btn_FollowFollowing);
 
         View.OnClickListener followerOCL = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //pass followerArraylist and followernamelist
-                followPopUp showFollowList = new followPopUp(view, "follower", followerList);
-                showFollowList.show(getActivity().getSupportFragmentManager(),"ProfilePicDialog");
+                followPopUp followList = new followPopUp(view, "follower",followerList);
+                followList.show(getActivity().getSupportFragmentManager(), "followerDialog");
             }
         };
 
         View.OnClickListener followingOCL = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                followPopUp showFollowList = new followPopUp(view, "following", followingList);
-                showFollowList.show(getActivity().getSupportFragmentManager(),"ProfilePicDialog");
+                followPopUp followList = new followPopUp(view, "following", followingList);
+                followList.show(getActivity().getSupportFragmentManager(), "followingDialog");
             }
         };
 
         follower.setOnClickListener(followerOCL);
         following.setOnClickListener(followingOCL);
 
-        View.OnClickListener favCategoryOCL = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //fetch favourite category
+        if (isFollowing == true){
+            follower.setEnabled(true);
+            follower.setClickable(true);
+            following.setEnabled(true);
+            following.setClickable(true);
+        }
+        else{
+            following.setEnabled(false);
+            following.setClickable(false);
+        }
 
-                Navigation.findNavController(view).navigate(R.id.DestFavouriteCategory);
-            }
-        };
 
-        favCategory.setOnClickListener(favCategoryOCL);
 
         if (recipeName.isEmpty()){
             String noRecipe = "Nothing to show here.\nLet's get started on sharing your secret recipes!";
-            textcontent = view.findViewById(R.id.TV_Empty);
+            TextView textcontent = view.findViewById(R.id.TV_Empty);
             textcontent.setText(noRecipe);
 
         }
         else{
             view.findViewById(R.id.TV_Empty).setVisibility(View.INVISIBLE);
-            tabcontent = view.findViewById(R.id.tabcontent);
-            CustomAdapter recipeAdapter = new CustomAdapter();
+            ExpandableHeightGridView tabcontent = view.findViewById(R.id.FollowTabContent);
+            ViewProfileFragment.CustomAdapter recipeAdapter = new ViewProfileFragment.CustomAdapter();
             tabcontent.setExpanded(true);
             tabcontent.setAdapter(recipeAdapter);
         }
 
-        cl = view.findViewById(R.id.CL_SecretRecipe);
+        ConstraintLayout cl = view.findViewById(R.id.CL_FollowSecretRecipe);
         cl.setVisibility(View.VISIBLE);
 
-        ll = view.findViewById(R.id.LL_AboutMe);
-        clmain = view.findViewById(R.id.CS_Main);
+        LinearLayout ll = view.findViewById(R.id.LL_FollowAboutMe);
+        ConstraintLayout clmain = view.findViewById(R.id.CS_Follow);
 
         removeChild(ll);
 
-        TabLayout tabLayout = view.findViewById(R.id.TL_ProfileTab);
+        TabLayout tabLayout = view.findViewById(R.id.TL_FollowProfileTab);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -207,6 +207,7 @@ public class UserProfileFragment extends Fragment {
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
+
         });
 
 
@@ -257,6 +258,6 @@ public class UserProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_profile, container, false);
+        return inflater.inflate(R.layout.fragment_view_profile, container, false);
     }
 }

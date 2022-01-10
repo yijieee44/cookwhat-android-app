@@ -1,6 +1,7 @@
 package com.example.cookwhat.models;
 
 public class IngredientModel {
+    private String recipeId;
     private String name;
     private Double quantity;
     private Double weight;
@@ -9,6 +10,10 @@ public class IngredientModel {
     private String memo;
     private int icon;
     private boolean required;
+
+    public String getRecipeId() { return recipeId; }
+
+    public void setRecipeId(String recipeId) { this.recipeId = recipeId; }
 
     public String getName() {
         return name;

@@ -44,6 +44,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.recipeName.setText(recipeModel.get(position).getTitle());
+        holder.recipeImage.setImageResource(R.drawable.avatar_winter_custome_23_svgrepo_com);
         holder.tag.setText(recipeModel.get(position).getTags().get(0));
         holder.numFav.setText(Integer.toString(recipeModel.get(position).getNum_fav()));
         holder.userName.setText(userModel.get(position).getUserName());

@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.core.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:id="@+id/FragmentCreateGallery"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:context=".fragments.CreateShowGalleryFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -54,8 +55,36 @@
                     app:strokeWidth="3dp" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/NoPhotoDescription"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_photo_selected" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/add_photo" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/edit_sequence_and_delete" />
+
+            </LinearLayout>
+
             <com.denzcoskun.imageslider.ImageSlider
                 android:id="@+id/CreateImageSlider"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"></com.denzcoskun.imageslider.ImageSlider>
         </LinearLayout>
@@ -72,7 +101,7 @@
             android:id="@+id/activity_create_ingredient_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:nestedScrollingEnabled="false">
 
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -87,7 +116,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/activity_create_utensil_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"/>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

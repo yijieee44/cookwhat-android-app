@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.FavouriteCategoryFragment" >
+
+    <GridView
+        android:id="@+id/GV_FavouriteCategory"
+        android:layout_width="383dp"
+        android:layout_height="433dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/roundrec_board"
+        android:numColumns="3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></GridView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/Btn_BackToUser"
+        android:layout_width="87dp"
+        android:layout_height="87dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/backbutton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/GV_FavouriteCategory"
+        tools:ignore="SpeakableTextPresentCheck,UnknownId" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

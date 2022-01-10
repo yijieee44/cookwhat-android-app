@@ -28,9 +28,14 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<IngredientModel> ingredientList;
     private Context context;
 
+
     public IngredientAdapter(Context context, List<IngredientModel> ingredientList) {
         this.ingredientList = ingredientList;
         this.context = context;
+    }
+
+    public List<IngredientModel> getIngredientList() {
+        return ingredientList;
     }
 
     public void addIngredient(IngredientModel ingredient){
@@ -38,9 +43,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.notifyDataSetChanged();
     }
 
-    public List<IngredientModel> getIngredientList() {
-        return ingredientList;
-    }
 
     public void editIngredient(int position, IngredientModel ingredientModel){
         ingredientList.set(position, ingredientModel);

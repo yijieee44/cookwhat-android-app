@@ -50,9 +50,7 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
                         view.setClickable(false);
                         clickListener.onClick(this.getLayoutPosition(), this.context, view);
 
-
                 }
-
 
 
         }
@@ -104,7 +102,6 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
                         System.out.println("Here");
                         viewHolder.getImgView().findViewById(R.id.IV_Tick).setVisibility(View.VISIBLE);
                 }
-
 
         }
 
