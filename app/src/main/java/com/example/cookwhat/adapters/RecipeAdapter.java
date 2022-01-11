@@ -15,6 +15,7 @@ import com.example.cookwhat.R;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cookwhat.activities.UserActivity;
 import com.example.cookwhat.activities.ViewRecipeActivity;
 import com.example.cookwhat.models.RecipeModel;
 import com.example.cookwhat.models.UserModel;
@@ -28,6 +29,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -82,12 +85,22 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            recipeName = itemView.findViewById(R.id.TVrecipeName);
-            recipeImage = itemView.findViewById(R.id.IVrecipeImage);
-            numFav = itemView.findViewById(R.id.BtnFav);
-            userName = itemView.findViewById(R.id.BtnUser1);
-            tag = itemView.findViewById(R.id.TVTag);
+            recipeName = (TextView) itemView.findViewById(R.id.TVrecipeName);
+            recipeImage = (ImageView) itemView.findViewById(R.id.IVrecipeImage);
+            numFav = (Button) itemView.findViewById(R.id.BtnFav);
+            userName = (Button) itemView.findViewById(R.id.BtnUser1);
+            tag = (TextView) itemView.findViewById(R.id.TVTag);
 
+            userName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String userId = recipeModel.get(getAdapterPosition()).getUserId();
+                    Intent intent = new Intent(itemView.getContext(), UserActivity.class);
+                    intent.putExtra("fragmentname", "viewprofilefragment");
+                    intent.putExtra("userId", userId);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
 
             numFav.setOnClickListener(new View.OnClickListener() {
                 ArrayList<String> recipeids;

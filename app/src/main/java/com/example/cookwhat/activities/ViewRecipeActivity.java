@@ -3,17 +3,12 @@ package com.example.cookwhat.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavDeepLinkBuilder;
+
 
 import android.annotation.SuppressLint;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Debug;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -23,20 +18,16 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.interfaces.ItemChangeListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.cookwhat.R;
-import com.example.cookwhat.activities.MainActivity;
+import com.example.cookwhat.Testing;
 import com.example.cookwhat.adapters.CommentAdapter;
-import com.example.cookwhat.fragments.LoginFragment;
-import com.example.cookwhat.fragments.UserProfileFragment;
 import com.example.cookwhat.fragments.ViewProfileFragment;
 import com.example.cookwhat.models.RecipeCommentModel;
 import com.example.cookwhat.models.RecipeModel;
-import com.example.cookwhat.models.RecipeStepModel;
 import com.example.cookwhat.models.UserModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -51,6 +42,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.example.cookwhat.utils.Utility;
+
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -90,34 +82,27 @@ public class ViewRecipeActivity extends AppCompatActivity {
                         .withZone( ZoneId.systemDefault() );
 
         db = FirebaseFirestore.getInstance();
-
         recipedb = db.collection("recipe");
         recipecommentdb = db.collection("recipecomment");
         userdb = db.collection("user");
-
         user = FirebaseAuth.getInstance().getCurrentUser();
 
 
         userModel1 = new UserModel();
         recipeowner = new UserModel();
-
         recipemodel = new RecipeModel();
-
         usernames = new ArrayList<>();
-
+        recipecomments = new ArrayList<>();
         recipeId = getIntent().getStringExtra("recipeId");
 
-        recipecomments = new ArrayList<>();
-
         imageSlider = findViewById(R.id.image_slider);
-
         ArrayList<SlideModel> images = new ArrayList<>();
 
-        ImageButton userPic = findViewById(R.id.IBOwnerPic);
-        TextView recipeName = findViewById(R.id.TVRecipeName);
-        TextView userName = findViewById(R.id.TVOwnerUsername);
-        Button addFav = findViewById(R.id.BtnAddFav);
-        Button ingredientandutensils = findViewById(R.id.BtnINU);
+        ImageButton userPic = (ImageButton) findViewById(R.id.IBOwnerPic);
+        TextView recipeName = (TextView) findViewById(R.id.TVRecipeName);
+        TextView userName = (TextView) findViewById(R.id.TVOwnerUsername);
+        Button addFav = (Button) findViewById(R.id.BtnAddFav);
+        Button ingredientandutensils = (Button) findViewById(R.id.BtnINU);
 
         ingredientandutensils.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,9 +204,10 @@ public class ViewRecipeActivity extends AppCompatActivity {
                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//                        transaction.replace(R.id.CS, new ViewProfileFragment()).commit();
-                        Intent intent = new Intent(ViewRecipeActivity.this, MainActivity.class);
+                        String userId = recipecomments.get(position).getUserId();
+                        Intent intent = new Intent(ViewRecipeActivity.this, UserActivity.class);
+                        intent.putExtra("fragmentname", "viewprofilefragment");
+                        intent.putExtra("userId", userId);
                         startActivity(intent);
                     }
                 });
@@ -253,21 +239,10 @@ public class ViewRecipeActivity extends AppCompatActivity {
                     listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//                            transaction.replace(R.id.DestViewProfile, new ViewProfileFragment()).commit(); // give your fragment container id in first parameter
-//                            transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-//                            transaction.commit();
-//                            PendingIntent pendingIntent = new NavDeepLinkBuilder(getApplicationContext())
-//                                    .setGraph(R.navigation.nav_user)
-//                                    .setDestination(R.id.DestViewProfile)
-//                                    .createPendingIntent();
-//
-//                            try {
-//                                pendingIntent.send();
-//                            } catch (PendingIntent.CanceledException e) {
-//                                e.printStackTrace();
-//                            }
-                            Intent intent = new Intent(ViewRecipeActivity.this, ViewProfileFragment.class);
+                            String userId = recipecomments.get(position).getUserId();
+                            Intent intent = new Intent(ViewRecipeActivity.this, UserActivity.class);
+                            intent.putExtra("fragmentname", "viewprofilefragment");
+                            intent.putExtra("userId", userId);
                             startActivity(intent);
                         }
                     });

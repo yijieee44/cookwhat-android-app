@@ -3,11 +3,14 @@ package com.example.cookwhat.activities;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cookwhat.R;
+import com.example.cookwhat.fragments.CreateShowGalleryFragment;
 import com.example.cookwhat.fragments.FavouriteFragment;
+import com.example.cookwhat.fragments.ViewProfileFragment;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -19,6 +22,9 @@ public class UserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+        String fragmentname = getIntent().getStringExtra("fragmentname");
+        startFragment(fragmentname);
         /*FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         FavouriteCategoryFragment f1 = new FavouriteCategoryFragment();
@@ -32,6 +38,15 @@ public class UserActivity extends AppCompatActivity {
 
 
 
+    }
+
+    public void startFragment(String fragmentname){
+        Fragment nfhuser = getSupportFragmentManager().findFragmentById(R.id.NHFUser);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if(fragmentname.equals("viewprofilefragment")){
+            transaction.replace(R.id.NHFUser, new ViewProfileFragment()).commit();
+        }
     }
 
     public void setCategoryName(String categoryName) {
