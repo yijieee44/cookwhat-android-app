@@ -1,5 +1,7 @@
 package com.example.cookwhat.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +11,11 @@ public class RecipeModel {
     private int num_fav = 0;
     private String title = "";
     private List<String> tags = new ArrayList<>();
+    @JsonIgnore
     private List<IngredientModel> ingredients = new ArrayList<>();
+    @JsonIgnore
     private List<UtensilModel> utensils = new ArrayList<>();
+    @JsonIgnore
     private List<RecipeCommentModel> comments = new ArrayList<>();
     private List<RecipeStepModel> steps = new ArrayList<>();
 

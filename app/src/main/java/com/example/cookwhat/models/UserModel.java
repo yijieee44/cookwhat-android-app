@@ -11,17 +11,20 @@ public class UserModel   {
     private int profilePic;
     private String userName;
     private String emailAddr;
+    private ArrayList<String> favouriteFood;
     @JsonIgnore
     private ArrayList<String> prefer;
     @JsonIgnore
     private ArrayList<String> favouriteCategory;
     @JsonIgnore
-    private ArrayList<RecipeModel> favouriteFood;
-    @JsonIgnore
     private ArrayList<UserModel> followers;
     @JsonIgnore
     private ArrayList<UserModel> followings;
     private String password;
+    @JsonIgnore
+    private ArrayList<String> followersNameList;
+    @JsonIgnore
+    private ArrayList<String> followingsNameList;
 
 
 
@@ -44,9 +47,9 @@ public class UserModel   {
         this.emailAddr = emailAddr;
     }
 
-    public void setFavouriteFood(RecipeModel addFood) {
+    public void setFavouriteFood(ArrayList<String> recipeId) {
 
-        this.favouriteFood.add(1,addFood);
+        this.favouriteFood = recipeId;
     }
 
     public void addFollowers(UserModel followers) {
@@ -81,10 +84,12 @@ public class UserModel   {
 
     public ArrayList <String> getFollowersNameList(){
         ArrayList<String>namelist = new ArrayList<>();
-        for (int i =0; i<this.followers.size();i++){
-            namelist.add(this.followers.get(i).getUserName());
+        if (followers != null){
+            for (int i =0; i<this.followers.size();i++){
+                namelist.add(this.followers.get(i).getUserName());
+            }
+            Collections.sort(namelist);
         }
-        Collections.sort(namelist);
         return namelist;
     }
 
@@ -104,10 +109,12 @@ public class UserModel   {
 
     public ArrayList <String> getFollowingsNameList(){
         ArrayList<String>namelist = new ArrayList<>();
-        for (int i =0; i<this.followings.size();i++){
-            namelist.add(this.followings.get(i).getUserName());
+        if (followings != null) {
+            for (int i =0; i<this.followings.size();i++){
+                namelist.add(this.followings.get(i).getUserName());
+            }
+            Collections.sort(namelist);
         }
-        Collections.sort(namelist);
         return namelist;
     }
 
@@ -136,7 +143,7 @@ public class UserModel   {
         return favouriteCategory;
     }
 
-    public ArrayList<RecipeModel> getFavouriteFood() {
+    public ArrayList<String> getFavouriteFood() {
         return favouriteFood;
     }
 

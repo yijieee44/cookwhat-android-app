@@ -150,6 +150,7 @@ public class RegisterCompleteFragment extends Fragment {
                                     userModel.setFollowers(userModelList);
                                     userModel.setFollowings(userModelList);
                                     userModel.setUserId(user.getUid());
+                                    userModel.setUserName(username);
                                     firestoreDb.collection("user")
                                             .add(userModel)
                                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

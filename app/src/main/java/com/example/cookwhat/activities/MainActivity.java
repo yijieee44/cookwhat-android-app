@@ -83,8 +83,15 @@ public class MainActivity extends AppCompatActivity {
                                     Log.d("SUCCESS", document.getId() + " => " + document.getData());
                                     ArrayList<UserModel> followers = (ArrayList<UserModel>)document.getData().get("followers");
                                     ArrayList<UserModel> followings = (ArrayList<UserModel>)document.getData().get("followings");
-                                    int follower = followers.size() ;
-                                    int following = followings.size();
+
+                                    int following = 0;
+                                    int follower = 0;
+                                    if (followers != null){
+                                        follower = followers.size();
+                                    }
+                                    if (followings != null){
+                                        following = followings.size();
+                                    }
                                     values.put(UserTableContract.UserTable.COLUMN_NAME_FOLLOWER, follower);
                                     values.put(UserTableContract.UserTable.COLUMN_NAME_FOLLOWING, following);
                                     int count = db.update(

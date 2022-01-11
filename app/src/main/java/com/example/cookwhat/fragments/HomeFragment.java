@@ -2,22 +2,42 @@ package com.example.cookwhat.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cookwhat.R;
+import com.example.cookwhat.activities.ViewRecipeActivity;
 import com.example.cookwhat.adapters.RecipeAdapter;
+import com.example.cookwhat.models.RecipeCommentModel;
 import com.example.cookwhat.models.RecipeModel;
 import com.example.cookwhat.models.RecipeStepModel;
 import com.example.cookwhat.models.UserModel;
+import com.example.cookwhat.utils.CustomComparator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +51,13 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     RecyclerView recipeList;
+    public CollectionReference recipedb;
+    public CollectionReference userdb;
+    public CollectionReference recipestepdb;
+    private FirebaseAuth mAuth;
+    public ArrayList<RecipeModel> recipeModelsArray = new ArrayList<>();
+    public ArrayList<UserModel> userModelsArray = new ArrayList<>();
+    public ArrayList<RecipeStepModel> recipeStepModelsArray = new ArrayList<>();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -73,57 +100,143 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        recipedb = db.collection("recipe");
+        recipestepdb = db.collection("recipestep");
+        userdb = db.collection("user");
+
         recipeList = view.findViewById(R.id.recipeList);
-        ArrayList<String> tags = new ArrayList<>();
-        tags.add("Vegan");
-        tags.add("Organic");
 
-        RecipeStepModel recipeStepModel1 = new RecipeStepModel("https://img.jakpost.net/c/2020/03/02/2020_03_02_87967_1583122954._large.jpg", "step1 of recipe");
-        RecipeStepModel recipeStepModel2 = new RecipeStepModel("IMG URL2", "step2 of recipe");
+        readData(new FirestoreCallback() {
+            @Override
+            public void onCallBack(ArrayList<RecipeModel> recipeModelArrayList, ArrayList<RecipeStepModel> recipeStepModelArrayList, ArrayList<UserModel> userModelArrayList) {
+                Collections.sort(recipeStepModelArrayList, new CustomComparator());
+                for (int i=0;i<recipeModelArrayList.size();i++){
+                    ArrayList<RecipeStepModel> temp = new ArrayList<>();
+                    String recipeId = recipeModelArrayList.get(i).getId();
+                    for (int m=0;m<recipeStepModelArrayList.size();m++){
+                        String recipeId2 = recipeStepModelArrayList.get(m).getRecipeId();
+                        if (recipeId.equals(recipeId2)){
+                            temp.add(recipeStepModelArrayList.get(m));
+                        }
+                    }
+                    recipeModelArrayList.get(i).setSteps(temp);
+                }
+                for (int n=0;n<recipeModelArrayList.size();n++){
+                    writeData(recipeModelArrayList.get(n), recipeModelArrayList.get(n).getId());
+                }
+                RecipeAdapter adapter = new RecipeAdapter(recipeModelArrayList, userModelArrayList, getContext());
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+                recipeList.setLayoutManager(gridLayoutManager);
+                recipeList.setAdapter(adapter);
 
-        ArrayList<RecipeStepModel> steps1 = new ArrayList<>();
-        steps1.add(recipeStepModel1);
-        steps1.add(recipeStepModel2);
-
-        RecipeStepModel recipeStepModel3 = new RecipeStepModel("https://www.healthyeating.org/images/default-source/home-0.0/nutrition-topics-2.0/milk-dairy/2-1-3-1dairyfoods_cheese_detailfeature.jpg?sfvrsn=a580dd8c_4", "step1 of recipe");
-        ArrayList<RecipeStepModel> steps2 = new ArrayList<>();
-        steps2.add(recipeStepModel3);
-
-        RecipeModel recipeModel1 = new RecipeModel();
-        recipeModel1.setTitle("Turkey Sucks");
-        recipeModel1.setTags(tags);
-        recipeModel1.setNum_fav(6);
-        recipeModel1.setId("1");
-        recipeModel1.setUserId("1");
-        recipeModel1.setSteps(steps1);
-
-        RecipeModel recipeModel2 = new RecipeModel();
-        recipeModel2.setTitle("Turkey Yums");
-        recipeModel2.setTags(tags);
-        recipeModel2.setNum_fav(10);
-        recipeModel2.setId("2");
-        recipeModel2.setUserId("2");
-        recipeModel2.setSteps(steps2);
-
-        ArrayList<RecipeModel> recipeModelsArray = new ArrayList<>();
-        recipeModelsArray.add(recipeModel1);
-        recipeModelsArray.add(recipeModel2);
-
-        UserModel userModel1 = new UserModel();
-        userModel1.setUserName("PJasmine2328u4u23");
-
-        UserModel userModel2 = new UserModel();
-        userModel2.setUserName("PAladdin");
-
-        ArrayList<UserModel> userModelsArray = new ArrayList<>();
-        userModelsArray.add(userModel1);
-        userModelsArray.add(userModel2);
-
-        RecipeAdapter adapter = new RecipeAdapter(recipeModelsArray, userModelsArray, this.getContext());
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this.getContext(), 2, GridLayoutManager.VERTICAL, false);
-        recipeList.setLayoutManager(gridLayoutManager);
-        recipeList.setAdapter(adapter);
+            }
+        });
 
         return view;
+    }
+
+    public void readData(FirestoreCallback firestoreCallback){
+
+        recipedb.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    ArrayList<UserModel> tempUserModelArrayList = new ArrayList<>();
+                    List<String> userids = new ArrayList<>();
+                    List<String> recipeids = new ArrayList<>();
+                    Map mapuserid=new HashMap();
+                    Map maprecipeid=new HashMap();
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("SUCCESS", document.getId() + " => " + document.getData());
+                                final ObjectMapper mapper = new ObjectMapper();
+                                //TODO try to catch error here if fail to map value
+                                recipeModelsArray.add(mapper.convertValue(document.getData(), RecipeModel.class));
+                            }
+                            for (int i = 0; i < recipeModelsArray.size();i++){
+                                String tempuserid = recipeModelsArray.get(i).getUserId();
+                                String temprecipeid = recipeModelsArray.get(i).getId();
+                                userids.add(tempuserid);
+                                recipeids.add(temprecipeid);
+                                if (!mapuserid.containsKey(tempuserid)){
+                                    mapuserid.put(tempuserid, "");
+                                }
+                                if (!maprecipeid.containsKey(temprecipeid)){
+                                    maprecipeid.put(temprecipeid, "");
+                                }
+                            }
+                            recipestepdb.whereIn("recipeId", recipeids).get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    Log.d("SUCCESS", document.getId() + " => " + document.getData());
+                                                    final ObjectMapper mapper = new ObjectMapper();
+                                                    recipeStepModelsArray.add(mapper.convertValue(document.getData(), RecipeStepModel.class));
+                                                }
+                                                userdb.whereIn("userId", userids)
+                                                        .get()
+                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                        Log.d("SUCCESS", document.getId() + " => " + document.getData());
+                                                                        final ObjectMapper mapper = new ObjectMapper();
+                                                                        tempUserModelArrayList.add(mapper.convertValue(document.getData(), UserModel.class));
+                                                                    }
+                                                                    for (int y=0;y<userids.size();y++){
+                                                                        String userid = userids.get(y);
+                                                                        for (int z=0;z<tempUserModelArrayList.size();z++){
+                                                                            String userid2 = tempUserModelArrayList.get(z).getUserId();
+                                                                            if (userid.equals(userid2)){
+                                                                                userModelsArray.add(tempUserModelArrayList.get(z));
+                                                                                break;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    firestoreCallback.onCallBack(recipeModelsArray, recipeStepModelsArray, userModelsArray);
+                                                                } else {
+                                                                    Log.w("ERROR", "Error getting documents.", task.getException());
+                                                                }
+                                                            }
+                                                        });
+                                            } else {
+                                                Log.w("ERROR", "Error getting documents.", task.getException());
+                                            }
+                                        }
+                                    });
+                      } else {
+                            Log.w("ERROR", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void writeData(RecipeModel recipeModel, String recipeId){
+        recipedb.whereEqualTo("id", recipeId).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("SUCCESS", document.getId() + " => " + document.getData());
+                                recipedb.document(document.getId()).set(recipeModel);
+                            }
+                        }
+                        else {
+                            Log.w("ERROR", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private interface FirestoreCallback {
+        void onCallBack(ArrayList<RecipeModel> recipeModelArrayList, ArrayList<RecipeStepModel> recipeStepModelArrayList, ArrayList<UserModel> userModelArrayList);
     }
 }
