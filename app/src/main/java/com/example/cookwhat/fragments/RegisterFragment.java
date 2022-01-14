@@ -46,7 +46,7 @@ public class RegisterFragment extends Fragment {
 
     public RegisterFragment() {
         mAuth = FirebaseAuth.getInstance();
-        // Required empty public constructor
+
     }
 
     @Override
@@ -161,25 +161,13 @@ public class RegisterFragment extends Fragment {
                                 LoginActivity activity = (LoginActivity) getActivity();
                                 activity.setRegisterDetails(details);
 
-
-                                /*FragmentManager fm = getFragmentManager();
-                                FragmentTransaction ft = fm.beginTransaction();
-                                RegisterCompleteFragment registerCompleteFragment = new RegisterCompleteFragment();
-
-                                ft.replace(R.id.NHFLogin,registerCompleteFragment, "RegisterComplete");
-                                ft.commit();*/
-                                //RegisterCompleteFragment registerCompleteFragment = new RegisterCompleteFragment();
-                                //registerCompleteFragment.setTargetFragment(RegisterFragment.this, 1);
-
+                                
                             }
 
                         }
 
                     }
                 }, email );
-
-
-
 
 
 

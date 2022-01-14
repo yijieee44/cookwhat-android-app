@@ -43,15 +43,10 @@ public class CommentAdapter extends ArrayAdapter<RecipeCommentModel> {
         TextView comment = convertView.findViewById(R.id.TVComment);
         TextView time = convertView.findViewById(R.id.TVTimeCommented);
 
-//        imageView.setImageResource(user.getUserId());
         userName.setText(usernames.get(position));
         comment.setText(user.getComment());
         time.setText(user.getCreatedTime());
 
         return convertView;
-
-
-
-//        return super.getView(position, convertView, parent);
     }
 }

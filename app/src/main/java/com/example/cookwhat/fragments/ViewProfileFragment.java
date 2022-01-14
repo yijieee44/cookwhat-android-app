@@ -167,7 +167,7 @@ public class ViewProfileFragment extends Fragment {
 
 
 
-        if (recipeName.isEmpty()){
+        if (recipeName == null){
             String noRecipe = "Nothing to show here.\nLet's get started on sharing your secret recipes!";
             TextView textcontent = view.findViewById(R.id.TV_Empty);
             textcontent.setText(noRecipe);
@@ -275,6 +275,7 @@ public class ViewProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         container.removeAllViews();
         // Inflate the layout for this fragment
+        container.removeAllViews();
         return inflater.inflate(R.layout.fragment_view_profile, container, false);
     }
 }

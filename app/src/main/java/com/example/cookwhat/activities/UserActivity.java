@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cookwhat.R;
+import com.example.cookwhat.fragments.CreateShowGalleryFragment;
 import com.example.cookwhat.fragments.FavouriteFragment;
 import com.example.cookwhat.fragments.ViewProfileFragment;
 
@@ -21,10 +23,15 @@ public class UserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_user);
+
+        String fragmentname = getIntent().getStringExtra("fragmentname");
+        startFragmentViewOtherProfile(fragmentname);
+
+
         Intent i = getIntent();
         this.userID = i.getStringExtra("userID");
         System.out.println("In user activity"+userID);
-        setContentView(R.layout.activity_user);
 
         //NavHostFragment host = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.NHFUser);
 
@@ -32,6 +39,16 @@ public class UserActivity extends AppCompatActivity {
 
     public String getUserID(){
         return this.userID;
+    }
+
+    public void startFragmentViewOtherProfile(String fragmentname){
+        Fragment nfhuser = getSupportFragmentManager().findFragmentById(R.id.NHFUser);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if(fragmentname.equals("viewprofilefragment")){
+
+            transaction.replace(R.id.NHFUser, new ViewProfileFragment()).commit();
+        }
     }
 
     public void setCategoryName(String categoryName) {

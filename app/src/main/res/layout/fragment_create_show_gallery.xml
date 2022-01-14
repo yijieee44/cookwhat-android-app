@@ -6,118 +6,118 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-<LinearLayout
-    android:id="@+id/FragmentCreateGallery"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".fragments.CreateShowGalleryFragment">
-
     <LinearLayout
+        android:id="@+id/FragmentCreateGallery"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".fragments.CreateShowGalleryFragment">
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/BtnAddImages"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    app:icon="@drawable/ic_baseline_add_photo_alternate_24"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="24dp"
+                    app:iconTint="@color/grey"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle"
+                    app:strokeWidth="3dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/BtnEditImages"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    app:icon="@drawable/ic_baseline_edit_24"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="24dp"
+                    app:iconTint="@color/grey"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle"
+                    app:strokeWidth="3dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/NoPhotoDescription"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_photo_selected" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/add_photo" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/edit_sequence_and_delete" />
+
+            </LinearLayout>
+
+            <com.denzcoskun.imageslider.ImageSlider
+                android:id="@+id/CreateImageSlider"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"></com.denzcoskun.imageslider.ImageSlider>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/BtnSelectIngredient"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/light_yellow"
+            android:text="@string/add_ingredients" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/BtnAddImages"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                app:icon="@drawable/ic_baseline_add_photo_alternate_24"
-                app:iconGravity="textStart"
-                app:iconPadding="0dp"
-                app:iconSize="24dp"
-                app:iconTint="@color/grey"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle"
-                app:strokeWidth="3dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/BtnEditImages"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                app:icon="@drawable/ic_baseline_edit_24"
-                app:iconGravity="textStart"
-                app:iconPadding="0dp"
-                app:iconSize="24dp"
-                app:iconTint="@color/grey"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle"
-                app:strokeWidth="3dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/NoPhotoDescription"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/activity_create_ingredient_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/no_photo_selected" />
+        </androidx.recyclerview.widget.RecyclerView>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/add_photo" />
+        <Button
+            android:id="@+id/BtnSelectUtensil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:backgroundTint="@color/light_yellow"
+            android:text="@string/add_utensils" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/edit_sequence_and_delete" />
-
-        </LinearLayout>
-
-        <com.denzcoskun.imageslider.ImageSlider
-            android:id="@+id/CreateImageSlider"
-            android:visibility="gone"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/activity_create_utensil_list"
             android:layout_width="match_parent"
-            android:layout_height="200dp"></com.denzcoskun.imageslider.ImageSlider>
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"/>
+
     </LinearLayout>
-
-    <Button
-        android:id="@+id/BtnSelectIngredient"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:backgroundTint="@color/light_yellow"
-        android:text="@string/add_ingredients" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/activity_create_ingredient_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <Button
-        android:id="@+id/BtnSelectUtensil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:backgroundTint="@color/light_yellow"
-        android:text="@string/add_utensils" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/activity_create_utensil_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"/>
-
-</LinearLayout>
 </androidx.core.widget.NestedScrollView>

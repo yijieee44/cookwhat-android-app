@@ -7,11 +7,22 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cookwhat.R;
+
 import com.example.cookwhat.fragments.LoginFragment;
 import com.example.cookwhat.fragments.RegisterCompleteFragment;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
+
 public class LoginActivity extends AppCompatActivity {
 
+    ;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
 
 
     @Override
@@ -19,12 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-       /* NavHostFragment host = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.NHFLogin);
-        NavController navController = host.getNavController();
 
-
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration);*/
 
     }
 

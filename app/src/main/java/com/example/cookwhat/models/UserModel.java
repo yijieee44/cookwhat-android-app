@@ -1,6 +1,7 @@
 package com.example.cookwhat.models;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class UserModel   {
 
@@ -9,11 +10,11 @@ public class UserModel   {
     private String userName;
     private String emailAddr;
 
+
     private ArrayList<String> preferences = new ArrayList<>();
 
     private ArrayList<String> favouriteCategory =  new ArrayList<>();
 
-    private ArrayList<RecipeModel> favouriteFood = new ArrayList<>();
 
     private ArrayList<String> followers = new ArrayList<>();
 
@@ -22,7 +23,20 @@ public class UserModel   {
     private ArrayList<String> followingsID = new ArrayList<>();
 
     private ArrayList<String> followersID = new ArrayList<>();
+
+    private ArrayList<String> favouriteFood;
+
+
+
+    //private Map<String, ArrayList<String>> favouriteCategory;
+
+
+
     private String password;
+
+    private ArrayList<String> followersNameList;
+
+    private ArrayList<String> followingsNameList;
 
 
 
@@ -45,10 +59,8 @@ public class UserModel   {
         this.emailAddr = emailAddr;
     }
 
-    public void setFavouriteFood(RecipeModel addFood) {
 
-        this.favouriteFood.add(1,addFood);
-    }
+
 
     public void setFollowers(String follower) {
         this.followers.add(follower) ;
@@ -70,6 +82,9 @@ public class UserModel   {
         this.preferences.add(prefer);
     }
 
+
+
+
     public void setUserName(String userName) {
         this.userName = userName;
     }
@@ -82,10 +97,12 @@ public class UserModel   {
 
     /*public ArrayList <String> getFollowersNameList(){
         ArrayList<String>namelist = new ArrayList<>();
-        for (int i =0; i<this.followers.size();i++){
-            namelist.add(this.followers.get(i).getUserName());
+        if (followers != null){
+            for (int i =0; i<this.followers.size();i++){
+                namelist.add(this.followers.get(i).getUserName());
+            }
+            Collections.sort(namelist);
         }
-        Collections.sort(namelist);
         return namelist;
     }*/
 
@@ -105,10 +122,12 @@ public class UserModel   {
 
    /* public ArrayList <String> getFollowingsNameList(){
         ArrayList<String>namelist = new ArrayList<>();
-        for (int i =0; i<this.followings.size();i++){
-            namelist.add(this.followings.get(i).getUserName());
+        if (followings != null) {
+            for (int i =0; i<this.followings.size();i++){
+                namelist.add(this.followings.get(i).getUserName());
+            }
+            Collections.sort(namelist);
         }
-        Collections.sort(namelist);
         return namelist;
     }
 
@@ -137,7 +156,7 @@ public class UserModel   {
         return favouriteCategory;
     }
 
-    public ArrayList<RecipeModel> getFavouriteFood() {
+    public ArrayList<String> getFavouriteFood() {
         return favouriteFood;
     }
 

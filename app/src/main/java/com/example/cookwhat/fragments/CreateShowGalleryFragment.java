@@ -16,8 +16,10 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,6 +54,7 @@ import com.example.cookwhat.models.RecipeModel;
 import com.example.cookwhat.models.RecipeStepModel;
 import com.example.cookwhat.models.UtensilModel;
 import com.example.cookwhat.utils.Constants;
+import com.example.cookwhat.utils.RecyclerItemClickListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
@@ -286,13 +289,61 @@ public class CreateShowGalleryFragment extends Fragment {
         ingredientRecycleView.setLayoutManager(linearLayoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(ingredientRecycleView.getContext(), linearLayoutManager.getOrientation());
         ingredientRecycleView.addItemDecoration(dividerItemDecoration);  //for divider
+        ingredientRecycleView.setNestedScrollingEnabled(false);
+
         ingredientAdapter = new IngredientAdapter(context, ingredientModelList);
         ingredientRecycleView.setAdapter(ingredientAdapter);
+
+
+        ingredientRecycleView.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        context, ingredientRecycleView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        IngredientModel ingredientModel = ingredientAdapter.getIngredientList().get(position);
+                        IngredientDetailDialogFragment dialog = new IngredientDetailDialogFragment(ingredientModel.getName(), ingredientModel.getIcon(),
+                                ingredientModel.getQuantity(), ingredientModel.getWeight(), ingredientModel.getUnitQuantity(), ingredientModel.getUnitWeight(), ingredientModel.getMemo());
+                        dialog.setDialogListener(new IngredientDetailDialogFragment.DialogListener(){
+
+                            @Override
+                            public void onFinishEditDialog(String quantity, String weight, String unitQuantity, String unitWeight, String memo) {
+                                Log.d("ASDASDASD", "quantity" + quantity + quantity.isEmpty() + quantity.equals(""));
+                                if(quantity != null && !quantity.isEmpty()){
+                                    ingredientModel.setQuantity(Double.valueOf(quantity));
+                                }
+
+                                ingredientModel.setUnitQuantity(unitQuantity);
+
+                                if(weight != null && !weight.isEmpty()){
+                                    ingredientModel.setWeight(Double.valueOf(weight));
+                                }
+                                ingredientModel.setUnitWeight(unitWeight);
+                                if(memo != null && !memo.isEmpty()){
+                                    ingredientModel.setMemo(memo);
+                                }
+                                ingredientAdapter.getIngredientList().set(position, ingredientModel);
+                                ingredientAdapter.notifyDataSetChanged();
+
+                            }
+                        });
+                        dialog.show(((FragmentActivity)context).getSupportFragmentManager(),"dialog");
+
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+
+                    }
+                }
+                )
+        );
+
+
+
 
         utensilModelList = recipeModel.getUtensils();
         utensilRecycleView = (RecyclerView) view.findViewById(R.id.activity_create_utensil_list);
         utensilRecycleView.setLayoutManager(linearLayoutManager1);
         utensilRecycleView.addItemDecoration(dividerItemDecoration);  //for divider
+        utensilRecycleView.setNestedScrollingEnabled(false);
         utensilAdapter = new UtensilAdapter(context, utensilModelList);
         utensilRecycleView.setAdapter(utensilAdapter);
 
@@ -446,6 +497,7 @@ public class CreateShowGalleryFragment extends Fragment {
                         ingredientModel.setIcon(ingredientsIcon[position]);
                         ingredientAdapter.addIngredient(ingredientModel);
 
+
                         recipeModel.setIngredients(ingredientAdapter.getIngredientList());
                     }
                 } catch (Exception e) {
@@ -529,6 +581,9 @@ public class CreateShowGalleryFragment extends Fragment {
                 public void onClick(View v) {
                     chipGroup.removeView(chip);
                     selCustomIngredients.remove(chipItem);
+                    IngredientModel ingredientModel = new IngredientModel();
+                    ingredientModel.setName(chipItem);
+                    ingredientAdapter.removeIngredient(ingredientModel);
                 }
             });
             chip.setTextColor(getResources().getColor(R.color.black));
@@ -702,6 +757,9 @@ public class CreateShowGalleryFragment extends Fragment {
                 public void onClick(View v) {
                     chipGroup.removeView(chip);
                     selCustomUtensils.remove(chipItem);
+                    UtensilModel utensilModel = new UtensilModel();
+                    utensilModel.setName(chipItem);
+                    utensilAdapter.removeUtensil(utensilModel);
                 }
             });
             chip.setTextColor(getResources().getColor(R.color.black));
@@ -727,12 +785,19 @@ public class CreateShowGalleryFragment extends Fragment {
                 public void onClick(View v) {
                     chipGroup.removeView(chip);
                     selCustomIngredients.remove(newItem);
+                    IngredientModel ingredientModel = new IngredientModel();
+                    ingredientModel.setName(newItem);
+                    ingredientAdapter.removeIngredient(ingredientModel);
                 }
             });
             chip.setTextColor(getResources().getColor(R.color.black));
 
             chipGroup.addView(chip);
             selCustomIngredients.add(newItem);
+            IngredientModel ingredientModel = new IngredientModel();
+            ingredientModel.setName(newItem);
+            ingredientModel.setIcon(R.drawable.i0067_others);
+            ingredientAdapter.addIngredient(ingredientModel);
         }
     }
 
@@ -749,13 +814,22 @@ public class CreateShowGalleryFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     chipGroup.removeView(chip);
-                    selCustomIngredients.remove(newItem);
+                    selCustomUtensils.remove(newItem);
+                    UtensilModel utensilModel = new UtensilModel();
+                    utensilModel.setName(newItem);
+                    utensilAdapter.removeUtensil(utensilModel);
                 }
             });
             chip.setTextColor(getResources().getColor(R.color.black));
 
             chipGroup.addView(chip);
             selCustomUtensils.add(newItem);
+            UtensilModel utensilModel = new UtensilModel();
+            utensilModel.setName(newItem);
+            utensilModel.setIcon(R.drawable.i0067_others);
+            utensilAdapter.addUtensil(utensilModel);
         }
     }
+
+
 }

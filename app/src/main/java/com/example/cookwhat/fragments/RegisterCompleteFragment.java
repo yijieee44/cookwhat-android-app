@@ -1,6 +1,9 @@
 package com.example.cookwhat.fragments;
 
+
 import static android.content.ContentValues.TAG;
+
+import android.content.Intent;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.activities.LoginActivity;
+import com.example.cookwhat.activities.MainActivity;
 import com.example.cookwhat.adapters.ProfilePicAdapter;
 import com.example.cookwhat.models.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -65,7 +69,6 @@ public class RegisterCompleteFragment extends Fragment {
 
 
 
-
     }
 
     /**
@@ -89,6 +92,7 @@ public class RegisterCompleteFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Bundle bundle = this.getArguments();
         System.out.println("bundle received"+ bundle);
         if(bundle != null){
@@ -114,15 +118,22 @@ public class RegisterCompleteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         container.removeAllViews();
+
         return inflater.inflate(R.layout.fragment_register_complete, container, false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        Log.d("CHECKING", "email password username" + email + password + username);
         RecyclerView profilePicRV = view.findViewById(R.id.RV_ProfilePic);
         LinearLayoutManager recycleViewLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         profilePicRV.setLayoutManager(recycleViewLayoutManager);
@@ -134,6 +145,7 @@ public class RegisterCompleteFragment extends Fragment {
         profilePicRV.setLayoutManager(HorizontalScroll);
         profilePicRV.setAdapter(adapter);
 
+
         UserModel usermodel = new UserModel();
         usermodel.setUserName(username);
         usermodel.setEmailAddr(email);
@@ -142,8 +154,12 @@ public class RegisterCompleteFragment extends Fragment {
 
 
 
-        Button register = view.findViewById(R.id.Btn_Register);
-        View.OnClickListener registerOCL = new View.OnClickListener() {
+
+        FirebaseFirestore firestoreDb = FirebaseFirestore.getInstance();
+
+        Button BtnRegister = view.findViewById(R.id.BtnRegisterComplete);
+        View.OnClickListener OCLRegister = new View.OnClickListener(){
+
             @Override
             public void onClick(View v) {
                 ChipGroup chipGroup = view.findViewById(R.id.CG_Preferences);
@@ -152,11 +168,15 @@ public class RegisterCompleteFragment extends Fragment {
                     Chip chip = view.findViewById(chips.get(i));
                     usermodel.setPreferences((String) chip.getText());;
 
+
                 }
 
-                System.out.println(usermodel.getPreferences());
-                addNewUser(usermodel);
+
+                //addNewUser(usermodel);
                 mAuth = FirebaseAuth.getInstance();
+
+                //Log.d("SUCCESS", email);
+
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -165,6 +185,27 @@ public class RegisterCompleteFragment extends Fragment {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d("SUCCESS", "createUserWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
+
+                                    //UserModel userModel = new UserModel();
+                                    //userModel.setEmailAddr(email);
+
+                                    //userModel.setUserId(user.getUid());
+                                    //userModel.setUserName(username);
+                                    firestoreDb.collection("user")
+                                            .add(usermodel)
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                @Override
+                                                public void onSuccess(DocumentReference documentReference) {
+                                                    Log.d("SUCCESS", "DocumentSnapshot added with ID: " + documentReference.getId());
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w("ERROR", "Error adding document", e);
+                                                }
+                                            });
+
                                     user.sendEmailVerification()
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
@@ -205,14 +246,10 @@ public class RegisterCompleteFragment extends Fragment {
                         });
 
 
-            }
-        };
-
-        register.setOnClickListener(registerOCL);
+            }};
 
 
-
-
+        BtnRegister.setOnClickListener(OCLRegister);
 
 
     }

@@ -4,7 +4,9 @@ public class IngredientModel {
     private String recipeId;
     private String name;
     private Double quantity;
-    private String unit;
+    private Double weight;
+    private String unitQuantity;
+    private String unitWeight;
     private String memo;
     private int icon;
     private boolean required;
@@ -29,12 +31,28 @@ public class IngredientModel {
         this.quantity = quantity;
     }
 
-    public String getUnit() {
-        return unit;
+    public Double getWeight() {
+        return weight;
     }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public String getUnitQuantity() {
+        return unitQuantity;
+    }
+
+    public void setUnitQuantity(String unitQuantity) {
+        this.unitQuantity = unitQuantity;
+    }
+
+    public String getUnitWeight() {
+        return unitWeight;
+    }
+
+    public void setUnitWeight(String unitWeight) {
+        this.unitWeight = unitWeight;
     }
 
     public String getMemo() {

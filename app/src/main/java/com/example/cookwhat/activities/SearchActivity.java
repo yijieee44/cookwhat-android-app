@@ -95,7 +95,6 @@ public class SearchActivity extends AppCompatActivity {
             ingredientModels[i].setName(getString(ingredientsName[selIngredientsItem.get(i)]));
             ingredientModels[i].setQuantity(Double.valueOf(1));
             ingredientModels[i].setMemo("Description");
-            ingredientModels[i].setUnit("g");
             ingredientModels[i].setIcon(ingredientsIcon[selIngredientsItem.get(i)]);
             ingredientModelList.add(ingredientModels[i]);
 
@@ -109,6 +108,7 @@ public class SearchActivity extends AppCompatActivity {
         ingredientRecycleView.setLayoutManager(linearLayoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(ingredientRecycleView.getContext(), linearLayoutManager.getOrientation());
         ingredientRecycleView.addItemDecoration(dividerItemDecoration);  //for divider
+        ingredientRecycleView.setNestedScrollingEnabled(false);
         ingredientAdapter = new IngredientAdapter(context, ingredientModelList);
         ingredientRecycleView.setAdapter(ingredientAdapter);
 
@@ -116,6 +116,7 @@ public class SearchActivity extends AppCompatActivity {
         utensilRecycleView = (RecyclerView) findViewById(R.id.activity_search_utensil_list);
         utensilRecycleView.setLayoutManager(linearLayoutManager1);
         utensilRecycleView.addItemDecoration(dividerItemDecoration);  //for divider
+        utensilRecycleView.setNestedScrollingEnabled(false);
         utensilAdapter = new UtensilAdapter(context, utensilModelList);
         utensilRecycleView.setAdapter(utensilAdapter);
     }
@@ -268,6 +269,9 @@ public class SearchActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     chipGroup.removeView(chip);
                     selCustomIngredients.remove(chipItem);
+                    IngredientModel ingredientModel = new IngredientModel();
+                    ingredientModel.setName(chipItem);
+                    ingredientAdapter.removeIngredient(ingredientModel);
                 }
             });
             chip.setTextColor(getResources().getColor(R.color.black));
@@ -427,6 +431,9 @@ public class SearchActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     chipGroup.removeView(chip);
                     selCustomUtensils.remove(chipItem);
+                    UtensilModel utensilModel = new UtensilModel();
+                    utensilModel.setName(chipItem);
+                    utensilAdapter.removeUtensil(utensilModel);
                 }
             });
             chip.setTextColor(getResources().getColor(R.color.black));
@@ -452,12 +459,19 @@ public class SearchActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     chipGroup.removeView(chip);
                     selCustomIngredients.remove(newItem);
+                    IngredientModel ingredientModel = new IngredientModel();
+                    ingredientModel.setName(newItem);
+                    ingredientAdapter.removeIngredient(ingredientModel);
                 }
             });
             chip.setTextColor(getResources().getColor(R.color.black));
 
             chipGroup.addView(chip);
             selCustomIngredients.add(newItem);
+            IngredientModel ingredientModel = new IngredientModel();
+            ingredientModel.setName(newItem);
+            ingredientModel.setIcon(R.drawable.i0067_others);
+            ingredientAdapter.addIngredient(ingredientModel);
         }
     }
 
@@ -474,13 +488,20 @@ public class SearchActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     chipGroup.removeView(chip);
-                    selCustomIngredients.remove(newItem);
+                    selCustomUtensils.remove(newItem);
+                    UtensilModel utensilModel = new UtensilModel();
+                    utensilModel.setName(newItem);
+                    utensilAdapter.removeUtensil(utensilModel);
                 }
             });
             chip.setTextColor(getResources().getColor(R.color.black));
 
             chipGroup.addView(chip);
             selCustomUtensils.add(newItem);
+            UtensilModel utensilModel = new UtensilModel();
+            utensilModel.setName(newItem);
+            utensilModel.setIcon(R.drawable.i0067_others);
+            utensilAdapter.addUtensil(utensilModel);
         }
     }
 }

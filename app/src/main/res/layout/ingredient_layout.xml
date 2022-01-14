@@ -12,13 +12,13 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="center"
-        android:layout_weight="2"
+        android:layout_marginRight="10dp"
         app:srcCompat="@drawable/beer" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="6">
+        android:layout_weight="8">
 
         <TextView
             android:id="@+id/TVIngredientName"
@@ -32,7 +32,8 @@
             android:id="@+id/TVDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/TVIngredientName" />
+            android:layout_below="@id/TVIngredientName"
+            android:ellipsize="end" />
     </RelativeLayout>
 
     <TextView
