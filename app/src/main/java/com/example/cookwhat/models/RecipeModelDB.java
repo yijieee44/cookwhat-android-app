@@ -14,7 +14,8 @@ public class RecipeModelDB implements Serializable {
     private List<String> ingName;
     private List<Integer> ingIcon;
     private List<String> ingMemo;
-    private List<Integer> ingQuantity;
+    private List<Double> ingQuantity;
+    private List<Double> ingWeight;
     private List<String> ingUnitQuantity;
     private List<String> ingUnitWeight;
     private List<String> utName;
@@ -102,12 +103,20 @@ public class RecipeModelDB implements Serializable {
         this.ingMemo = ingMemo;
     }
 
-    public List<Integer> getIngQuantity() {
+    public List<Double> getIngQuantity() {
         return ingQuantity;
     }
 
-    public void setIngQuantity(List<Integer> ingQuantity) {
+    public void setIngQuantity(List<Double> ingQuantity) {
         this.ingQuantity = ingQuantity;
+    }
+
+    public List<Double> getIngWeight() {
+        return ingWeight;
+    }
+
+    public void setIngWeight(List<Double> ingWeight) {
+        this.ingWeight = ingWeight;
     }
 
     public List<String> getIngUnitQuantity() {
