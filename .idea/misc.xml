@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/activity_create.xml" value="0.1421875" />
+        <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/activity_testing.xml" value="0.2828125" />
+        <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/activity_user.xml" value="0.25" />
+        <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/activity_view_recipe.xml" value="0.25" />
+        <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/fragment_create_preview.xml" value="0.18" />
+        <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/fragment_create_show_gallery.xml" value="0.2828125" />
+        <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/fragment_user_profile.xml" value="0.14947916666666666" />
+        <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/fragment_view_profile.xml" value="0.14947916666666666" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+</project>

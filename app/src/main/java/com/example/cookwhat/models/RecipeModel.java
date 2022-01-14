@@ -1,35 +1,24 @@
 package com.example.cookwhat.models;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class RecipeModel {
-    private String id = "";
-    private String userId = "";
-    private int num_fav = 0;
-    private String title = "";
-    private List<String> tags = new ArrayList<>();
-    @JsonIgnore
-    private List<IngredientModel> ingredients = new ArrayList<>();
-    @JsonIgnore
-    private List<UtensilModel> utensils = new ArrayList<>();
-    @JsonIgnore
-    private List<RecipeCommentModel> comments = new ArrayList<>();
-    private List<RecipeStepModel> steps = new ArrayList<>();
+    private String userId;
+    private String title;
+    private int numFav;
+    private String createdTime;
+    private ArrayList<RecipeStepModel> steps;
+    private ArrayList<String> tags;
+    private ArrayList<String> ingName;
+    private ArrayList<String> ingIcon;
+    private ArrayList<String> ingMemo;
+    private ArrayList<String> ingQuantity;
+    private ArrayList<String> ingUnitQuantity;
+    private ArrayList<String> ingUnitWeight;
+    private ArrayList<String> utName;
+    private ArrayList<String> utIcon;
+    private ArrayList<String> utMemo;
+    private ArrayList<RecipeCommentModel> comments;
 
-    public RecipeModel() {
-
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getUserId() {
         return userId;
@@ -37,14 +26,6 @@ public class RecipeModel {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public int getNum_fav() {
-        return num_fav;
-    }
-
-    public void setNum_fav(int num_fav) {
-        this.num_fav = num_fav;
     }
 
     public String getTitle() {
@@ -55,43 +36,115 @@ public class RecipeModel {
         this.title = title;
     }
 
-    public List<String> getTags() {
-        return tags;
+    public int getNumFav() {
+        return numFav;
     }
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
+    public void setNumFav(int numFav) {
+        this.numFav = numFav;
     }
 
-    public List<IngredientModel> getIngredients() {
-        return ingredients;
+    public String getCreatedTime() {
+        return createdTime;
     }
 
-    public void setIngredients(List<IngredientModel> ingredients) {
-        this.ingredients = ingredients;
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
     }
 
-    public List<UtensilModel> getUtensils() {
-        return utensils;
-    }
-
-    public void setUtensils(List<UtensilModel> utensils) {
-        this.utensils = utensils;
-    }
-
-    public List<RecipeCommentModel> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<RecipeCommentModel> comments) {
-        this.comments = comments;
-    }
-
-    public List<RecipeStepModel> getSteps() {
+    public ArrayList<RecipeStepModel> getSteps() {
         return steps;
     }
 
-    public void setSteps(List<RecipeStepModel> steps) {
+    public void setSteps(ArrayList<RecipeStepModel> steps) {
         this.steps = steps;
+    }
+
+    public ArrayList<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(ArrayList<String> tags) {
+        this.tags = tags;
+    }
+
+    public ArrayList<String> getIngName() {
+        return ingName;
+    }
+
+    public void setIngName(ArrayList<String> ingName) {
+        this.ingName = ingName;
+    }
+
+    public ArrayList<String> getIngIcon() {
+        return ingIcon;
+    }
+
+    public void setIngIcon(ArrayList<String> ingIcon) {
+        this.ingIcon = ingIcon;
+    }
+
+    public ArrayList<String> getIngMemo() {
+        return ingMemo;
+    }
+
+    public void setIngMemo(ArrayList<String> ingMemo) {
+        this.ingMemo = ingMemo;
+    }
+
+    public ArrayList<String> getIngQuantity() {
+        return ingQuantity;
+    }
+
+    public void setIngQuantity(ArrayList<String> ingQuantity) {
+        this.ingQuantity = ingQuantity;
+    }
+
+    public ArrayList<String> getIngUnitQuantity() {
+        return ingUnitQuantity;
+    }
+
+    public void setIngUnitQuantity(ArrayList<String> ingUnitQuantity) {
+        this.ingUnitQuantity = ingUnitQuantity;
+    }
+
+    public ArrayList<String> getIngUnitWeight() {
+        return ingUnitWeight;
+    }
+
+    public void setIngUnitWeight(ArrayList<String> ingUnitWeight) {
+        this.ingUnitWeight = ingUnitWeight;
+    }
+
+    public ArrayList<String> getUtName() {
+        return utName;
+    }
+
+    public void setUtName(ArrayList<String> utName) {
+        this.utName = utName;
+    }
+
+    public ArrayList<String> getUtIcon() {
+        return utIcon;
+    }
+
+    public void setUtIcon(ArrayList<String> utIcon) {
+        this.utIcon = utIcon;
+    }
+
+    public ArrayList<String> getUtMemo() {
+        return utMemo;
+    }
+
+    public void setUtMemo(ArrayList<String> utMemo) {
+        this.utMemo = utMemo;
+    }
+
+    public ArrayList<RecipeCommentModel> getComments() {
+        return comments;
+    }
+
+    public void setComments(ArrayList<RecipeCommentModel> comments) {
+        this.comments = comments;
     }
 }
