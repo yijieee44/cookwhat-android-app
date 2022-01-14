@@ -5,7 +5,6 @@ public class UtensilModel {
     private String name;
     private String memo;
     private int icon;
-    private boolean required;
 
     public String getRecipeId() { return recipeId; }
 
@@ -27,13 +26,6 @@ public class UtensilModel {
         this.memo = memo;
     }
 
-    public boolean isRequired() {
-        return required;
-    }
-
-    public void setRequired(boolean required) {
-        this.required = required;
-    }
 
     public int getIcon() {
         return icon;
