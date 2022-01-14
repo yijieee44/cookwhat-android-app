@@ -1,8 +1,10 @@
 package com.example.cookwhat.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class RecipeModelDB {
+public class RecipeModelDB implements Serializable {
+    private String id;
     private String userId;
     private String title;
     private int numFav;
@@ -18,6 +20,15 @@ public class RecipeModelDB {
     private ArrayList<String> utName;
     private ArrayList<Integer> utIcon;
     private ArrayList<String> utMemo;
+    private ArrayList<RecipeCommentModel> comments;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getUserId() {
         return userId;
@@ -146,8 +157,6 @@ public class RecipeModelDB {
     public void setComments(ArrayList<RecipeCommentModel> comments) {
         this.comments = comments;
     }
-
-    private ArrayList<RecipeCommentModel> comments;
 
 
 

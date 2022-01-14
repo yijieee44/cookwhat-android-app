@@ -1,7 +1,9 @@
 package com.example.cookwhat.models;
 
 
-public class RecipeCommentModel {
+import java.io.Serializable;
+
+public class RecipeCommentModel implements Serializable {
     private String userId;
     private String recipeId;
     private String createdTime;

@@ -1,9 +1,10 @@
 package com.example.cookwhat.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class UserModelDB {
+public class UserModelDB implements Serializable {
     private String userId;
     private int profilePic;
     private String userName;
