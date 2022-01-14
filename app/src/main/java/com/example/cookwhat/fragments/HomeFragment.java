@@ -99,43 +99,43 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        recipedb = db.collection("recipe");
-        recipestepdb = db.collection("recipestep");
-        userdb = db.collection("user");
-
-        recipeList = view.findViewById(R.id.recipeList);
-
-        readData(new FirestoreCallback() {
-            @Override
-            public void onCallBack(ArrayList<RecipeModel> recipeModelArrayList, ArrayList<RecipeStepModel> recipeStepModelArrayList, ArrayList<UserModel> userModelArrayList) {
-                Collections.sort(recipeStepModelArrayList, new CustomComparator());
-                for (int i=0;i<recipeModelArrayList.size();i++){
-                    ArrayList<RecipeStepModel> temp = new ArrayList<>();
-                    String recipeId = recipeModelArrayList.get(i).getId();
-                    for (int m=0;m<recipeStepModelArrayList.size();m++){
-                        String recipeId2 = recipeStepModelArrayList.get(m).getRecipeId();
-                        if (recipeId.equals(recipeId2)){
-                            temp.add(recipeStepModelArrayList.get(m));
-                        }
-                    }
-                    recipeModelArrayList.get(i).setSteps(temp);
-                }
-                for (int n=0;n<recipeModelArrayList.size();n++){
-                    writeData(recipeModelArrayList.get(n), recipeModelArrayList.get(n).getId());
-                }
-                RecipeAdapter adapter = new RecipeAdapter(recipeModelArrayList, userModelArrayList, getContext());
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
-                recipeList.setLayoutManager(gridLayoutManager);
-                recipeList.setAdapter(adapter);
-
-            }
-        });
-
+//
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//
+//        mAuth = FirebaseAuth.getInstance();
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        recipedb = db.collection("recipe");
+//        recipestepdb = db.collection("recipestep");
+//        userdb = db.collection("user");
+//
+//        recipeList = view.findViewById(R.id.recipeList);
+//
+//        readData(new FirestoreCallback() {
+//            @Override
+//            public void onCallBack(ArrayList<RecipeModel> recipeModelArrayList, ArrayList<RecipeStepModel> recipeStepModelArrayList, ArrayList<UserModel> userModelArrayList) {
+//                Collections.sort(recipeStepModelArrayList, new CustomComparator());
+//                for (int i=0;i<recipeModelArrayList.size();i++){
+//                    ArrayList<RecipeStepModel> temp = new ArrayList<>();
+//                    String recipeId = recipeModelArrayList.get(i).getId();
+//                    for (int m=0;m<recipeStepModelArrayList.size();m++){
+//                        String recipeId2 = recipeStepModelArrayList.get(m).getRecipeId();
+//                        if (recipeId.equals(recipeId2)){
+//                            temp.add(recipeStepModelArrayList.get(m));
+//                        }
+//                    }
+//                    recipeModelArrayList.get(i).setSteps(temp);
+//                }
+//                for (int n=0;n<recipeModelArrayList.size();n++){
+//                    writeData(recipeModelArrayList.get(n), recipeModelArrayList.get(n).getId());
+//                }
+//                RecipeAdapter adapter = new RecipeAdapter(recipeModelArrayList, userModelArrayList, getContext());
+//                GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+//                recipeList.setLayoutManager(gridLayoutManager);
+//                recipeList.setAdapter(adapter);
+//
+//            }
+//        });
+//
         return view;
     }
 

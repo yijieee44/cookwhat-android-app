@@ -21,6 +21,7 @@
             android:drawableStart="@drawable/ic_baseline_search_24"
             android:drawableTint="@color/grey"
             android:ems="10"
+            android:maxLength="20"
             android:hint="@string/find_ingredients"
             android:inputType="textPersonName"
             android:layout_marginBottom="10dp"/>
