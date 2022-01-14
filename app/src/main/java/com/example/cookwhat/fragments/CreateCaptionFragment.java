@@ -162,12 +162,12 @@ public class CreateCaptionFragment extends Fragment {
         buttonAddTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newTag = "#" + editAddTag.getText().toString();
+                String newTag = editAddTag.getText().toString();
                 RecipeModel recipeActivity = ((CreateActivity)getActivity()).getNewRecipe();
 
                 if (!recipeActivity.getTags().contains(newTag)) {
                     Chip chip = new Chip(getActivity());
-                    chip.setText(newTag);
+                    chip.setText("#" + newTag);
                     chip.setChipBackgroundColorResource(R.color.light_yellow);
                     chip.setCloseIconVisible(true);
                     chip.setOnCloseIconClickListener(new View.OnClickListener() {

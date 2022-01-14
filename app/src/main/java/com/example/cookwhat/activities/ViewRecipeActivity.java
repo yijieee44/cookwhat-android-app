@@ -1,10 +1,12 @@
 package com.example.cookwhat.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -19,23 +21,31 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.interfaces.ItemChangeListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.cookwhat.R;
 import com.example.cookwhat.adapters.CommentAdapter;
+import com.example.cookwhat.adapters.IngredientAdapter;
+import com.example.cookwhat.adapters.UtensilAdapter;
+import com.example.cookwhat.models.IngredientModel;
 import com.example.cookwhat.models.RecipeCommentModel;
 import com.example.cookwhat.models.RecipeModel;
 import com.example.cookwhat.models.RecipeModelDB;
 import com.example.cookwhat.models.UserModel;
 import com.example.cookwhat.models.UserModelDB;
+import com.example.cookwhat.models.UtensilModel;
 import com.example.cookwhat.utils.Utility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -70,6 +80,8 @@ public class ViewRecipeActivity extends AppCompatActivity {
     ImageButton userPic, enterButton;
     ListView listView;
     EditText writeComment;
+    Dialog INUDialog;
+    RecipeModelDB recipeModelDB;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -91,7 +103,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
         userIds = new ArrayList<>();
 
         UserModelDB userModelDB = (UserModelDB) getIntent().getSerializableExtra("userModel");
-        RecipeModelDB recipeModelDB = (RecipeModelDB) getIntent().getSerializableExtra("recipeModel");
+        recipeModelDB = (RecipeModelDB) getIntent().getSerializableExtra("recipeModel");
 
         imageSlider = (ImageSlider) findViewById(R.id.image_slider);
         ArrayList<SlideModel> images = new ArrayList<>();
@@ -148,11 +160,11 @@ public class ViewRecipeActivity extends AppCompatActivity {
             }
         });
 
+        INUDialog = new Dialog(this);
         ingredientandutensils.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                showINUDialog();
             }
         });
 
@@ -249,6 +261,23 @@ public class ViewRecipeActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // tag
+        ChipGroup chipGroup = (ChipGroup) findViewById(R.id.ChipGroupTag);
+
+        for (String tag : recipeModelDB.getTags()) {
+            Chip chip = new Chip(this);
+            chip.setText("#" + tag);
+            chip.setClickable(false);
+            chip.setChipBackgroundColorResource(R.color.light_yellow);
+            chip.setTextColor(getResources().getColor(R.color.black));
+
+            chipGroup.addView(chip);
+        }
+
+        // created time
+        TextView TVCreatedTime = (TextView) findViewById(R.id.TVCreatedTime);
+        TVCreatedTime.setText(recipeModelDB.getCreatedTime());
     }
 
     public void readUser(FirestoreCallback firestoreCallback) {
@@ -287,5 +316,55 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
     private interface FirestoreCallback {
         void onCallBack(ArrayList<UserModelDB> userModelDBArrayList);
+    }
+
+    private void showINUDialog() {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+
+        INUDialog.setCancelable(true);
+        INUDialog.setContentView(R.layout.dialog_inu);
+        INUDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.outline_white_background));
+
+        List<IngredientModel> ingredientModels = recipeModelDB.ingListToIngredientModel();
+        List<UtensilModel> utensilModels = recipeModelDB.utListToUtensilsModel();
+
+        if(ingredientModels.size()>0) {
+            RecyclerView ingredientsRecyclerView = (RecyclerView) INUDialog.findViewById(R.id.RVIngredients);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this) {
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            };
+            ingredientsRecyclerView.setLayoutManager(linearLayoutManager);
+            ingredientsRecyclerView.setAdapter(new IngredientAdapter(this, ingredientModels));
+
+        } else {
+            TextView noIngredientTextView = (TextView) INUDialog.findViewById(R.id.TVNoIngredients);
+            noIngredientTextView.setVisibility(View.VISIBLE);
+        }
+
+        if(utensilModels.size()>0) {
+            RecyclerView utensilsRecyclerView = (RecyclerView) INUDialog.findViewById(R.id.RVUtensils);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this) {
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            };
+            utensilsRecyclerView.setLayoutManager(linearLayoutManager);
+            utensilsRecyclerView.setAdapter(new UtensilAdapter(this, utensilModels));
+
+        } else {
+            TextView noUtensilsTextView = (TextView) INUDialog.findViewById(R.id.TVNoUtensils);
+            noUtensilsTextView.setVisibility(View.VISIBLE);
+        }
+
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.75);
+
+        INUDialog.getWindow().setLayout(width, height);
+
+        INUDialog.show();
     }
 }
