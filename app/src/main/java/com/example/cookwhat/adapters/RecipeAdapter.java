@@ -79,7 +79,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         Button numFav;
         Button userName;
         TextView tag;
-        String recipeId = "1";
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -23,7 +23,6 @@ import com.denzcoskun.imageslider.interfaces.ItemChangeListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.cookwhat.R;
 import com.example.cookwhat.adapters.CommentAdapter;
-import com.example.cookwhat.fragments.LoginFragment;
 import com.example.cookwhat.models.RecipeCommentModel;
 import com.example.cookwhat.models.RecipeModel;
 import com.example.cookwhat.models.UserModel;
@@ -64,7 +63,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
     public UserModel recipeowner;
     public String recipeId;
     public FirebaseFirestore db;
-    final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    public FirebaseUser user;
 
     ImageSlider imageSlider;
 
@@ -74,22 +73,16 @@ public class ViewRecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_recipe);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         DateTimeFormatter formatter =
                 DateTimeFormatter.ofLocalizedDateTime( FormatStyle.SHORT )
                         .withLocale( Locale.getDefault() )
                         .withZone( ZoneId.systemDefault() );
 
-        recipeId = getIntent().getStringExtra("recipeId");
-
-        // Recipe Steps Pictures, need to get from cloud
-        imageSlider = findViewById(R.id.image_slider);
-
         db = FirebaseFirestore.getInstance();
         recipedb = db.collection("recipe");
         recipecommentdb = db.collection("recipecomment");
         userdb = db.collection("user");
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
 
         userModel1 = new UserModel();
@@ -115,6 +108,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
         TextView recipeCaption = findViewById(R.id.TVRecipeDesc);
         ListView listview = findViewById(R.id.LV1);
@@ -214,43 +208,44 @@ public class ViewRecipeActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
+            }
+        });
 
-                EditText writecomment = findViewById(R.id.ETComment);
-                writecomment.setOnKeyListener(new View.OnKeyListener() {
-                    @Override
-                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-                        if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                                (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                            // Perform action on key press
-                            RecipeCommentModel recipeCommentModel = new RecipeCommentModel();
-                            recipeCommentModel.setComment(writecomment.getText().toString());
-                            recipeCommentModel.setRecipeId(recipeId);
-                            recipeCommentModel.setUserId(user.getUid());
-                            recipeCommentModel.setCreatedTime(formatter.format(Instant.now()));
-                            writeComment(recipeCommentModel);
-                            writecomment.getText().clear();
-                            recipecomments.add(recipeCommentModel);
-                            usernames.add(user.getDisplayName());
+        EditText writecomment = findViewById(R.id.ETComment);
 
-                            CommentAdapter commentAdapter = new CommentAdapter(ViewRecipeActivity.this, recipecomments, usernames);
-                            listview.setAdapter(commentAdapter);
-                            Utility.setListViewHeightBasedOnChildren(listview);
-                            listview.setClickable(true);
-                            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    String userId = recipecomments.get(position).getUserId();
-                                    Intent intent = new Intent(ViewRecipeActivity.this, UserActivity.class);
-                                    intent.putExtra("fragmentname", "viewprofilefragment");
-                                    intent.putExtra("userId", userId);
-                                    startActivity(intent);
-                                }
-                            });
-                            return true;
+        writecomment.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    RecipeCommentModel recipeCommentModel = new RecipeCommentModel();
+                    recipeCommentModel.setComment(writecomment.getText().toString());
+                    recipeCommentModel.setRecipeId(recipeId);
+                    recipeCommentModel.setUserId(user.getUid());
+                    recipeCommentModel.setCreatedTime(formatter.format(Instant.now()));
+                    writeComment(recipeCommentModel);
+                    writecomment.getText().clear();
+                    recipecomments.add(recipeCommentModel);
+                    usernames.add(user.getDisplayName());
+
+                    CommentAdapter commentAdapter = new CommentAdapter(ViewRecipeActivity.this, recipecomments, usernames);
+                    listview.setAdapter(commentAdapter);
+                    Utility.setListViewHeightBasedOnChildren(listview);
+                    listview.setClickable(true);
+                    listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            String userId = recipecomments.get(position).getUserId();
+                            Intent intent = new Intent(ViewRecipeActivity.this, UserActivity.class);
+                            intent.putExtra("fragmentname", "viewprofilefragment");
+                            intent.putExtra("userId", userId);
+                            startActivity(intent);
                         }
-                        return false;
-                    }
-                });
+                    });
+                    return true;
+                }
+                return false;
             }
         });
     }
@@ -411,6 +406,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
     private interface FirestoreCallback {
         void onCallBack(RecipeModel recipeModel, UserModel userModel, ArrayList<RecipeCommentModel> recipecomments, List<String> usernames);
