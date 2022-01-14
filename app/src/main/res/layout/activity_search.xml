@@ -52,6 +52,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp" />
+
+        <Button
+            android:id="@+id/activity_search_button_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/search" />
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

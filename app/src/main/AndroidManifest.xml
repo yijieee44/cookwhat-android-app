@@ -51,9 +51,9 @@
             android:exported="true"
             android:label="@string/create_recipe"
             android:parentActivityName=".activities.MainActivity" />
-        <activity
-            android:name=".followPopUp"
-            android:theme="@style/CustomTheme" />
+<!--        <activity-->
+<!--            android:name=".followPopUp"-->
+<!--            android:theme="@style/CustomTheme" />-->
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.example.cookwhat.activities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -12,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,8 +24,16 @@ import android.widget.GridView;
 import com.example.cookwhat.R;
 import com.example.cookwhat.adapters.IngredientAdapter;
 import com.example.cookwhat.adapters.MarketIngredientAdapter;
+import com.example.cookwhat.database.UserTableContract;
 import com.example.cookwhat.models.IngredientModel;
+import com.example.cookwhat.models.RecipeModel;
+import com.example.cookwhat.models.RecipeModelDB;
+import com.example.cookwhat.models.RecipeModelSearch;
+import com.example.cookwhat.models.UserModel;
 import com.example.cookwhat.utils.Constants;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import android.widget.LinearLayout;
@@ -35,11 +45,15 @@ import com.example.cookwhat.models.IngredientModel;
 import com.example.cookwhat.models.UtensilModel;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class SearchActivity extends AppCompatActivity {
@@ -106,6 +120,14 @@ public class SearchActivity extends AppCompatActivity {
 //            utensilModelList.add(utensilModels[i]);
         }
 
+        Button searchButton = findViewById(R.id.activity_search_button_submit);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search();
+            }
+        });
+
         ingredientRecycleView = (RecyclerView) findViewById(R.id.activity_search_ingredient_list);
         ingredientRecycleView.setLayoutManager(linearLayoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(ingredientRecycleView.getContext(), linearLayoutManager.getOrientation());
@@ -121,6 +143,92 @@ public class SearchActivity extends AppCompatActivity {
         utensilRecycleView.setNestedScrollingEnabled(false);
         utensilAdapter = new UtensilAdapter(context, utensilModelList);
         utensilRecycleView.setAdapter(utensilAdapter);
+    }
+
+    private void search(){
+        List<IngredientModel> ingredientModelToSearch = ingredientAdapter.getIngredientList();
+        List<UtensilModel> utensilModelToSearch = utensilAdapter.getUtensilList();
+        List<String> ingredientNameToSearch = new ArrayList<>();
+        List<String> utensilNameToSearch = new ArrayList<>();
+        List<RecipeModelDB> queriedRecipes = new ArrayList<>();
+        for(IngredientModel ingredient: ingredientModelToSearch){
+            ingredientNameToSearch.add(ingredient.getName());
+        }
+        FirebaseFirestore firestoreDb = FirebaseFirestore.getInstance();
+        firestoreDb.collection("recipe")
+                .whereArrayContainsAny("ingName", ingredientNameToSearch)
+                .get()
+        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("SUCCESS", document.getId() + " => " + document.getData());
+                        final ObjectMapper mapper = new ObjectMapper();
+                        try{
+                            RecipeModelDB queriedRecipe = mapper.convertValue(document.getData(), RecipeModelDB.class);
+                            queriedRecipe.setId(document.getId());
+                            queriedRecipes.add(queriedRecipe);
+
+
+                        }
+                        catch (Exception e){
+                            Log.w("ERROR", e.toString());
+                            continue;
+                        }
+                    }
+
+                    Log.d("ANOTHER SUCCESS!!!", ""+queriedRecipes);
+                    List<RecipeModelSearch> recipeModelSearchList = organizeQuerriedRecipes(queriedRecipes, ingredientNameToSearch, utensilNameToSearch);
+                            for(Integer inter: recipeModelSearchList.get(0).getNonMatchingIngredientIndex()){
+                                Log.d("U ARE GENIUS!!!", "" + inter.toString());
+                            }
+
+
+                } else {
+                    Log.w("ERROR", "Error getting documents.", task.getException());
+                }
+            }
+        });
+    }
+
+    private List<RecipeModelSearch> organizeQuerriedRecipes(List<RecipeModelDB> queriedRecipes, List<String> ingredientNameList, List<String> utensilNameList){
+        List<RecipeModelSearch> recipeModelSearchList = new ArrayList<>();
+        for(RecipeModelDB recipe: queriedRecipes){
+            List<Integer> nonMatchingUtensilIndex = new ArrayList();
+            List<Integer> nonMatchingIngredientIndex = new ArrayList<>();
+            List<String> recipeIngredientNameList = recipe.getIngName();
+            for(String ingName: recipeIngredientNameList){
+                boolean searched = false;
+                for(String searchName: ingredientNameList){
+                    if(searchName.equals(ingName)){
+                        searched = true;
+                        break;
+                    }
+                }
+                if(!searched){
+                    nonMatchingIngredientIndex.add(recipeIngredientNameList.indexOf(ingName));
+                }
+            }
+            List<String> recipeUtensilNameList = recipe.getUtName();
+            for(String utName: recipeUtensilNameList){
+                boolean searched = false;
+                for(String searchName: utensilNameList){
+                    if(searchName.equals(utName)){
+                        searched = true;
+                    }
+                }
+                if(!searched){
+                    nonMatchingUtensilIndex.add(recipeUtensilNameList.indexOf(utName));
+                }
+            }
+
+            RecipeModelSearch recipeModelSearch = new RecipeModelSearch(recipe);
+            recipeModelSearch.setNonMatchingIngredientIndex(nonMatchingIngredientIndex);
+            recipeModelSearch.setNonMatchingUtensilIndex(nonMatchingUtensilIndex);
+            recipeModelSearchList.add(recipeModelSearch);
+        }
+        return recipeModelSearchList;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
