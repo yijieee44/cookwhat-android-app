@@ -14,13 +14,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.cookwhat.R;
+<<<<<<< HEAD
+import com.example.cookwhat.activities.UserActivity;
+=======
 import com.example.cookwhat.activities.LoginActivity;
 import com.example.cookwhat.activities.MainActivity;
+>>>>>>> 65ad7dcfcc67de5efdfb561f8f9c16b11da9418e
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +41,7 @@ public class LoginFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private FirebaseAuth mAuth;
+    String userID;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -75,6 +83,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        container.removeAllViews();
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
@@ -99,9 +108,26 @@ public class LoginFragment extends Fragment {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d("SUCCESS", "signInWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
+<<<<<<< HEAD
+                                    readUserID(new FirestoreCallBack() {
+                                        @Override
+                                        public void onCallBackUserID(String userid) {
+                                            userID = userid;
+                                            System.out.println("Login: "+userID);
+                                            Intent intentUserActivity = new Intent(getActivity(), UserActivity.class);
+                                            intentUserActivity.putExtra("userID",userID);
+                                            System.out.println("Userid in Login"+userID);
+                                            intentUserActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intentUserActivity);
+                                        }
+                                    }, email);
+
+
+=======
                                     Intent intentMainActivity = new Intent(getActivity(), MainActivity.class);
                                     intentMainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intentMainActivity);
+>>>>>>> 65ad7dcfcc67de5efdfb561f8f9c16b11da9418e
 
                                 } else {
                                     // If sign in fails, display a message to the user.
@@ -117,5 +143,29 @@ public class LoginFragment extends Fragment {
         BtnLogin.setOnClickListener(OCLLogin);
 
 
+    }
+
+    public void readUserID (FirestoreCallBack firestorecallback,String email){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("user")
+                .whereEqualTo("emailAddr",email).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    String userid;
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                userid = document.getId();
+                        }
+                        firestorecallback.onCallBackUserID(userid);
+                        }
+                    }
+                });
+
+    }
+
+    private interface FirestoreCallBack {
+        void onCallBackUserID(String userid);
     }
 }

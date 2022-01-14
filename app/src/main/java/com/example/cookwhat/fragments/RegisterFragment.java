@@ -1,5 +1,7 @@
 package com.example.cookwhat.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,10 +16,14 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.cookwhat.R;
-import com.example.cookwhat.activities.MainActivity;
-import com.example.cookwhat.models.UserModel;
+import com.example.cookwhat.activities.LoginActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,7 +41,7 @@ public class RegisterFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-//    UserModel newUser = ((MainActivity)getActivity()).getUser();
+
 
 
     public RegisterFragment() {
@@ -84,12 +90,15 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        container.removeAllViews();
         return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
 
         Button BtnNext = view.findViewById(R.id.button3);
         View.OnClickListener OCLNext = new View.OnClickListener() {
@@ -102,38 +111,65 @@ public class RegisterFragment extends Fragment {
                 String email = editTextEmail.getText().toString();
                 EditText editTextPassword = view.findViewById(R.id.ETRegisterPassword);
                 String password = editTextPassword.getText().toString();
+                System.out.println("password here"+password);
+
+                readData(new FirestoreCallback(){
+
+                    @Override
+                    public void onCallBackCheckExisting(boolean isExisting) {
+
+                        if (username.equals("")){
+                            editTextUsername.setHint("Username must be filled!");
+                            //editTextUsername.setHintTextColor(Integer.parseInt("@color/red"));
+                        }
+
+                        if (email.equals("")){
+                            editTextEmail.setHint("Email must be filled!");
+                            //editTextEmail.setHintTextColor(Integer.parseInt("@color/red"));
+                        }
+
+                        if (password.equals("")){
+                            editTextPassword.setHint("Username must be filled!");
+                           //editTextPassword.setHintTextColor(Integer.parseInt("@color/red"));
+                        }
+                        else  {
+                            if (isExisting){
+
+                                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                                alert.setMessage(R.string.register_warning);
+                                alert.setCancelable(false);
+                                alert.setPositiveButton("Log In", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Navigation.findNavController(view).navigate(R.id.DestLogin);
+
+                                    }
+                                });
+                                alert.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.cancel();
+                                    }
+                                });
+                                alert.create();
+                                alert.show();
+
+                            }
+                            else{
+
+                                String[] details = {username, email, password};
+                                LoginActivity activity = (LoginActivity) getActivity();
+                                activity.setRegisterDetails(details);
+
+                                
+                            }
+
+                        }
+
+                    }
+                }, email );
 
 
-                if (username==null){
-                    editTextUsername.setHint("Username must be filled!");
-                    editTextUsername.setHintTextColor(Integer.parseInt("@color/red"));
-                }
-
-                if (email==null){
-                    editTextEmail.setHint("Email must be filled!");
-                    editTextEmail.setHintTextColor(Integer.parseInt("@color/red"));
-                }
-
-                if (password==null){
-                    editTextPassword.setHint("Username must be filled!");
-                    editTextPassword.setHintTextColor(Integer.parseInt("@color/red"));
-                }
-
-                else{
-                    Bundle bundle = new Bundle();
-                    bundle.putString("username", username);
-                    bundle.putString("password", password);
-                    bundle.putString("email", email);
-
-
-
-//                    newUser.setUserName(username);
-//                    newUser.setEmailAddr(email);
-//                    newUser.setPassword(password);
-//
-//                    ((MainActivity)getActivity()).setUser(newUser);
-                    Navigation.findNavController(view).navigate(R.id.DestRegisterComplete, bundle);
-                }
 
 
 
@@ -143,5 +179,34 @@ public class RegisterFragment extends Fragment {
 
         BtnNext.setOnClickListener(OCLNext);
 
+    }
+
+    public void readData(FirestoreCallback firestoreCallback, String emailAddr){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        System.out.println("readData and check");
+        db.collection("user")
+                .whereEqualTo("emailAddr", emailAddr)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    boolean isExisting = false;
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for(QueryDocumentSnapshot document: task.getResult()){
+                                isExisting = true;
+                                System.out.println(isExisting);
+                            }
+                            firestoreCallback.onCallBackCheckExisting(isExisting);
+                        }
+                        else{
+                            System.out.println("Not enter"+isExisting);
+                        }
+
+                    }
+                });
+    }
+
+    private interface FirestoreCallback {
+        void onCallBackCheckExisting(boolean isExisting);
     }
 }

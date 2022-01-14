@@ -12,7 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.navigation.Navigation;
+
+import com.example.cookwhat.activities.UserActivity;
 
 import java.util.ArrayList;
 
@@ -25,12 +26,20 @@ public class followPopUp extends DialogFragment {
     String following_follower;
     View parentview;
     ArrayList<String> followList = new ArrayList<>();
+    ArrayList<String> followIDList = new ArrayList<>();
+    ArrayList<String> checkFollowIDList = new ArrayList<>();
+    Boolean isFollowing;
+    String userID;
 
 
-    public followPopUp(View parentview, String following_follower, ArrayList<String> followList) {
+    public followPopUp(View parentview, String following_follower, ArrayList<String> followList, ArrayList<String> followIDList, String userID, ArrayList<String>checkFollowIDList) {
         this.following_follower = following_follower;
         this.parentview = parentview;
         this.followList = followList;
+        this.followIDList = followIDList;
+        this.userID = userID;
+        this.checkFollowIDList = checkFollowIDList;
+
     }
 
     @Nullable
@@ -42,9 +51,11 @@ public class followPopUp extends DialogFragment {
 
         if (following_follower.equalsIgnoreCase("follower")){
             follow_title.setText("Followers");
+            isFollowing = false;
         }
         else{
             follow_title.setText("Followings");
+            isFollowing = true;
         }
 
         // followname = passed arg
@@ -56,11 +67,20 @@ public class followPopUp extends DialogFragment {
         AdapterView.OnItemClickListener followListOCL = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(android.widget.AdapterView<?> adapterView, View view, int i, long l) {
-                String name = followAdapter.getItem(i).toString();
-                //setSelectedUserID
+                String usernameToView = followAdapter.getItem(i).toString();
+                String usernameIDToView = followIDList.get(i);
+                System.out.println(followIDList.get(i));
+
+                if (following_follower.equals("follower")) {
+                    if (checkFollowIDList.contains(usernameIDToView)){
+                        isFollowing = true;
+                    }
+                }
+                UserActivity activity = (UserActivity) getActivity();
+                activity.getUserIDToView(usernameIDToView, usernameToView, isFollowing);
 
 
-                Navigation.findNavController(parentview).navigate(R.id.DestViewProfile);
+                //Navigation.findNavController(parentview).navigate(R.id.DestViewProfile);
                 dismiss();
             }
 
@@ -77,6 +97,8 @@ public class followPopUp extends DialogFragment {
         super.onResume();
         getDialog().getWindow().setLayout(900,1000);
     }
+
+
 
 
     }

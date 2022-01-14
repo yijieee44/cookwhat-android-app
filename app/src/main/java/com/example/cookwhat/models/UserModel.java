@@ -1,9 +1,7 @@
 package com.example.cookwhat.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Map;
 
 public class UserModel   {
 
@@ -11,19 +9,33 @@ public class UserModel   {
     private int profilePic;
     private String userName;
     private String emailAddr;
+
+
+    private ArrayList<String> preferences = new ArrayList<>();
+
+    private ArrayList<String> favouriteCategory =  new ArrayList<>();
+
+
+    private ArrayList<String> followers = new ArrayList<>();
+
+    private ArrayList<String> followings = new ArrayList<>();
+
+    private ArrayList<String> followingsID = new ArrayList<>();
+
+    private ArrayList<String> followersID = new ArrayList<>();
+
     private ArrayList<String> favouriteFood;
-    @JsonIgnore
-    private ArrayList<String> prefer;
-    @JsonIgnore
-    private ArrayList<String> favouriteCategory;
-    @JsonIgnore
-    private ArrayList<UserModel> followers;
-    @JsonIgnore
-    private ArrayList<UserModel> followings;
+
+
+
+    //private Map<String, ArrayList<String>> favouriteCategory;
+
+
+
     private String password;
-    @JsonIgnore
+
     private ArrayList<String> followersNameList;
-    @JsonIgnore
+
     private ArrayList<String> followingsNameList;
 
 
@@ -47,30 +59,31 @@ public class UserModel   {
         this.emailAddr = emailAddr;
     }
 
-    public void setFavouriteFood(ArrayList<String> recipeId) {
 
-        this.favouriteFood = recipeId;
+
+
+    public void setFollowers(String follower) {
+        this.followers.add(follower) ;
     }
 
-    public void addFollowers(UserModel followers) {
-        this.followers.add(followers) ;
+    public void setFollowings(String following) {
+        this.followings.add(following);
     }
 
-    public void addFollowings(UserModel followings) {
-        this.followings.add(followings);
+    public void setFollowersID(String followerID) {
+        this.followersID.add(followerID) ;
     }
 
-    public void setFollowers(ArrayList<UserModel> followers) {
-        this.followers = followers;
+    public void setFollowingsID(String followingID) {
+        this.followingsID.add(followingID);
     }
 
-    public void setFollowings(ArrayList<UserModel> followings) {
-        this.followings = followings;
+    public void setPreferences(String prefer) {
+        this.preferences.add(prefer);
     }
 
-    public void setPrefer(String prefer) {
-        this.prefer.add(prefer);
-    }
+
+
 
     public void setUserName(String userName) {
         this.userName = userName;
@@ -82,7 +95,7 @@ public class UserModel   {
 
     public void setUserId(String userId) { this.userId = userId; }
 
-    public ArrayList <String> getFollowersNameList(){
+    /*public ArrayList <String> getFollowersNameList(){
         ArrayList<String>namelist = new ArrayList<>();
         if (followers != null){
             for (int i =0; i<this.followers.size();i++){
@@ -91,23 +104,23 @@ public class UserModel   {
             Collections.sort(namelist);
         }
         return namelist;
-    }
+    }*/
 
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public UserModel getSpecificFollower(String followername){
+   /* public UserModel getSpecificFollower(String followername){
         ArrayList<String> namelist = this.getFollowersNameList();
         if (namelist.contains(followername)){
             int p = this.followers.indexOf(followername);
             return this.followers.get(p);
         }
         return null;
-    }
+    }*/
 
-    public ArrayList <String> getFollowingsNameList(){
+   /* public ArrayList <String> getFollowingsNameList(){
         ArrayList<String>namelist = new ArrayList<>();
         if (followings != null) {
             for (int i =0; i<this.followings.size();i++){
@@ -125,7 +138,7 @@ public class UserModel   {
             return this.followings.get(p);
         }
         return null;
-    }
+    }*/
 
     public int getProfilePic() {
         return profilePic;
@@ -135,8 +148,8 @@ public class UserModel   {
         return password;
     }
 
-    private ArrayList<String> getPrefer() {
-        return prefer;
+    public ArrayList<String> getPreferences() {
+        return preferences;
     }
 
     public ArrayList<String> getFavouriteCategory() {
@@ -147,13 +160,25 @@ public class UserModel   {
         return favouriteFood;
     }
 
-    public ArrayList<UserModel> getFollowers() {
+    public ArrayList<String> getFollowers() {
         return followers;
     }
 
-    public ArrayList<UserModel> getFollowings() {
+    public ArrayList<String> getFollowings() {
         return followings;
     }
+
+    public ArrayList<String> getFollowersID() {
+        return followersID;
+    }
+
+    public ArrayList<String> getFollowingsID() {
+        return followingsID;
+    }
+
+    public Integer getFollowingsNumber(){ return this.followings.size(); }
+
+    public Integer getFollowersNumber(){ return this.followers.size(); }
 
     public String getEmailAddr() {
         return emailAddr;

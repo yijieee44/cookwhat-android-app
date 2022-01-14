@@ -1,10 +1,5 @@
 package com.example.cookwhat.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
@@ -19,6 +14,10 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.interfaces.ItemChangeListener;
 import com.denzcoskun.imageslider.models.SlideModel;
@@ -27,6 +26,7 @@ import com.example.cookwhat.adapters.CommentAdapter;
 import com.example.cookwhat.models.RecipeCommentModel;
 import com.example.cookwhat.models.RecipeModel;
 import com.example.cookwhat.models.UserModel;
+import com.example.cookwhat.utils.Utility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -39,7 +39,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.example.cookwhat.utils.Utility;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -138,7 +137,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
                                 if (recipeids.contains(recipeModel.getId())){
                                     recipeModel.setNum_fav(recipeModel.getNum_fav() - 1);
                                     recipeids.remove(recipeModel.getId());
-                                    userModel1.setFavouriteFood(recipeids);
+                                   // userModel1.setFavouriteFood(recipeids);
                                     writeData(recipeModel);
                                     writeUser(userModel1);
                                     addFav.setText(String.valueOf(recipeModel.getNum_fav()));
@@ -146,7 +145,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
                                 else{
                                     recipeModel.setNum_fav(recipeModel.getNum_fav() + 1);
                                     recipeids.add(recipeModel.getId());
-                                    userModel1.setFavouriteFood(recipeids);
+                                    //userModel1.setFavouriteFood(recipeids);
                                     writeData(recipeModel);
                                     writeUser(userModel1);
                                     addFav.setText(String.valueOf(recipeModel.getNum_fav()));
@@ -190,7 +189,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
                 userPic.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), com.example.cookwhat.activities.MainActivity.class);
                         startActivity(intent);
                     }
                 });

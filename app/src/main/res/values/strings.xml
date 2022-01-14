@@ -152,5 +152,6 @@
     <string name="u0008_water_heater">Water Heater</string>
     <string name="u0009_oven">Oven</string>
     <string name="u0010_microwave">Microwave</string>
+    <string name="register_warning">You are already a user of CookWhat.\nPlease proceed to log in.</string>
 
 </resources>

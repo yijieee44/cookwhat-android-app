@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cookwhat.ProfilePicPopUp;
 import com.example.cookwhat.R;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.ViewHolder> {
 
-        private List <Integer> profilepic;
+        private ArrayList <Integer> profilepic;
         boolean isTick = false;
         Integer selectedProfilePic ;
 
@@ -36,7 +36,7 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
                         imgView = (ImageView) view.findViewById(R.id.IV_ProfilePic);
                         this.clickListener = clickListener;
                         imgView.setOnClickListener(this);
-                        context = view.getContext();
+                        this.context = view.getContext();
 
                 }
 
@@ -55,7 +55,7 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
 
         }
 
-        public ProfilePicAdapter(List<Integer> profilepic) {
+        public ProfilePicAdapter(ArrayList<Integer> profilepic) {
                this.profilepic = profilepic;
         }
 
@@ -96,11 +96,19 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
 
                 // Get element from your dataset at this position and replace the
                 // contents of the view with that element
+                /*Drawable drawable = ContextCompat.getDrawable(context, profilepic.get(p));
+                Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(bitmap);
+
+                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                drawable.draw(canvas);*/
+
+                //viewHolder.getImgView().setImageBitmap(bitmap);
                 viewHolder.getImgView().setImageResource(profilepic.get(position));
                 System.out.println("print");
                 if(isTick && selectedProfilePic == position){
                         System.out.println("Here");
-                        viewHolder.getImgView().findViewById(R.id.IV_Tick).setVisibility(View.VISIBLE);
+                        //viewHolder.getImgView().findViewById(R.id.IV_Tick).setVisibility(View.VISIBLE);
                 }
 
         }

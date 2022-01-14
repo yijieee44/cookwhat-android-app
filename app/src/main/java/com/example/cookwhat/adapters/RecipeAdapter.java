@@ -10,11 +10,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.cookwhat.R;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cookwhat.R;
 import com.example.cookwhat.activities.UserActivity;
 import com.example.cookwhat.activities.ViewRecipeActivity;
 import com.example.cookwhat.models.RecipeModel;
@@ -29,8 +28,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -118,7 +115,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                             if (recipeids.contains(recipeModel.get(getAdapterPosition()).getId())){
                                 recipeModel.get(getAdapterPosition()).setNum_fav(recipeModel.get(getAdapterPosition()).getNum_fav() - 1);
                                 recipeids.remove(recipeModel.get(getAdapterPosition()).getId());
-                                userModel1.setFavouriteFood(recipeids);
+                                //userModel1.setFavouriteFood(recipeids);
                                 writeData(recipeModel.get(getAdapterPosition()), recipeModel.get(getAdapterPosition()).getId());
                                 writeUser(userModel1);
                                 numFav.setText(String.valueOf(recipeModel.get(getAdapterPosition()).getNum_fav()));
@@ -126,7 +123,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                             else{
                                 recipeModel.get(getAdapterPosition()).setNum_fav(recipeModel.get(getAdapterPosition()).getNum_fav() + 1);
                                 recipeids.add(recipeModel.get(getAdapterPosition()).getId());
-                                userModel1.setFavouriteFood(recipeids);
+                                //userModel1.setFavouriteFood(recipeids);
                                 writeData(recipeModel.get(getAdapterPosition()), recipeModel.get(getAdapterPosition()).getId());
                                 writeUser(userModel1);
                                 numFav.setText(String.valueOf(recipeModel.get(getAdapterPosition()).getNum_fav()));
