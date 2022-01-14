@@ -1,5 +1,6 @@
 package com.example.cookwhat.activities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -7,22 +8,42 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.fragments.CreateCaptionFragment;
 import com.example.cookwhat.fragments.CreatePreviewFragment;
 import com.example.cookwhat.fragments.CreateShowGalleryFragment;
 import com.example.cookwhat.models.RecipeModel;
+import com.example.cookwhat.models.RecipeStepModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 
 public class CreateActivity extends AppCompatActivity {
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseStorage storage;
+    StorageReference storageRef;
     RecipeModel newRecipe = new RecipeModel();
     FragmentManager fragmentManager;
     FloatingActionButton backButton;
@@ -41,6 +62,9 @@ public class CreateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
 
         fragmentManager = getSupportFragmentManager();
 
@@ -77,6 +101,8 @@ public class CreateActivity extends AppCompatActivity {
                     
                 } else if (currentFragment instanceof CreateCaptionFragment) {
                    toPreview();
+                } else if (currentFragment instanceof CreatePreviewFragment) {
+                    toCreate();
                 }
             }
         });
@@ -140,12 +166,47 @@ public class CreateActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.FragmentContainerCreate, new CreatePreviewFragment());
         fragmentTransaction.commit();
 
-        nextButton.setEnabled(false);
-        nextButton.setClickable(false);
         backButton.setEnabled(true);
         backButton.setClickable(true);
 
         nextButton.setImageDrawable(ContextCompat.getDrawable(CreateActivity.this, R.drawable.ic_baseline_check_24));
+    }
+
+    private void toCreate() {
+//        List<String> imagesId = new ArrayList<>();
+//
+//        // upload photos on storage first
+//        for(int i=0; i<newRecipe.getSteps().size(); i++) {
+//            RecipeStepModel step = newRecipe.getSteps().get(i);
+//            String imageId = UUID.randomUUID().toString();
+//            StorageReference ref = storageRef.child("images/" + imageId);
+//
+//            ref.putFile(Uri.parse(step.getImage())).addOnSuccessListener(
+//                    new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+//                            imagesId.add(imageId);
+//                        }
+//                    }
+//            ) .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e)
+//                        {
+//                            Toast.makeText(CreateActivity.this,
+//                                            "Failed " + e.getMessage(),
+//                                            Toast.LENGTH_SHORT)
+//                                    .show();
+//                            return;
+//                        }
+//                    });
+//        }
+//
+//        for (int i=0; i < newRecipe.getSteps().size(); i++) {
+//            newRecipe.getSteps().get(i).setImage(imagesId.get(i));
+//        }
+//
+//        db.collection("recipe").document().set(newRecipe);
+
     }
 
 

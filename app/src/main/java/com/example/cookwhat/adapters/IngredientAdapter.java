@@ -52,7 +52,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void removeIngredient(IngredientModel ingredient){
         int index = -1;
         for(IngredientModel ingredientModel: ingredientList){
-            if(ingredientModel.getName().equals(ingredient.getName())){
+            if(ingredientModel.getName().equals(ingredient.getName()) && ingredientModel.getIcon() == (ingredient.getIcon())){
                 index = ingredientList.indexOf(ingredientModel);
                 break;
             }
@@ -85,21 +85,21 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             }
 
             ((ViewHolder) holder).textViewDescription.setText(text);
+        } else {
+            ((ViewHolder)holder).textViewDescription.setText("");
         }
 
         if(ingredientModel.getQuantity() == null && ingredientModel.getWeight() == null){
-            ((ViewHolder)holder).multiplySymbol.setVisibility(View.INVISIBLE);
+            ((ViewHolder)holder).textViewQuantity.setText("");
         }
         else if(ingredientModel.getQuantity() != null){
-            ((ViewHolder)holder).multiplySymbol.setVisibility(View.VISIBLE);
             String quantity = format.format(ingredientModel.getQuantity()) + " ";
             if(ingredientModel.getUnitQuantity() != null) {
                 quantity += ingredientModel.getUnitQuantity();
             }
             ((ViewHolder)holder).textViewQuantity.setText(quantity);
         }
-        else if( ingredientModel.getWeight() != null){
-            ((ViewHolder)holder).multiplySymbol.setVisibility(View.VISIBLE);
+        else if(ingredientModel.getWeight() != null){
             String weight = format.format(ingredientModel.getWeight()) + " ";
             if(ingredientModel.getUnitWeight() != null) {
                 weight += ingredientModel.getUnitWeight();
@@ -116,7 +116,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textViewName, textViewDescription, textViewQuantity, multiplySymbol;
+        TextView textViewName, textViewDescription, textViewQuantity;
         ImageView icon;
 
         ViewHolder(View itemView, int viewType) {
@@ -125,7 +125,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             textViewName = itemView.findViewById(R.id.TVIngredientName);
             textViewQuantity = itemView.findViewById(R.id.TVQuantity);
             textViewDescription = itemView.findViewById(R.id.TVDescription);
-            multiplySymbol = itemView.findViewById(R.id.TVMultiply);
 
         }
 
