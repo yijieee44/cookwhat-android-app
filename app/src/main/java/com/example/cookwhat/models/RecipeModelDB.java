@@ -1,7 +1,7 @@
 package com.example.cookwhat.models;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 public class RecipeModelDB implements Serializable {
     private String id;
@@ -9,18 +9,18 @@ public class RecipeModelDB implements Serializable {
     private String title;
     private int numFav;
     private String createdTime;
-    private ArrayList<RecipeStepModel> steps;
-    private ArrayList<String> tags;
-    private ArrayList<String> ingName;
-    private ArrayList<Integer> ingIcon;
-    private ArrayList<String> ingMemo;
-    private ArrayList<Integer> ingQuantity;
-    private ArrayList<String> ingUnitQuantity;
-    private ArrayList<String> ingUnitWeight;
-    private ArrayList<String> utName;
-    private ArrayList<Integer> utIcon;
-    private ArrayList<String> utMemo;
-    private ArrayList<RecipeCommentModel> comments;
+    private List<RecipeStepModel> steps;
+    private List<String> tags;
+    private List<String> ingName;
+    private List<Integer> ingIcon;
+    private List<String> ingMemo;
+    private List<Integer> ingQuantity;
+    private List<String> ingUnitQuantity;
+    private List<String> ingUnitWeight;
+    private List<String> utName;
+    private List<Integer> utIcon;
+    private List<String> utMemo;
+    private List<RecipeCommentModel> comments;
 
     public String getId() {
         return id;
@@ -62,99 +62,99 @@ public class RecipeModelDB implements Serializable {
         this.createdTime = createdTime;
     }
 
-    public ArrayList<RecipeStepModel> getSteps() {
+    public List<RecipeStepModel> getSteps() {
         return steps;
     }
 
-    public void setSteps(ArrayList<RecipeStepModel> steps) {
+    public void setSteps(List<RecipeStepModel> steps) {
         this.steps = steps;
     }
 
-    public ArrayList<String> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(ArrayList<String> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
-    public ArrayList<String> getIngName() {
+    public List<String> getIngName() {
         return ingName;
     }
 
-    public void setIngName(ArrayList<String> ingName) {
+    public void setIngName(List<String> ingName) {
         this.ingName = ingName;
     }
 
-    public ArrayList<Integer> getIngIcon() {
+    public List<Integer> getIngIcon() {
         return ingIcon;
     }
 
-    public void setIngIcon(ArrayList<Integer> ingIcon) {
+    public void setIngIcon(List<Integer> ingIcon) {
         this.ingIcon = ingIcon;
     }
 
-    public ArrayList<String> getIngMemo() {
+    public List<String> getIngMemo() {
         return ingMemo;
     }
 
-    public void setIngMemo(ArrayList<String> ingMemo) {
+    public void setIngMemo(List<String> ingMemo) {
         this.ingMemo = ingMemo;
     }
 
-    public ArrayList<Integer> getIngQuantity() {
+    public List<Integer> getIngQuantity() {
         return ingQuantity;
     }
 
-    public void setIngQuantity(ArrayList<Integer> ingQuantity) {
+    public void setIngQuantity(List<Integer> ingQuantity) {
         this.ingQuantity = ingQuantity;
     }
 
-    public ArrayList<String> getIngUnitQuantity() {
+    public List<String> getIngUnitQuantity() {
         return ingUnitQuantity;
     }
 
-    public void setIngUnitQuantity(ArrayList<String> ingUnitQuantity) {
+    public void setIngUnitQuantity(List<String> ingUnitQuantity) {
         this.ingUnitQuantity = ingUnitQuantity;
     }
 
-    public ArrayList<String> getIngUnitWeight() {
+    public List<String> getIngUnitWeight() {
         return ingUnitWeight;
     }
 
-    public void setIngUnitWeight(ArrayList<String> ingUnitWeight) {
+    public void setIngUnitWeight(List<String> ingUnitWeight) {
         this.ingUnitWeight = ingUnitWeight;
     }
 
-    public ArrayList<String> getUtName() {
+    public List<String> getUtName() {
         return utName;
     }
 
-    public void setUtName(ArrayList<String> utName) {
+    public void setUtName(List<String> utName) {
         this.utName = utName;
     }
 
-    public ArrayList<Integer> getUtIcon() {
+    public List<Integer> getUtIcon() {
         return utIcon;
     }
 
-    public void setUtIcon(ArrayList<Integer> utIcon) {
+    public void setUtIcon(List<Integer> utIcon) {
         this.utIcon = utIcon;
     }
 
-    public ArrayList<String> getUtMemo() {
+    public List<String> getUtMemo() {
         return utMemo;
     }
 
-    public void setUtMemo(ArrayList<String> utMemo) {
+    public void setUtMemo(List<String> utMemo) {
         this.utMemo = utMemo;
     }
 
-    public ArrayList<RecipeCommentModel> getComments() {
+    public List<RecipeCommentModel> getComments() {
         return comments;
     }
 
-    public void setComments(ArrayList<RecipeCommentModel> comments) {
+    public void setComments(List<RecipeCommentModel> comments) {
         this.comments = comments;
     }
 
