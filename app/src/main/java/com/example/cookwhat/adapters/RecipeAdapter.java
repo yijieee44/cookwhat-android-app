@@ -62,11 +62,23 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+        String username = "";
+        int profilePic = 0;
+
+        for (int i=0;i<userModel.size();i++){
+            if(recipeModel.get(position).getUserId().equals(userModel.get(i).getUserId())){
+                username = userModel.get(i).getUserName();
+                profilePic = userModel.get(i).getProfilePic();
+                break;
+            }
+        }
+
         holder.recipeName.setText(recipeModel.get(position).getTitle());
         holder.tag.setText(recipeModel.get(position).getTags().get(0));
         holder.numFav.setText(Integer.toString(recipeModel.get(position).getNumFav()));
-        holder.userName.setText(userModel.get(position).getUserName());
-        holder.userName.setCompoundDrawablesWithIntrinsicBounds(userModel.get(position).getProfilePic(), 0, 0, 0);
+        holder.userName.setText(username);
+        holder.userName.setCompoundDrawablesWithIntrinsicBounds(profilePic, 0, 0, 0);
         Picasso.get().load(recipeModel.get(position).getSteps().get(0).getImage()).into(holder.recipeImage);
     }
 
@@ -107,7 +119,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                 public void onClick(View v) {
                     Intent intent = new Intent(itemView.getContext(), ViewRecipeActivity.class);
                     intent.putExtra("recipeModel", recipeModel.get(getAdapterPosition()));
-                    intent.putExtra("userModel", userModel.get(getAdapterPosition()));
+                    UserModelDB userModelDB = new UserModelDB();
+                    for (int i=0;i<userModel.size();i++){
+                        if(recipeModel.get(getAdapterPosition()).getUserId().equals(userModel.get(i).getUserId())){
+                            userModelDB = userModel.get(i);
+                            break;
+                        }
+                    }
+                    intent.putExtra("userModel", userModelDB);
                     itemView.getContext().startActivity(intent);
                 }
             });
