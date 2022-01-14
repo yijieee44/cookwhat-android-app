@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -64,6 +65,7 @@ public class CreateActivity extends AppCompatActivity {
     FirebaseUser user;
     DateTimeFormatter formatter;
     boolean isAllImageUploaded = true;
+    List<Boolean> fileUploadCheck = new ArrayList<>();
     Dialog loadingDialog;
 
     public RecipeModel getNewRecipe() {
@@ -211,6 +213,10 @@ public class CreateActivity extends AppCompatActivity {
 
         loadingDialog.getWindow().setLayout(width, height);
 
+        for(RecipeStepModel step : newRecipe.getSteps()) {
+            fileUploadCheck.add(false);
+        }
+
         // upload photos on storage first
         for(int i=0; i<newRecipe.getSteps().size(); i++) {
             loadingDialog.show();
@@ -223,9 +229,12 @@ public class CreateActivity extends AppCompatActivity {
                     new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                            Log.d("blabka", imageId);
+                            Log.d("hehe", Integer.toString(index));
                             newRecipe.getSteps().get(index).setImage(imageId);
+                            fileUploadCheck.set(index, true);
 
-                            if (isAllImageUploaded == true && index==newRecipe.getSteps().size()-1) {
+                            if (isAllImageUploaded == true && !fileUploadCheck.contains(false)) {
                                 newRecipe.setCreatedTime(formatter.format(Instant.now()));
 
                                 db.collection("recipe").document().set(newRecipe.toRecipeModelDB()).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -250,16 +259,16 @@ public class CreateActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e)
                         {
-                            Toast.makeText(CreateActivity.this,
-                                            "Failed " + e.getMessage(),
-                                            Toast.LENGTH_SHORT)
-                                    .show();
                             isAllImageUploaded = false;
                         }
                     });
 
             if (isAllImageUploaded == false) {
                 loadingDialog.cancel();
+                Toast.makeText(CreateActivity.this,
+                        "Fail to create, please try again",
+                        Toast.LENGTH_SHORT)
+                        .show();
                 break;
             }
         }
