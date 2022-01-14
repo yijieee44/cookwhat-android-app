@@ -9,7 +9,6 @@ public class IngredientModel {
     private String unitWeight;
     private String memo;
     private int icon;
-    private boolean required;
 
     public String getRecipeId() { return recipeId; }
 
@@ -61,14 +60,6 @@ public class IngredientModel {
 
     public void setMemo(String memo) {
         this.memo = memo;
-    }
-
-    public boolean isRequired() {
-        return required;
-    }
-
-    public void setRequired(boolean required) {
-        this.required = required;
     }
 
     public int getIcon() {
