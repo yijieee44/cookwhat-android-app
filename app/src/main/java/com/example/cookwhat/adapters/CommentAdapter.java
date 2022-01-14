@@ -14,17 +14,20 @@ import androidx.annotation.Nullable;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.models.RecipeCommentModel;
+import com.example.cookwhat.models.RecipeModel;
+import com.example.cookwhat.models.UserModelDB;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommentAdapter extends ArrayAdapter<RecipeCommentModel> {
 
-    List<String> usernames;
+    List<UserModelDB> userModelDBS;
 
-    public CommentAdapter(Context context, ArrayList<RecipeCommentModel> commentorArrayList, List<String> usernames)
+    public CommentAdapter(Context context, List<RecipeCommentModel> commentorArrayList, List<UserModelDB> userModelDBS)
     {
         super(context, 0, commentorArrayList);
-        this.usernames = usernames;
+        this.userModelDBS = userModelDBS;
     }
 
     @NonNull
@@ -43,7 +46,15 @@ public class CommentAdapter extends ArrayAdapter<RecipeCommentModel> {
         TextView comment = convertView.findViewById(R.id.TVComment);
         TextView time = convertView.findViewById(R.id.TVTimeCommented);
 
-        userName.setText(usernames.get(position));
+        String username = "";
+
+        for(int i=0;i<userModelDBS.size();i++){
+            if (user.getUserId().equals(userModelDBS.get(i).getUserId())){
+                username = userModelDBS.get(i).getUserName();
+            }
+        }
+
+        userName.setText(username);
         comment.setText(user.getComment());
         time.setText(user.getCreatedTime());
 

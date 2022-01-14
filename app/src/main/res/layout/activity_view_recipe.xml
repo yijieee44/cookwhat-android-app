@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="@erica666"
+                android:text="username"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TVRecipeName" />
@@ -69,6 +69,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/BtnAddFav"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_baseline_account_circle_24" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -101,15 +102,30 @@
             android:text="Comments:"
             android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/ETComment"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:ems="10"
-            android:hint="Leave a comment..."
-            android:inputType="textPersonName" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/ETComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="Leave a comment..."
+                android:inputType="textMultiLine" />
+
+            <ImageButton
+                android:id="@+id/IBEnterButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                app:srcCompat="@drawable/ic_send_svgrepo_com" />
+
+        </LinearLayout>
 
         <ListView
             android:id="@+id/LV1"
