@@ -11,9 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.cookwhat.activities.MainActivity;
-import com.example.cookwhat.models.UserModel;
-
 public class ProfilePicPopUp extends DialogFragment {
 
     int position;
@@ -30,7 +27,7 @@ public class ProfilePicPopUp extends DialogFragment {
 
         View profilePicPopUp = inflater.inflate(R.layout.pop_up_profile_pic,null);
         ImageView img = (ImageView) profilePicPopUp.findViewById(R.id.IV_ProfilePicEnlarge);
-        String mDrawableName = "profile_pic_0"+ position;
+        String mDrawableName = "ic_profile_pic_"+ position;
         int resId = getResources().getIdentifier(mDrawableName , "drawable", getActivity().getPackageName());
         img.setImageResource(resId);
         img.setVisibility(View.VISIBLE);
@@ -41,11 +38,9 @@ public class ProfilePicPopUp extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Integer oldprofile;
-                UserModel newUser = ((MainActivity)getActivity()).getUser();
 
-                oldprofile = newUser.getProfilePic();
 
-                if(oldprofile != null ){
+               /* if(oldprofile != null ){
 
                 }
                 newUser.setProfilePic(position);
@@ -58,7 +53,7 @@ public class ProfilePicPopUp extends DialogFragment {
                 //tick.setVisibility(View.VISIBLE);
                 ((MainActivity)getActivity()).setUser(newUser);
 
-                setConfirm(true);
+                setConfirm(true);*/
 
 
                 dismiss();

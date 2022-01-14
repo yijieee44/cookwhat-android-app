@@ -1,15 +1,14 @@
 package com.example.cookwhat.fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.cookwhat.R;
 
@@ -66,6 +65,7 @@ public class GetStartedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        container.removeAllViews();
         return inflater.inflate(R.layout.fragment_get_started, container, false);
     }
 
@@ -76,6 +76,8 @@ public class GetStartedFragment extends Fragment {
         View.OnClickListener OCLLogin = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+
+
                 Navigation.findNavController(view).navigate(R.id.DestLogin);
             }
         };

@@ -126,8 +126,6 @@ public class FavouriteFragment extends Fragment implements OptionPopUp.passData 
                 optionPopUp.setTargetFragment(FavouriteFragment.this,1);
                 optionPopUp.show(getFragmentManager(),"deleteOrMoveTo");
 
-
-
                 return true;
             }
         });

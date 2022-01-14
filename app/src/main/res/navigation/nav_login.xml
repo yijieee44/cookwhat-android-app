@@ -20,4 +20,9 @@
         android:name="com.example.cookwhat.fragments.RegisterFragment"
         android:label="Register"
         tools:layout="@layout/fragment_register" />
+    <fragment
+        android:id="@+id/DestRegisterComplete"
+        android:name="com.example.cookwhat.fragments.RegisterCompleteFragment"
+        android:label="fragment_register_complete"
+        tools:layout="@layout/fragment_register_complete" />
 </navigation>

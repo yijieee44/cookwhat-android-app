@@ -3,28 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/CS_ProfilePic"
-    android:layout_width="85dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/IV_ProfilePic"
         android:layout_width="77dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="4dp"
+        android:layout_height="64dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/profile_pic_01" />
+        app:srcCompat="@drawable/ic_profile_pic_1"
+        tools:ignore="VectorDrawableCompat" />
 
-    <ImageView
-        android:id="@+id/IV_Tick"
-        android:layout_width="75dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:background="#8D3C3C3C"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?android:attr/textCheckMark" />
 </androidx.constraintlayout.widget.ConstraintLayout>

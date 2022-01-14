@@ -1,6 +1,7 @@
 package com.example.cookwhat.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,12 +38,15 @@ public class ViewProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     String selectedUserID;
+    String selectedUsername;
     Boolean haveFollowed = false;
     Boolean isFollowing = false;
-    ArrayList<String> recipeName;
+    ArrayList<String> recipeName = new ArrayList<>();
     ArrayList<Integer> Img;
     ArrayList<String> followerList = new ArrayList<>();
     ArrayList<String> followingList = new ArrayList<>();
+    ArrayList<String> followerIDList = new ArrayList<>();
+    ArrayList<String> followingIDList = new ArrayList<>();
 
     public ViewProfileFragment() {
         //Fetch selectedUserID info
@@ -77,17 +81,29 @@ public class ViewProfileFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+
+
+
     }
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
+        Bundle bundle = getArguments();
+        System.out.println("bundle received"+ bundle);
+        if(bundle != null){
+            this.selectedUserID = bundle.getString("viewUserID");
+            this.selectedUsername = bundle.getString("viewUsername");
+            this.haveFollowed = bundle.getBoolean("isFollowing");
+            System.out.println(haveFollowed);
+
+        }
+        else{
+            Log.d("ErrorType","null details on selected user to view");
+        }
         Button showFollow = view.findViewById(R.id.Btn_ShowFollow);
+        System.out.println("ViewCreated:"+ haveFollowed);
 
         if(haveFollowed == true){
             showFollow.setText("Unfollow");
@@ -122,7 +138,7 @@ public class ViewProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //pass followerArraylist and followernamelist
-                followPopUp followList = new followPopUp(view, "follower",followerList);
+                followPopUp followList = new followPopUp(view, "follower",followerList, followerIDList,selectedUserID,followingIDList);
                 followList.show(getActivity().getSupportFragmentManager(), "followerDialog");
             }
         };
@@ -130,7 +146,7 @@ public class ViewProfileFragment extends Fragment {
         View.OnClickListener followingOCL = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                followPopUp followList = new followPopUp(view, "following", followingList);
+                followPopUp followList = new followPopUp(view, "following", followingList,followingIDList,selectedUserID,followingIDList);
                 followList.show(getActivity().getSupportFragmentManager(), "followingDialog");
             }
         };
@@ -257,6 +273,7 @@ public class ViewProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        container.removeAllViews();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_view_profile, container, false);
     }
