@@ -1,6 +1,8 @@
 package com.example.cookwhat.models;
 
-public class RecipeStepModel {
+import java.io.Serializable;
+
+public class RecipeStepModel implements Serializable {
     private String image;
     private String step;
     private int sequence;

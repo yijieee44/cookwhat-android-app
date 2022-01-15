@@ -176,6 +176,7 @@ public class CreatePreviewFragment extends Fragment {
 
         INUDialog.setCancelable(true);
         INUDialog.setContentView(R.layout.dialog_inu);
+        INUDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.outline_white_background));
 
         List<IngredientModel> ingredientModels = recipeModel.getIngredients();
         List<UtensilModel> utensilModels = recipeModel.getUtensils();

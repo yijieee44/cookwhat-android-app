@@ -18,6 +18,7 @@ public class RecipeModel {
     @JsonIgnore
     private List<RecipeCommentModel> comments = new ArrayList<>();
     private List<RecipeStepModel> steps = new ArrayList<>();
+    private String createdTime = "";
 
     public RecipeModel() {
 
@@ -93,5 +94,66 @@ public class RecipeModel {
 
     public void setSteps(List<RecipeStepModel> steps) {
         this.steps = steps;
+    }
+
+    public String getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public RecipeModelDB toRecipeModelDB() {
+        RecipeModelDB recipeModelDB = new RecipeModelDB();
+        recipeModelDB.setId(this.getId());
+        recipeModelDB.setUserId(this.getUserId());
+        recipeModelDB.setTitle(this.getTitle());
+        recipeModelDB.setNumFav(this.getNum_fav());
+        recipeModelDB.setCreatedTime(this.getCreatedTime());
+        recipeModelDB.setSteps(this.getSteps());
+        recipeModelDB.setTags(this.getTags());
+        recipeModelDB.setComments(this.getComments());
+
+        List<String> ingName = new ArrayList<>();
+        List<Integer> ingIcon = new ArrayList<>();
+        List<String> ingMemo = new ArrayList<>();
+        List<Double> ingQuantity = new ArrayList<>();
+        List<Double> ingWeight = new ArrayList<>();
+        List<String> ingUnitQuantity = new ArrayList<>();
+        List<String> ingUnitWeight = new ArrayList<>();
+
+        for(IngredientModel model : this.getIngredients()) {
+            ingName.add(model.getName());
+            ingIcon.add(model.getIcon());
+            ingMemo.add(model.getMemo());
+            ingQuantity.add(model.getQuantity());
+            ingWeight.add(model.getWeight());
+            ingUnitQuantity.add(model.getUnitQuantity());
+            ingUnitWeight.add(model.getUnitWeight());
+        }
+
+        List<String> utName = new ArrayList<>();
+        List<Integer> utIcon = new ArrayList<>();
+        List<String> utMemo = new ArrayList<>();
+        for(UtensilModel model : this.getUtensils()) {
+            utName.add(model.getName());
+            utIcon.add(model.getIcon());
+            utMemo.add(model.getMemo());
+        }
+
+        recipeModelDB.setIngName(ingName);
+        recipeModelDB.setIngIcon(ingIcon);
+        recipeModelDB.setIngMemo(ingMemo);
+        recipeModelDB.setIngQuantity(ingQuantity);
+        recipeModelDB.setIngWeight(ingWeight);
+        recipeModelDB.setIngUnitQuantity(ingUnitQuantity);
+        recipeModelDB.setIngUnitWeight(ingUnitWeight);
+
+        recipeModelDB.setUtName(utName);
+        recipeModelDB.setUtIcon(utIcon);
+        recipeModelDB.setUtMemo(utMemo);
+
+        return recipeModelDB;
     }
 }

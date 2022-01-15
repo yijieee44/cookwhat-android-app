@@ -93,8 +93,10 @@ public class CreateShowGalleryFragment extends Fragment {
 
     List<Integer> selIngredientsItem = new ArrayList<Integer>();
     List<Integer> selUtensilsItem = new ArrayList<Integer>();
-    List<Integer> displayIngredientItem = new ArrayList<Integer>();
-    List<Integer> displayUtensilItem = new ArrayList<Integer>();
+    List<Integer> displayIngredientIcon = new ArrayList<Integer>();
+    List<Integer> displayIngredientName = new ArrayList<Integer>();
+    List<Integer> displayUtensilIcon = new ArrayList<Integer>();
+    List<Integer> displayUtensilName = new ArrayList<Integer>();
     List<String> selCustomIngredients = new ArrayList<String>();
     List<String> selCustomUtensils = new ArrayList<String>();
 
@@ -294,7 +296,6 @@ public class CreateShowGalleryFragment extends Fragment {
         ingredientAdapter = new IngredientAdapter(context, ingredientModelList);
         ingredientRecycleView.setAdapter(ingredientAdapter);
 
-
         ingredientRecycleView.addOnItemTouchListener(
                 new RecyclerItemClickListener(
                         context, ingredientRecycleView ,new RecyclerItemClickListener.OnItemClickListener() {
@@ -336,9 +337,6 @@ public class CreateShowGalleryFragment extends Fragment {
                 )
         );
 
-
-
-
         utensilModelList = recipeModel.getUtensils();
         utensilRecycleView = (RecyclerView) view.findViewById(R.id.activity_create_utensil_list);
         utensilRecycleView.setLayoutManager(linearLayoutManager1);
@@ -347,6 +345,17 @@ public class CreateShowGalleryFragment extends Fragment {
         utensilAdapter = new UtensilAdapter(context, utensilModelList);
         utensilRecycleView.setAdapter(utensilAdapter);
 
+        // Initialize bottom sheet selected
+        for (IngredientModel model : ingredientModelList) {
+            selIngredientsItem.add(model.getIcon());
+        }
+
+        for (UtensilModel model : utensilModelList) {
+            selUtensilsItem.add(model.getIcon());
+        }
+
+        // check the number of ingredient and utensils
+        checkNumberOfIngAndUt(view);
 
         return view;
 
@@ -366,6 +375,7 @@ public class CreateShowGalleryFragment extends Fragment {
 
         editDialog.setCancelable(true);
         editDialog.setContentView(R.layout.dialog_edit_photos);
+        editDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.outline_white_background));
 
         if(recipeStepModels.size()>0) {
             RecyclerView photosRecyclerView = (RecyclerView) editDialog.findViewById(R.id.RVPhotos);
@@ -438,7 +448,8 @@ public class CreateShowGalleryFragment extends Fragment {
         int[] ingredientsIcon = Constants.INGREDIENTS_ICON;
         int[] ingredientsName = Constants.INGREDIENTS_NAME;
 
-        displayIngredientItem = Arrays.stream(ingredientsIcon).boxed().collect(Collectors.toList());
+        displayIngredientIcon = Arrays.stream(ingredientsIcon).boxed().collect(Collectors.toList());
+        displayIngredientName = Arrays.stream(ingredientsName).boxed().collect(Collectors.toList());
 
         GridView ingredientsGridView = (GridView) bottomSheetDialog.findViewById(R.id.Grid_Market_Ingredients);
         LinearLayout ingredientLayoutCantFind = (LinearLayout) bottomSheetDialog.findViewById(R.id.LayoutIngCantFind);
@@ -459,7 +470,7 @@ public class CreateShowGalleryFragment extends Fragment {
                 View view = super.getView(position, convertView, parent);
 
                 int color = Color.TRANSPARENT; // Transparent
-                if (selIngredientsItem.contains(displayIngredientItem.get(position))) {
+                if (selIngredientsItem.contains(displayIngredientIcon.get(position))) {
                     color = getResources().getColor(R.color.light_yellow);
                 }
 
@@ -478,25 +489,25 @@ public class CreateShowGalleryFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 try {
-                    if (selIngredientsItem.contains(displayIngredientItem.get(position))) {
+                    if (selIngredientsItem.contains(displayIngredientIcon.get(position))) {
                         viewPrev = (View) ingredientsGridView.getChildAt(position);
-                        selIngredientsItem.remove(Integer.valueOf(displayIngredientItem.get(position)));
+                        selIngredientsItem.remove(Integer.valueOf(displayIngredientIcon.get(position)));
                         viewPrev.setBackgroundColor(Color.TRANSPARENT);
 
                         IngredientModel ingredientModel = new IngredientModel();
-                        ingredientModel.setName(getString(ingredientsName[position]));
+                        ingredientModel.setName(getString(displayIngredientName.get(position)));
+                        ingredientModel.setIcon(displayIngredientIcon.get(position));
                         ingredientAdapter.removeIngredient(ingredientModel);
 
                         recipeModel.setIngredients(ingredientAdapter.getIngredientList());
                     } else {
                         viewPrev = (View) ingredientsGridView.getChildAt(position);
                         view.setBackgroundColor(getResources().getColor(R.color.light_yellow));
-                        selIngredientsItem.add(displayIngredientItem.get(position));
+                        selIngredientsItem.add(displayIngredientIcon.get(position));
                         IngredientModel ingredientModel = new IngredientModel();
-                        ingredientModel.setName(getString(ingredientsName[position]));
-                        ingredientModel.setIcon(ingredientsIcon[position]);
+                        ingredientModel.setName(getString(displayIngredientName.get(position)));
+                        ingredientModel.setIcon(displayIngredientIcon.get(position));
                         ingredientAdapter.addIngredient(ingredientModel);
-
 
                         recipeModel.setIngredients(ingredientAdapter.getIngredientList());
                     }
@@ -511,17 +522,19 @@ public class CreateShowGalleryFragment extends Fragment {
         searchIngredients.addTextChangedListener(new TextWatcher() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             public void afterTextChanged(Editable s) {
-                displayIngredientItem.clear();
+                displayIngredientIcon.clear();
+                displayIngredientName.clear();
                 List<Integer> searchName = new ArrayList<>();
                 List<Integer> selectedIndex = new ArrayList<>();
 
                 int newIndex = 0;
                 for(int i=0; i<ingredientsName.length; i++) {
                     if(getResources().getString(ingredientsName[i]).toLowerCase().contains(s.toString().toLowerCase())) {
-                        displayIngredientItem.add(ingredientsIcon[i]);
+                        displayIngredientIcon.add(ingredientsIcon[i]);
+                        displayIngredientName.add(ingredientsName[i]);
                         searchName.add(ingredientsName[i]);
 
-                        if (selIngredientsItem.contains(displayIngredientItem.get(newIndex))) {
+                        if (selIngredientsItem.contains(displayIngredientIcon.get(newIndex))) {
                             selectedIndex.add(newIndex);
                         }
 
@@ -529,11 +542,11 @@ public class CreateShowGalleryFragment extends Fragment {
                     }
                 }
 
-                if (displayIngredientItem.size() > 0) {
+                if (displayIngredientIcon.size() > 0) {
                     ingredientsGridView.setVisibility(View.VISIBLE);
                     ingredientLayoutCantFind.setVisibility(View.GONE);
 
-                    int[] searchIconArray = displayIngredientItem.stream().mapToInt(i -> i).toArray();
+                    int[] searchIconArray = displayIngredientIcon.stream().mapToInt(i -> i).toArray();
                     int[] searchNameArray = searchName.stream().mapToInt(i -> i).toArray();
 
                     MarketIngredientAdapter marketIngredientAdapter = new MarketIngredientAdapter(view.getContext(), searchNameArray, searchIconArray) {
@@ -591,6 +604,12 @@ public class CreateShowGalleryFragment extends Fragment {
             chipGroup.addView(chip);
         }
 
+        bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                checkNumberOfIngAndUt(view);
+            }
+        });
 
         bottomSheetDialog.show();
     }
@@ -615,7 +634,8 @@ public class CreateShowGalleryFragment extends Fragment {
         int[] utensilsIcon = Constants.UTENSILS_ICON;
         int[] utensilsName = Constants.UTENSILS_NAME;
 
-        displayUtensilItem = Arrays.stream(utensilsIcon).boxed().collect(Collectors.toList());
+        displayUtensilIcon = Arrays.stream(utensilsIcon).boxed().collect(Collectors.toList());
+        displayUtensilName = Arrays.stream(utensilsName).boxed().collect(Collectors.toList());
 
         GridView utensilsGridView = (GridView) bottomSheetDialog.findViewById(R.id.Grid_Market_Utensils);
         LinearLayout utensilLayoutCantFind = (LinearLayout) bottomSheetDialog.findViewById(R.id.LayoutUntCantFind);
@@ -636,7 +656,7 @@ public class CreateShowGalleryFragment extends Fragment {
                 View view = super.getView(position, convertView, parent);
 
                 int color = Color.TRANSPARENT; // Transparent
-                if (selUtensilsItem.contains(displayUtensilItem.get(position))) {
+                if (selUtensilsItem.contains(displayUtensilIcon.get(position))) {
                     color = getResources().getColor(R.color.light_yellow);
                 }
 
@@ -655,23 +675,24 @@ public class CreateShowGalleryFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 try {
-                    if (selUtensilsItem.contains(displayUtensilItem.get(position))) {
+                    if (selUtensilsItem.contains(displayUtensilIcon.get(position))) {
                         viewPrev = (View) utensilsGridView.getChildAt(position);
-                        selUtensilsItem.remove(Integer.valueOf(displayUtensilItem.get(position)));
+                        selUtensilsItem.remove(Integer.valueOf(displayUtensilIcon.get(position)));
                         viewPrev.setBackgroundColor(Color.TRANSPARENT);
 
                         UtensilModel utensilModel = new UtensilModel();
-                        utensilModel.setName(getString(utensilsName[position]));
+                        utensilModel.setName(getString(displayUtensilName.get(position)));
+                        utensilModel.setIcon(displayUtensilIcon.get(position));
                         utensilAdapter.removeUtensil(utensilModel);
 
                         recipeModel.setUtensils(utensilAdapter.getUtensilList());
                     } else {
                         viewPrev = (View) utensilsGridView.getChildAt(position);
                         view.setBackgroundColor(getResources().getColor(R.color.light_yellow));
-                        selUtensilsItem.add(displayUtensilItem.get(position));
+                        selUtensilsItem.add(displayUtensilIcon.get(position));
                         UtensilModel utensilModel = new UtensilModel();
-                        utensilModel.setName(getString(utensilsName[position]));
-                        utensilModel.setIcon(utensilsIcon[position]);
+                        utensilModel.setName(getString(displayUtensilName.get(position)));
+                        utensilModel.setIcon(displayUtensilIcon.get(position));
                         utensilAdapter.addUtensil(utensilModel);
 
                         recipeModel.setUtensils(utensilAdapter.getUtensilList());
@@ -687,17 +708,19 @@ public class CreateShowGalleryFragment extends Fragment {
         searchUtensils.addTextChangedListener(new TextWatcher() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             public void afterTextChanged(Editable s) {
-                displayUtensilItem.clear();
+                displayUtensilIcon.clear();
+                displayUtensilName.clear();
                 List<Integer> searchName = new ArrayList<>();
                 List<Integer> selectedIndex = new ArrayList<>();
 
                 int newIndex = 0;
                 for(int i=0; i<utensilsName.length; i++) {
                     if(getResources().getString(utensilsName[i]).toLowerCase().contains(s.toString().toLowerCase())) {
-                        displayUtensilItem.add(utensilsIcon[i]);
+                        displayUtensilIcon.add(utensilsIcon[i]);
+                        displayUtensilName.add(utensilsName[i]);
                         searchName.add(utensilsName[i]);
 
-                        if (selUtensilsItem.contains(displayUtensilItem.get(newIndex))) {
+                        if (selUtensilsItem.contains(displayUtensilIcon.get(newIndex))) {
                             selectedIndex.add(newIndex);
                         }
 
@@ -705,11 +728,11 @@ public class CreateShowGalleryFragment extends Fragment {
                     }
                 }
 
-                if (displayUtensilItem.size() > 0) {
+                if (displayUtensilIcon.size() > 0) {
                     utensilsGridView.setVisibility(View.VISIBLE);
                     utensilLayoutCantFind.setVisibility(View.GONE);
 
-                    int[] searchIconArray = displayUtensilItem.stream().mapToInt(i -> i).toArray();
+                    int[] searchIconArray = displayUtensilIcon.stream().mapToInt(i -> i).toArray();
                     int[] searchNameArray = searchName.stream().mapToInt(i -> i).toArray();
 
                     MarketIngredientAdapter marketIngredientAdapter = new MarketIngredientAdapter(view.getContext(), searchNameArray, searchIconArray) {
@@ -767,6 +790,12 @@ public class CreateShowGalleryFragment extends Fragment {
             chipGroup.addView(chip);
         }
 
+        bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                checkNumberOfIngAndUt(view);
+            }
+        });
 
         bottomSheetDialog.show();
     }
@@ -831,5 +860,26 @@ public class CreateShowGalleryFragment extends Fragment {
         }
     }
 
+    private void checkNumberOfIngAndUt(View view){
+        List<IngredientModel> ingredientModels = recipeModel.getIngredients();
+        List<UtensilModel> utensilModels = recipeModel.getUtensils();
 
+        TextView TVNoIngredientAdded = (TextView) view.findViewById(R.id.TVNoIngredientAdded);
+        TextView TVNoUtensilAdded = (TextView) view.findViewById(R.id.TVNoUtensilAdded);
+        TextView TVEditInstruction = (TextView) view.findViewById(R.id.TVEditInstruction);
+
+        if (ingredientModels.size() > 0) {
+            TVNoIngredientAdded.setVisibility(View.GONE);
+            TVEditInstruction.setVisibility(View.VISIBLE);
+        } else {
+            TVNoIngredientAdded.setVisibility(View.VISIBLE);
+            TVEditInstruction.setVisibility(View.GONE);
+        }
+
+        if (utensilModels.size() > 0) {
+            TVNoUtensilAdded.setVisibility(View.GONE);
+        } else {
+            TVNoUtensilAdded.setVisibility(View.VISIBLE);
+        }
+    }
 }

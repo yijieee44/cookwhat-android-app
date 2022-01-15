@@ -107,6 +107,7 @@ public class LoginFragment extends Fragment {
                                     startActivity(intentMainActivity);
 
 
+
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w("ERROR", "signInWithEmail:failure", task.getException());
@@ -122,6 +123,5 @@ public class LoginFragment extends Fragment {
 
 
     }
-
 
 }
