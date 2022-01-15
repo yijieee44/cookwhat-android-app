@@ -354,6 +354,9 @@ public class CreateShowGalleryFragment extends Fragment {
             selUtensilsItem.add(model.getIcon());
         }
 
+        // check the number of ingredient and utensils
+        checkNumberOfIngAndUt(view);
+
         return view;
 
     }
@@ -601,6 +604,12 @@ public class CreateShowGalleryFragment extends Fragment {
             chipGroup.addView(chip);
         }
 
+        bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                checkNumberOfIngAndUt(view);
+            }
+        });
 
         bottomSheetDialog.show();
     }
@@ -781,6 +790,12 @@ public class CreateShowGalleryFragment extends Fragment {
             chipGroup.addView(chip);
         }
 
+        bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                checkNumberOfIngAndUt(view);
+            }
+        });
 
         bottomSheetDialog.show();
     }
@@ -842,6 +857,29 @@ public class CreateShowGalleryFragment extends Fragment {
             utensilModel.setName(newItem);
             utensilModel.setIcon(R.drawable.i0067_others);
             utensilAdapter.addUtensil(utensilModel);
+        }
+    }
+
+    private void checkNumberOfIngAndUt(View view){
+        List<IngredientModel> ingredientModels = recipeModel.getIngredients();
+        List<UtensilModel> utensilModels = recipeModel.getUtensils();
+
+        TextView TVNoIngredientAdded = (TextView) view.findViewById(R.id.TVNoIngredientAdded);
+        TextView TVNoUtensilAdded = (TextView) view.findViewById(R.id.TVNoUtensilAdded);
+        TextView TVEditInstruction = (TextView) view.findViewById(R.id.TVEditInstruction);
+
+        if (ingredientModels.size() > 0) {
+            TVNoIngredientAdded.setVisibility(View.GONE);
+            TVEditInstruction.setVisibility(View.VISIBLE);
+        } else {
+            TVNoIngredientAdded.setVisibility(View.VISIBLE);
+            TVEditInstruction.setVisibility(View.GONE);
+        }
+
+        if (utensilModels.size() > 0) {
+            TVNoUtensilAdded.setVisibility(View.GONE);
+        } else {
+            TVNoUtensilAdded.setVisibility(View.VISIBLE);
         }
     }
 }
