@@ -3,8 +3,6 @@ package com.example.cookwhat.fragments;
 
 import static android.content.ContentValues.TAG;
 
-import android.content.Intent;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.activities.LoginActivity;
-import com.example.cookwhat.activities.MainActivity;
 import com.example.cookwhat.adapters.ProfilePicAdapter;
 import com.example.cookwhat.models.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -151,10 +148,6 @@ public class RegisterCompleteFragment extends Fragment {
         usermodel.setEmailAddr(email);
         usermodel.setPassword(password);
 
-
-
-
-
         FirebaseFirestore firestoreDb = FirebaseFirestore.getInstance();
 
         Button BtnRegister = view.findViewById(R.id.BtnRegisterComplete);
@@ -164,19 +157,17 @@ public class RegisterCompleteFragment extends Fragment {
             public void onClick(View v) {
                 ChipGroup chipGroup = view.findViewById(R.id.CG_Preferences);
                 List<Integer> chips = chipGroup.getCheckedChipIds();
+                ArrayList<String> chipsSelected = new ArrayList<>();
                 for(int i =0; i<chips.size(); i++){
                     Chip chip = view.findViewById(chips.get(i));
-                    usermodel.setPreferences((String) chip.getText());;
-
-
+                    chipsSelected.add((String) chip.getText());
                 }
-
+                usermodel.setPreferences(chipsSelected);
 
                 //addNewUser(usermodel);
                 mAuth = FirebaseAuth.getInstance();
 
                 //Log.d("SUCCESS", email);
-
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -185,13 +176,9 @@ public class RegisterCompleteFragment extends Fragment {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d("SUCCESS", "createUserWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
-
-                                    //UserModel userModel = new UserModel();
-                                    //userModel.setEmailAddr(email);
-
-                                    //userModel.setUserId(user.getUid());
-                                    //userModel.setUserName(username);
-                                    firestoreDb.collection("user")
+                                    String userId = user.getUid();
+                                    usermodel.setUserId(userId);
+                                    /*firestoreDb.collection("user")
                                             .add(usermodel)
                                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                 @Override
@@ -204,7 +191,10 @@ public class RegisterCompleteFragment extends Fragment {
                                                 public void onFailure(@NonNull Exception e) {
                                                     Log.w("ERROR", "Error adding document", e);
                                                 }
-                                            });
+                                            });*/
+
+                                    firestoreDb.collection("user").document(userId)
+                                            .set(usermodel);
 
                                     user.sendEmailVerification()
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -214,11 +204,10 @@ public class RegisterCompleteFragment extends Fragment {
                                                         Log.d("SUCCESS", "Email sent.");
                                                         LoginActivity activity = (LoginActivity) getActivity();
                                                         activity.onRegisterSuccessful();
-
-
                                                     }
                                                 }
                                             });
+
                                     Toast.makeText(getActivity(), "Successfully registered!!",
                                             Toast.LENGTH_SHORT).show();
 
@@ -233,14 +222,12 @@ public class RegisterCompleteFragment extends Fragment {
                                                 Log.d("SUCCESS", "Updated profile");
                                             }
                                         }
-                                    });;
-
+                                    });
 
                                 } else {
                                     Log.w("ERROR", "createUserWithEmail:failure", task.getException());
                                     Toast.makeText(getActivity(), "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
-
                                 }
                             }
                         });
@@ -250,7 +237,6 @@ public class RegisterCompleteFragment extends Fragment {
 
 
         BtnRegister.setOnClickListener(OCLRegister);
-
 
     }
 

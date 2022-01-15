@@ -153,5 +153,13 @@
     <string name="u0009_oven">Oven</string>
     <string name="u0010_microwave">Microwave</string>
     <string name="register_warning">You are already a user of CookWhat.\nPlease proceed to log in.</string>
+    <string-array name="level">
+        <item>Beginner</item>
+        <item>Advanced Beginner</item>
+        <item>Competent</item>
+        <item>Proficient</item>
+        <item>Expert</item>
+        <item>Expert</item>
+    </string-array>
 
 </resources>

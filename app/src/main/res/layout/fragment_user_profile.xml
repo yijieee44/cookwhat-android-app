@@ -32,17 +32,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/TV_UserName"
-                android:layout_width="109dp"
-                android:layout_height="66dp"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="8dp"
-                android:text="TextView"
-                android:textAlignment="center"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/IV_Profile" />
-
             <androidx.appcompat.widget.AppCompatButton
 
                 android:id="@+id/Btn_Follower"
@@ -59,9 +48,23 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/TV_UserName"
+                android:layout_width="104dp"
+                android:layout_height="70dp"
+                android:text="TextView"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.092"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/IV_Profile"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
                 android:id="@+id/TV_Follower"
                 android:layout_width="82dp"
                 android:layout_height="30dp"
+                android:layout_marginStart="23dp"
                 android:layout_marginEnd="32dp"
                 android:gravity="center"
                 android:paddingTop="8dp"
@@ -69,6 +72,7 @@
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/TV_Following"
+                app:layout_constraintStart_toEndOf="@+id/TV_UserName"
                 app:layout_constraintTop_toBottomOf="@+id/Btn_Follower" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -102,10 +106,8 @@
             <androidx.appcompat.widget.AppCompatButton
 
                 android:id="@+id/Btn_Favourite"
-                android:layout_width="182dp"
-                android:layout_height="49dp"
-                android:layout_marginStart="168dp"
-                android:layout_marginTop="160dp"
+                android:layout_width="272dp"
+                android:layout_height="44dp"
                 android:background="@drawable/roundedrecbtn"
                 android:drawableEnd="@drawable/favourite"
                 android:drawableRight="@drawable/favourite"
@@ -118,8 +120,12 @@
                 android:text="see your"
                 android:textColor="#744518"
                 android:textSize="28sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.269" />
 
             <LinearLayout
                 android:id="@+id/LL_AboutMe"
@@ -133,23 +139,46 @@
 
                 <Button
                     android:id="@+id/Btn_Edit"
-                    android:layout_width="41dp"
-                    android:layout_height="37dp"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="355dp"
                     android:background="@drawable/ic_baseline_edit_24"
                     tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                 <TextView
-                    android:id="@+id/TV_Preferences"
-                    android:layout_width="150dp"
-                    android:layout_height="37dp"
-                    android:text="Preference" />
+                    android:id="@+id/TV_TabDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="center" />
 
                 <TextView
-                    android:id="@+id/TV_EmailAddr"
-                    android:layout_width="156dp"
-                    android:layout_height="57dp"
-                    android:text="email_addr" />
+                    android:id="@+id/TV_TabEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/TV_TabCountry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/TV_TabLevel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/TV_TabPreferences"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="center" />
 
             </LinearLayout>
 

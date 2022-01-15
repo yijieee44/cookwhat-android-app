@@ -275,7 +275,7 @@ public class ViewProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         container.removeAllViews();
         // Inflate the layout for this fragment
-        container.removeAllViews();
+
         return inflater.inflate(R.layout.fragment_view_profile, container, false);
     }
 }

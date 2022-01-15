@@ -1,5 +1,6 @@
 package com.example.cookwhat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,19 +69,23 @@ public class followPopUp extends DialogFragment {
             @Override
             public void onItemClick(android.widget.AdapterView<?> adapterView, View view, int i, long l) {
                 String usernameToView = followAdapter.getItem(i).toString();
-                String usernameIDToView = followIDList.get(i);
+                String userIdToView = followIDList.get(i);
                 System.out.println(followIDList.get(i));
 
                 if (following_follower.equals("follower")) {
-                    if (checkFollowIDList.contains(usernameIDToView)){
+                    if (checkFollowIDList.contains(userIdToView)){
                         isFollowing = true;
                     }
                 }
-                UserActivity activity = (UserActivity) getActivity();
-                activity.getUserIDToView(usernameIDToView, usernameToView, isFollowing);
+                Intent intent = new Intent(getActivity(), UserActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("UserIdToView", userIdToView);
+                bundle.putBoolean("isFollowing", isFollowing);
+                intent.putExtras(bundle);
+
+                startActivity(intent);
 
 
-                //Navigation.findNavController(parentview).navigate(R.id.DestViewProfile);
                 dismiss();
             }
 
