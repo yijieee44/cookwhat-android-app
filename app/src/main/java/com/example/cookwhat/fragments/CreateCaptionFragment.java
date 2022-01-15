@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.interfaces.ItemChangeListener;
@@ -42,6 +43,7 @@ public class CreateCaptionFragment extends Fragment {
     Button buttonAddTag;
     ChipGroup chipGroup;
     int currImageIndex = 0;
+    int MAX_TAG = 3;
 
     public CreateCaptionFragment() {
         // Required empty public constructor
@@ -165,27 +167,35 @@ public class CreateCaptionFragment extends Fragment {
                 String newTag = editAddTag.getText().toString();
                 RecipeModel recipeActivity = ((CreateActivity)getActivity()).getNewRecipe();
 
-                if (!recipeActivity.getTags().contains(newTag)) {
-                    Chip chip = new Chip(getActivity());
-                    chip.setText("#" + newTag);
-                    chip.setChipBackgroundColorResource(R.color.light_yellow);
-                    chip.setCloseIconVisible(true);
-                    chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            chipGroup.removeView(chip);
-                            List<String> prevTags = recipeActivity.getTags();
-                            prevTags.remove(newTag);
-                            recipeActivity.setTags(prevTags);
-                        }
-                    });
-                    chip.setTextColor(getResources().getColor(R.color.black));
+                if (recipeActivity.getTags().size() < MAX_TAG) {
+                    if (!recipeActivity.getTags().contains(newTag)) {
+                        Chip chip = new Chip(getActivity());
+                        chip.setText("#" + newTag);
+                        chip.setChipBackgroundColorResource(R.color.light_yellow);
+                        chip.setCloseIconVisible(true);
+                        chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                chipGroup.removeView(chip);
+                                List<String> prevTags = recipeActivity.getTags();
+                                prevTags.remove(newTag);
+                                recipeActivity.setTags(prevTags);
+                            }
+                        });
+                        chip.setTextColor(getResources().getColor(R.color.black));
 
-                    chipGroup.addView(chip);
-                    editAddTag.setText("");
-                    List<String> prevTags = recipeActivity.getTags();
-                    prevTags.add(newTag);
-                    recipeActivity.setTags(prevTags);
+                        chipGroup.addView(chip);
+                        editAddTag.setText("");
+                        List<String> prevTags = recipeActivity.getTags();
+                        prevTags.add(newTag);
+                        recipeActivity.setTags(prevTags);
+                    } else {
+                        Toast.makeText(getActivity(), "Tag " + newTag + " already added",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Max tags: 3",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
