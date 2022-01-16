@@ -114,6 +114,11 @@ public class CreateActivity extends AppCompatActivity {
             newRecipe = editRecipeModel;
             getSupportActionBar().setTitle(getResources().getString(R.string.edit_recipe));
             isEdit = true;
+
+            for (RecipeStepModel recipeStepModel : newRecipe.getSteps()) {
+                String storageCode = recipeStepModel.getImage();
+                recipeStepModel.setImage("https://firebasestorage.googleapis.com/v0/b/cookwhat.appspot.com/o/images%2F" + storageCode + "?alt=media");
+            }
         }
 
         backButton = (FloatingActionButton) findViewById(R.id.FABBack);

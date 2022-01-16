@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/DestSearchRecipe"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:layout_margin="10dp"
-android:orientation="vertical"
-tools:context=".fragments.SearchIngredientFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/DestSearchRecipe"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragments.SearchIngredientFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,16 +26,23 @@ tools:context=".fragments.SearchIngredientFragment">
             android:id="@+id/BtnSearchIngredient"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
             android:onClick="BtnIngredientsBottomSheet"
-            android:text="Add Ingredient" />
+            android:text="Add Ingredient"
+            app:backgroundTint="@color/light_yellow" />
 
         <TextView
             android:id="@+id/TVNoIngredient"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
             android:text="@string/no_ingredient_added"
-            android:textAlignment="center" />
+            android:textAlignment="viewStart" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/activity_search_ingredient_list"
@@ -49,16 +56,23 @@ tools:context=".fragments.SearchIngredientFragment">
             android:id="@+id/BtnSearchUtensil"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
             android:onClick="BtnUtensilsBottomSheet"
-            android:text="Add Utensils" />
+            android:text="Add Utensils"
+            app:backgroundTint="@color/light_yellow" />
 
         <TextView
             android:id="@+id/TVNoUtensil"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:text="@string/no_utensil_added"
-            android:textAlignment="center" />
+            android:textAlignment="viewStart" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/activity_search_utensil_list"
