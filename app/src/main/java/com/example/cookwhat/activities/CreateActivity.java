@@ -271,6 +271,12 @@ public class CreateActivity extends AppCompatActivity {
         recipedb = db.collection("recipe");
 
         if(isEdit) {
+            // convert back without http header
+            for (RecipeStepModel recipeStepModel : newRecipe.getSteps()) {
+                String storageCode = getStorageCode(recipeStepModel.getImage());
+                recipeStepModel.setImage(storageCode);
+            }
+
             RecipeModelDB newRecipeDB = newRecipe.toRecipeModelDB();
             recipedb.document(newRecipe.getId()).set(newRecipeDB)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -361,6 +367,14 @@ public class CreateActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private String getStorageCode(String link) {
+        try{
+            return link.substring(76, link.length()-10);
+        } catch (Exception e) {
+            return link;
         }
     }
 }

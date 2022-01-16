@@ -35,6 +35,7 @@ import com.example.cookwhat.fragments.IngredientAndUtensilDialogFragment;
 import com.example.cookwhat.models.IngredientModel;
 import com.example.cookwhat.models.RecipeCommentModel;
 import com.example.cookwhat.models.RecipeModelDB;
+import com.example.cookwhat.models.RecipeStepModel;
 import com.example.cookwhat.models.UserModelDB;
 import com.example.cookwhat.models.UtensilModel;
 import com.example.cookwhat.utils.Utility;
@@ -91,6 +92,10 @@ public class ViewRecipeActivity extends AppCompatActivity {
                         RecipeModelDB editedRecipeModel = (RecipeModelDB) data.getSerializableExtra("recipeModelDB");
 
                         recipeModelDB = editedRecipeModel;
+                        for (RecipeStepModel recipeStepModel : recipeModelDB.getSteps()) {
+                            String storageCode = recipeStepModel.getImage();
+                            recipeStepModel.setImage("https://firebasestorage.googleapis.com/v0/b/cookwhat.appspot.com/o/images%2F" + storageCode + "?alt=media");
+                        }
                         reloadFromRecipe();
                     }
                 }
@@ -248,7 +253,6 @@ public class ViewRecipeActivity extends AppCompatActivity {
             Utility.setListViewHeightBasedOnChildren(listView);
         }
 
-
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -331,7 +335,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
                     currImageIndex = position;
                     String currImageCaption = recipeModelDB.getSteps().get(currImageIndex).getStep();
 
-                    if (currImageCaption.isEmpty() && currImageIndex!=0) {
+                    if (currImageCaption.isEmpty() && currImageIndex != 0) {
                         for (int i = currImageIndex; i >= 0; i--) {
                             if (!recipeModelDB.getSteps().get(i).getStep().isEmpty()) {
                                 currImageCaption = recipeModelDB.getSteps().get(i).getStep();
@@ -379,24 +383,32 @@ public class ViewRecipeActivity extends AppCompatActivity {
         TVCreatedTime.setText(recipeModelDB.getCreatedTime());
     }
 
-    public void readUser(FirestoreCallback firestoreCallback) {
-        userdb.whereIn("userId", userIds).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("SUCCESS", document.getId() + " => " + document.getData());
-                                final ObjectMapper mapper = new ObjectMapper();
-                                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                                userModelDBArrayList.add(mapper.convertValue(document.getData(), UserModelDB.class));
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this.getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
+
+
+    public void readUser (FirestoreCallback firestoreCallback){
+            userdb.whereIn("userId", userIds).get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("SUCCESS", document.getId() + " => " + document.getData());
+                                    final ObjectMapper mapper = new ObjectMapper();
+                                    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                                    userModelDBArrayList.add(mapper.convertValue(document.getData(), UserModelDB.class));
+                                }
+                                firestoreCallback.onCallBack(userModelDBArrayList);
+                            } else {
+                                Log.w("ERROR", "Error getting documents.", task.getException());
                             }
-                            firestoreCallback.onCallBack(userModelDBArrayList);
-                        } else {
-                            Log.w("ERROR", "Error getting documents.", task.getException());
                         }
-                    }
-                });
+                    });
     }
 
     public void readCurrentUser(FirestoreCallback2 firestoreCallback2) {
@@ -430,8 +442,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d("SUCCESS", "DocumentSnapshot successfully written!");
-                        }
-                        else {
+                        } else {
                             Log.w("ERROR", "Error writing document", task.getException());
                         }
                     }
@@ -456,7 +467,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
     }
 
-    private void showPopUpMenu(View v) {
+    private void showPopUpMenu (View v){
         PopupMenu popupMenu = new PopupMenu(ViewRecipeActivity.this, v);
         popupMenu.getMenuInflater().inflate(R.menu.post_nav_menu, popupMenu.getMenu());
 
@@ -475,6 +486,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
                     case R.id.delete_post:
                         DeleteRecipeDialogFragment dialog = new DeleteRecipeDialogFragment(recipeModelDB);
                         dialog.setDialogListener(new DeleteRecipeDialogFragment.DialogListener(){
+
                             @Override
                             public void onFinishEditDialog() {
                                 Log.d("delet", "hehe");
@@ -492,12 +504,6 @@ public class ViewRecipeActivity extends AppCompatActivity {
         popupMenu.show();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(this.getApplicationContext(), MainActivity.class);
-        startActivity(intent);
-    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
