@@ -40,6 +40,15 @@
     <string name="are_you_sure">Are you sure?</string>
     <string name="you_wont_be_able_to_revert_this">You will not be able to revert this!</string>
     <string name="delete">Delete</string>
+    <string name="fav_categories">Add to:</string>
+    <string name="european">European</string>
+    <string name="mediterranean">Mediterranean</string>
+    <string name="arabic">Arabic</string>
+    <string name="southeastasia">South-East-Asia</string>
+    <string name="chinese">Chinese</string>
+    <string name="japan">Japan</string>
+    <string name="korea">Korea</string>
+    <string name="india">India</string>
 
     <string name="i0000_acorn">Acorn</string>
     <string name="i0001_ajinomoto">Ajinomoto</string>

@@ -27,8 +27,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firestore.admin.v1.Index;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -119,7 +121,7 @@ public class HomeFragment extends Fragment {
 
     public void readData(FirestoreCallback firestoreCallback){
 
-        recipedb.get()
+        recipedb.orderBy("createdTime", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     ArrayList<UserModelDB> tempUserModelArrayList = new ArrayList<>();
                     List<String> userids = new ArrayList<>();

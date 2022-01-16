@@ -1,12 +1,9 @@
 package com.example.cookwhat.activities;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +14,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -27,8 +23,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.interfaces.ItemChangeListener;
@@ -36,12 +30,11 @@ import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.cookwhat.R;
 import com.example.cookwhat.adapters.CommentAdapter;
 import com.example.cookwhat.fragments.DeleteRecipeDialogFragment;
+import com.example.cookwhat.fragments.FavouriteCategoryDialogFragment;
 import com.example.cookwhat.fragments.IngredientAndUtensilDialogFragment;
-import com.example.cookwhat.fragments.IngredientDetailDialogFragment;
 import com.example.cookwhat.models.IngredientModel;
 import com.example.cookwhat.models.RecipeCommentModel;
 import com.example.cookwhat.models.RecipeModelDB;
-import com.example.cookwhat.models.UserModel;
 import com.example.cookwhat.models.UserModelDB;
 import com.example.cookwhat.models.UtensilModel;
 import com.example.cookwhat.utils.Utility;
@@ -54,6 +47,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -65,6 +59,7 @@ import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class ViewRecipeActivity extends AppCompatActivity {
 
@@ -175,10 +170,31 @@ public class ViewRecipeActivity extends AppCompatActivity {
         userName.setText(userModelDB.getUserName());
 
         addFav.setText(String.valueOf(recipeModelDB.getNumFav()));
+        readCurrentUser(new FirestoreCallback2() {
+            @RequiresApi(api = Build.VERSION_CODES.Q)
+            @Override
+            public void onCallBack(UserModelDB currentUser) {
+                Map<String, ArrayList<String>> favouriteCategory = currentUser.getFavouriteCategory();
+
+                if (favouriteCategory != null){
+                    for (Map.Entry<String,ArrayList<String>> entry : favouriteCategory.entrySet())
+                        if (entry.getValue().contains(recipeModelDB.getId())){
+                            addFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
+                            break;
+                        }
+                }
+            }
+        });
+
         addFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                readCurrentUser(new FirestoreCallback2() {
+                    @Override
+                    public void onCallBack(UserModelDB currentUser) {
+                        showFavCatDialog(v, currentUser);
+                    }
+                });
             }
         });
 
@@ -195,7 +211,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
         userPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), UserModel.class);
+                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                 intent.putExtra("fragmentname", "viewprofilefragment");
                 startActivity(intent);
             }
@@ -245,6 +261,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
                     recipeModelDB.getComments().add(recipeCommentModel);
                     updateComments(recipeModelDB);
                     writeComment.getText().clear();
+                    userIds.add(user.getUid());
 
                     readUser(new FirestoreCallback() {
                         @Override
@@ -265,21 +282,6 @@ public class ViewRecipeActivity extends AppCompatActivity {
                             });
                         }
                     });
-
-//                    CommentAdapter commentAdapter = new CommentAdapter(ViewRecipeActivity.this, recipeModelDB.getComments(), userModelDBArrayList);
-//                    listView.setAdapter(commentAdapter);
-//                    Utility.setListViewHeightBasedOnChildren(listView);
-//                    listView.setClickable(true);
-//                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                            String userId = recipeModelDB.getComments().get(position).getUserId();
-//                            Intent intent = new Intent(ViewRecipeActivity.this, UserActivity.class);
-//                            intent.putExtra("fragmentname", "viewprofilefragment");
-//                            intent.putExtra("userId", userId);
-//                            startActivity(intent);
-//                        }
-//                    });
                 }
             }
         });
@@ -349,7 +351,12 @@ public class ViewRecipeActivity extends AppCompatActivity {
         addFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                readCurrentUser(new FirestoreCallback2() {
+                    @Override
+                    public void onCallBack(UserModelDB currentUser) {
+                        showFavCatDialog(v, currentUser);
+                    }
+                });
             }
         });
 
@@ -392,6 +399,30 @@ public class ViewRecipeActivity extends AppCompatActivity {
                 });
     }
 
+    public void readCurrentUser(FirestoreCallback2 firestoreCallback2) {
+        userdb.document(user.getUid()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    UserModelDB currentUser = new UserModelDB();
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            Log.d("SUCCESS", document.getId() + " => " + document.getData());
+                            final ObjectMapper mapper = new ObjectMapper();
+                            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                            currentUser = mapper.convertValue(document.getData(), UserModelDB.class);
+                            firestoreCallback2.onCallBack(currentUser);
+                        } else {
+                            Log.w("ERROR", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private interface FirestoreCallback2 {
+        void onCallBack(UserModelDB currentUser);
+    }
+
     public void updateComments(RecipeModelDB recipeModelDB){
         recipedb.document(recipeModelDB.getId()).set(recipeModelDB)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -417,6 +448,12 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
         IngredientAndUtensilDialogFragment dialog = new IngredientAndUtensilDialogFragment(ingredientModels, utensilModels);
         dialog.show(getSupportFragmentManager(), "inuDialog");
+    }
+
+    private void showFavCatDialog(View view, UserModelDB currentUser) {
+        FavouriteCategoryDialogFragment dialog = new FavouriteCategoryDialogFragment(currentUser,recipeModelDB);
+        dialog.show(getSupportFragmentManager(), "FavCatDialog");
+
     }
 
     private void showPopUpMenu(View v) {
