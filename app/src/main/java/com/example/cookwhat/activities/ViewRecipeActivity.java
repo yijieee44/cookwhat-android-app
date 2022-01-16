@@ -139,7 +139,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
 
         for (int z = 0; z < recipeModelDB.getSteps().size(); z++) {
-            images.add(new SlideModel(recipeModelDB.getSteps().get(z).getImage(), null));
+            images.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/cookwhat.appspot.com/o/images%2F" + recipeModelDB.getSteps().get(z).getImage() + "?alt=media", null));
         }
 
         imageSlider.setImageList(images);
