@@ -612,6 +612,7 @@ public class CreateShowGalleryFragment extends Fragment {
                     chipGroup.removeView(chip);
                     selCustomIngredients.remove(chipItem);
                     IngredientModel ingredientModel = new IngredientModel();
+                    ingredientModel.setIcon(-1);
                     ingredientModel.setName(chipItem);
                     ingredientAdapter.removeIngredient(ingredientModel);
                 }
@@ -796,6 +797,7 @@ public class CreateShowGalleryFragment extends Fragment {
                     selCustomUtensils.remove(chipItem);
                     UtensilModel utensilModel = new UtensilModel();
                     utensilModel.setName(chipItem);
+                    utensilModel.setIcon(-1);
                     utensilAdapter.removeUtensil(utensilModel);
                 }
             });

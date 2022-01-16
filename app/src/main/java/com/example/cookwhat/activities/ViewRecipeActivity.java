@@ -34,7 +34,9 @@ import com.denzcoskun.imageslider.interfaces.ItemChangeListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.cookwhat.R;
 import com.example.cookwhat.adapters.CommentAdapter;
+import com.example.cookwhat.fragments.DeleteRecipeDialogFragment;
 import com.example.cookwhat.fragments.IngredientAndUtensilDialogFragment;
+import com.example.cookwhat.fragments.IngredientDetailDialogFragment;
 import com.example.cookwhat.models.IngredientModel;
 import com.example.cookwhat.models.RecipeCommentModel;
 import com.example.cookwhat.models.RecipeModelDB;
@@ -81,6 +83,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
     Dialog INUDialog;
     RecipeModelDB recipeModelDB;
     UserModelDB userModelDB;
+    ChipGroup chipGroup;
 
     ActivityResultLauncher<Intent> createActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -90,8 +93,9 @@ public class ViewRecipeActivity extends AppCompatActivity {
                     if (result.getResultCode() == 123) {
                         Intent data = result.getData();
                         RecipeModelDB editedRecipeModel = (RecipeModelDB) data.getSerializableExtra("recipeModelDB");
-                        Log.d("hehe", "be");
+
                         recipeModelDB = editedRecipeModel;
+                        reloadFromRecipe();
                     }
                 }
             });
@@ -134,7 +138,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
 
         for (int z = 0; z < recipeModelDB.getSteps().size(); z++) {
-            images.add(new SlideModel(recipeModelDB.getSteps().get(z).getImage(), null));
+            images.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/cookwhat.appspot.com/o/images%2F" + recipeModelDB.getSteps().get(z).getImage() + "?alt=media", null));
         }
 
         imageSlider.setImageList(images);
@@ -148,8 +152,8 @@ public class ViewRecipeActivity extends AppCompatActivity {
                     currImageIndex = position;
                     String currImageCaption = recipeModelDB.getSteps().get(currImageIndex).getStep();
 
-                    if (currImageCaption.isEmpty()) {
-                        for (int i = currImageIndex; i > 0; i--) {
+                    if (currImageCaption.isEmpty() && currImageIndex!=0) {
+                        for (int i = currImageIndex; i >= 0; i--) {
                             if (!recipeModelDB.getSteps().get(i).getStep().isEmpty()) {
                                 currImageCaption = recipeModelDB.getSteps().get(i).getStep();
                                 break;
@@ -302,11 +306,65 @@ public class ViewRecipeActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(this.getApplicationContext(), MainActivity.class);
-        startActivity(intent);
+    public void reloadFromRecipe() {
+        ArrayList<SlideModel> images = new ArrayList<>();
+
+        for (int z = 0; z < recipeModelDB.getSteps().size(); z++) {
+            images.add(new SlideModel(recipeModelDB.getSteps().get(z).getImage(), null));
+        }
+
+        imageSlider.setImageList(images);
+
+        recipeCaption.setText(recipeModelDB.getSteps().get(0).getStep());
+
+        imageSlider.setItemChangeListener(new ItemChangeListener() {
+            @Override
+            public void onItemChanged(int position) {
+                if (recipeModelDB.getSteps().size() > position) {
+                    currImageIndex = position;
+                    String currImageCaption = recipeModelDB.getSteps().get(currImageIndex).getStep();
+
+                    if (currImageCaption.isEmpty() && currImageIndex!=0) {
+                        for (int i = currImageIndex; i >= 0; i--) {
+                            if (!recipeModelDB.getSteps().get(i).getStep().isEmpty()) {
+                                currImageCaption = recipeModelDB.getSteps().get(i).getStep();
+                                break;
+                            }
+                        }
+                    }
+
+                    recipeCaption.setText(currImageCaption);
+                }
+            }
+        });
+
+        recipeName.setText(recipeModelDB.getTitle());
+
+        addFav.setText(String.valueOf(recipeModelDB.getNumFav()));
+        addFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        // clear all tag
+        chipGroup = (ChipGroup) findViewById(R.id.ChipGroupTag);
+        chipGroup.removeAllViews();
+
+        for (String tag : recipeModelDB.getTags()) {
+            Chip chip = new Chip(this);
+            chip.setText("#" + tag);
+            chip.setClickable(false);
+            chip.setChipBackgroundColorResource(R.color.light_yellow);
+            chip.setTextColor(getResources().getColor(R.color.black));
+
+            chipGroup.addView(chip);
+        }
+
+        // created time
+        TextView TVCreatedTime = (TextView) findViewById(R.id.TVCreatedTime);
+        TVCreatedTime.setText(recipeModelDB.getCreatedTime());
     }
 
     public void readUser(FirestoreCallback firestoreCallback) {
@@ -373,7 +431,16 @@ public class ViewRecipeActivity extends AppCompatActivity {
 //                        Toast.makeText(getApplicationContext(), String.valueOf(item.getTitle()), Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.delete_post:
-                        Toast.makeText(getApplicationContext(), String.valueOf(item.getTitle()), Toast.LENGTH_SHORT).show();
+                        DeleteRecipeDialogFragment dialog = new DeleteRecipeDialogFragment(recipeModelDB);
+                        dialog.setDialogListener(new DeleteRecipeDialogFragment.DialogListener(){
+                            @Override
+                            public void onFinishEditDialog() {
+                                Log.d("delet", "hehe");
+                                finish();
+                            }
+                        });
+                        dialog.show(getSupportFragmentManager(), "inuDialog");
+//                        Toast.makeText(getApplicationContext(), String.valueOf(item.getTitle()), Toast.LENGTH_SHORT).show();
                         break;
                 }
                 return false;
@@ -381,5 +448,12 @@ public class ViewRecipeActivity extends AppCompatActivity {
         });
 
         popupMenu.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this.getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 }

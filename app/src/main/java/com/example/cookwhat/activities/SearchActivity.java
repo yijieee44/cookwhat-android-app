@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
@@ -72,15 +73,17 @@ public class SearchActivity extends AppCompatActivity {
     List<UtensilModel> utensilModelList;
     FirebaseFirestore firestoreDb;
     Button searchButton;
+    Button backButton;
 
     List<UserModelDB> userList;
     List<RecipeModelSearch> recipeSearchResult;
+    Dialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
+        loadingDialog = new Dialog(this);
         firestoreDb = FirebaseFirestore.getInstance();
         fragmentManager = getSupportFragmentManager();
         ingredientModelList = new ArrayList<>();
@@ -96,9 +99,28 @@ public class SearchActivity extends AppCompatActivity {
                 search();
             }
         });
+
+        backButton = findViewById(R.id.BtnSearchBack);
+        backButton.setVisibility(View.GONE);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                toIngredient();
+            }
+        });
     }
 
     private void search(){
+        loadingDialog.setCancelable(false);
+        loadingDialog.setContentView(R.layout.dialog_loading);
+        loadingDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.black_transparent_background));
+
+        int width = (int)(getResources().getDisplayMetrics().widthPixels);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels);
+
+        loadingDialog.getWindow().setLayout(width, height);
+        loadingDialog.show();
         List<IngredientModel> ingredientModelToSearch = ingredientModelList;
         List<UtensilModel> utensilModelToSearch = utensilModelList;
         List<String> ingredientNameToSearch = new ArrayList<>();
@@ -129,15 +151,15 @@ public class SearchActivity extends AppCompatActivity {
 
                                 }
                                 catch (Exception e){
+
                                     Log.w("ERROR", e.toString());
                                 }
                             }
-
-                            Log.d("ANOTHER SUCCESS!!!", ""+queriedRecipes);
                             organizeAndNavigateToResult(queriedRecipes, ingredientNameToSearch, utensilNameToSearch);
 
 
                         } else {
+                            loadingDialog.cancel();
                             Log.w("ERROR", "Error getting documents.", task.getException());
                         }
                     }
@@ -203,6 +225,7 @@ public class SearchActivity extends AppCompatActivity {
             userList = new ArrayList<>();
             recipeSearchResult = new ArrayList<>();
 
+            loadingDialog.dismiss();
             toResult();
         }
         else{
@@ -235,10 +258,11 @@ public class SearchActivity extends AppCompatActivity {
                                 }
                                 userList = userModelList;
                                 recipeSearchResult = recipeModelSearchList;
-
+                                loadingDialog.dismiss();
                                 toResult();
 
                             } else {
+                                loadingDialog.cancel();
                                 Log.w("ERROR", "Error getting documents.", task.getException());
                             }
                         }
@@ -253,6 +277,7 @@ public class SearchActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
         searchButton.setVisibility(View.GONE);
+        backButton.setVisibility(View.VISIBLE);
 
     }
 
@@ -262,6 +287,7 @@ public class SearchActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
         searchButton.setVisibility(View.VISIBLE);
+        backButton.setVisibility(View.GONE);
 
     }
 

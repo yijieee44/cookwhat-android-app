@@ -161,7 +161,7 @@ public class CreatePreviewFragment extends Fragment {
 
         for (String tag : recipeModel.getTags()) {
             Chip chip = new Chip(getActivity());
-            chip.setText(tag);
+            chip.setText("#" + tag);
             chip.setChipBackgroundColorResource(R.color.light_yellow);
             chip.setTextColor(getResources().getColor(R.color.black));
 
