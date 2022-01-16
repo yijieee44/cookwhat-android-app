@@ -145,10 +145,16 @@ public class CreateActivity extends AppCompatActivity {
                 // Show Gallery > Caption > Preview
                 Fragment currentFragment = fragmentManager.findFragmentById(R.id.FragmentContainerCreate);
                 if (currentFragment instanceof CreateShowGalleryFragment) {
-                    toCreateCaption();
+                    boolean check = checkShowGallery();
+                    if (check) {
+                        toCreateCaption();
+                    }
                     
                 } else if (currentFragment instanceof CreateCaptionFragment) {
-                   toPreview();
+                   boolean check = checkCreateCaption();
+                    if(check) {
+                        toPreview();
+                    }
                 } else if (currentFragment instanceof CreatePreviewFragment) {
                     toCreate();
                 }
@@ -181,6 +187,32 @@ public class CreateActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private boolean checkShowGallery() {
+        // at least one image
+        if(newRecipe.getSteps().size()==0) {
+            Toast.makeText(CreateActivity.this,
+                    "At least one image need to be added.",
+                    Toast.LENGTH_SHORT)
+                    .show();
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean checkCreateCaption() {
+        // check title
+        if(newRecipe.getTitle().equals("")) {
+            Toast.makeText(CreateActivity.this,
+                    "Title cannot be empty",
+                    Toast.LENGTH_SHORT)
+                    .show();
+            return false;
+        }
+
+        return true;
     }
     
     private void toShowGallery() {
