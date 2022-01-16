@@ -68,6 +68,10 @@ public class SearchIngredientFragment extends Fragment {
     RecyclerView ingredientRecycleView;
     RecyclerView utensilRecycleView;
 
+    int[] INGREDIENTS_ICON = Constants.INGREDIENTS_ICON;
+    int[] INGREDIENTS_NAME = Constants.INGREDIENTS_NAME;
+    int[] UTENSILS_ICON = Constants.UTENSILS_ICON;
+    int[] UTENSIL_NAME = Constants.UTENSILS_NAME;
 
     List<IngredientModel> ingredientModelList;
     List<UtensilModel> utensilModelList;
@@ -270,7 +274,7 @@ public class SearchIngredientFragment extends Fragment {
 
                         IngredientModel ingredientModel = new IngredientModel();
                         ingredientModel.setName(getString(displayIngredientName.get(position)));
-                        ingredientModel.setIcon(displayIngredientIcon.get(position));
+                        ingredientModel.setIcon(getIndex(INGREDIENTS_ICON, displayIngredientIcon.get(position)));
                         ingredientAdapter.removeIngredient(ingredientModel);
                         ingredientAdapter.notifyDataSetChanged();
                         ingredientModelList = ingredientAdapter.getIngredientList();
@@ -286,7 +290,7 @@ public class SearchIngredientFragment extends Fragment {
                         selIngredientsItem.add(displayIngredientIcon.get(position));
                         IngredientModel ingredientModel = new IngredientModel();
                         ingredientModel.setName(getString(displayIngredientName.get(position)));
-                        ingredientModel.setIcon(displayIngredientIcon.get(position));
+                        ingredientModel.setIcon(getIndex(INGREDIENTS_ICON, displayIngredientIcon.get(position)));
                         ingredientAdapter.addIngredient(ingredientModel);
                         ingredientModelList = ingredientAdapter.getIngredientList();
                         if(ingredientModelList.size()<=0){
@@ -381,6 +385,7 @@ public class SearchIngredientFragment extends Fragment {
                     selCustomIngredients.remove(chipItem);
                     IngredientModel ingredientModel = new IngredientModel();
                     ingredientModel.setName(chipItem);
+                    ingredientModel.setIcon(-1);
                     ingredientAdapter.removeIngredient(ingredientModel);
                     ingredientModelList = ingredientAdapter.getIngredientList();
                     if(ingredientModelList.size()<=0){
@@ -468,7 +473,7 @@ public class SearchIngredientFragment extends Fragment {
 
                         UtensilModel utensilModel = new UtensilModel();
                         utensilModel.setName(getString(displayUtensilName.get(position)));
-                        utensilModel.setIcon(displayUtensilIcon.get(position));
+                        utensilModel.setIcon(getIndex(UTENSILS_ICON, displayUtensilIcon.get(position)));
                         utensilAdapter.removeUtensil(utensilModel);
                         utensilModelList = utensilAdapter.getUtensilList();
                         if(utensilModelList.size()<=0){
@@ -484,7 +489,7 @@ public class SearchIngredientFragment extends Fragment {
                         selUtensilsItem.add(displayUtensilIcon.get(position));
                         UtensilModel utensilModel = new UtensilModel();
                         utensilModel.setName(getString(displayUtensilName.get(position)));
-                        utensilModel.setIcon(displayUtensilIcon.get(position));
+                        utensilModel.setIcon(getIndex(UTENSILS_ICON, displayUtensilIcon.get(position)));
                         utensilAdapter.addUtensil(utensilModel);
                         utensilModelList = utensilAdapter.getUtensilList();
                         if(utensilModelList.size()<=0){
@@ -579,6 +584,7 @@ public class SearchIngredientFragment extends Fragment {
                     selCustomUtensils.remove(chipItem);
                     UtensilModel utensilModel = new UtensilModel();
                     utensilModel.setName(chipItem);
+                    utensilModel.setIcon(-1);
                     utensilAdapter.removeUtensil(utensilModel);
                     utensilModelList = utensilAdapter.getUtensilList();
                     if(utensilModelList.size()<=0){
@@ -613,6 +619,7 @@ public class SearchIngredientFragment extends Fragment {
                     chipGroup.removeView(chip);
                     selCustomIngredients.remove(newItem);
                     IngredientModel ingredientModel = new IngredientModel();
+                    ingredientModel.setIcon(-1);
                     ingredientModel.setName(newItem);
                     ingredientAdapter.removeIngredient(ingredientModel);
                     ingredientModelList = ingredientAdapter.getIngredientList();
@@ -630,7 +637,7 @@ public class SearchIngredientFragment extends Fragment {
             selCustomIngredients.add(newItem);
             IngredientModel ingredientModel = new IngredientModel();
             ingredientModel.setName(newItem);
-            ingredientModel.setIcon(R.drawable.i0067_others);
+            ingredientModel.setIcon(-1);
             ingredientAdapter.addIngredient(ingredientModel);
             ingredientModelList = ingredientAdapter.getIngredientList();
             if(ingredientModelList.size()<=0){
@@ -657,6 +664,7 @@ public class SearchIngredientFragment extends Fragment {
                     chipGroup.removeView(chip);
                     selCustomUtensils.remove(newItem);
                     UtensilModel utensilModel = new UtensilModel();
+                    utensilModel.setIcon(-1);
                     utensilModel.setName(newItem);
                     utensilAdapter.removeUtensil(utensilModel);
                     utensilModelList = utensilAdapter.getUtensilList();
@@ -674,7 +682,7 @@ public class SearchIngredientFragment extends Fragment {
             selCustomUtensils.add(newItem);
             UtensilModel utensilModel = new UtensilModel();
             utensilModel.setName(newItem);
-            utensilModel.setIcon(R.drawable.i0067_others);
+            utensilModel.setIcon(-1);
             utensilAdapter.addUtensil(utensilModel);
             utensilModelList = utensilAdapter.getUtensilList();
             if(utensilModelList.size()<=0){
@@ -689,5 +697,14 @@ public class SearchIngredientFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private int getIndex(int[] list, int item) {
+        for(int i=0; i<list.length; i++) {
+            if (list[i] == item){
+                return i;
+            }
+        }
+        return -1;
     }
 }
