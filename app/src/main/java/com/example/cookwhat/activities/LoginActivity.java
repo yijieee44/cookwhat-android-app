@@ -1,17 +1,17 @@
 package com.example.cookwhat.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cookwhat.R;
-
 import com.example.cookwhat.fragments.LoginFragment;
 import com.example.cookwhat.fragments.RegisterCompleteFragment;
-
-import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -64,5 +64,10 @@ public class LoginActivity extends AppCompatActivity {
         ft.replace(R.id.NHFLogin, loginFragment);
         ft.addToBackStack(null);
         ft.commit();
+    }
+
+    public void hideKeyboard(View view){
+        InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),0);
     }
 }

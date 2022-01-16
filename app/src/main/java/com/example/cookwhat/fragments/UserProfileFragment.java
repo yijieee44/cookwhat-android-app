@@ -1,7 +1,7 @@
 package com.example.cookwhat.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,21 +15,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
-import com.example.cookwhat.EditAboutMePopUp;
 import com.example.cookwhat.ExpandableHeightGridView;
 import com.example.cookwhat.R;
+import com.example.cookwhat.activities.FavouriteActivity;
 import com.example.cookwhat.activities.UserActivity;
 import com.example.cookwhat.followPopUp;
 import com.example.cookwhat.models.RecipeModel;
 import com.example.cookwhat.models.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -42,7 +40,7 @@ import java.util.ArrayList;
  * Use the {@link UserProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UserProfileFragment extends Fragment implements EditAboutMePopUp.passData {
+public class UserProfileFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,49 +53,22 @@ public class UserProfileFragment extends Fragment implements EditAboutMePopUp.pa
     private String userID;
     ArrayList<String> recipeName =new ArrayList<>();
     ArrayList<Integer> Img = new ArrayList<>();
-    ArrayList<String> followerList = new ArrayList<>();
-    ArrayList<String> followingList = new ArrayList<>();
+    ArrayList<String> followerNameList = new ArrayList<>();
+    ArrayList<String> followingNameList = new ArrayList<>();
     ArrayList<String> followerIDList = new ArrayList<>();
     ArrayList<String> followingIDList = new ArrayList<>();
     ExpandableHeightGridView tabcontent;
     TextView textcontent;
     LinearLayout ll;
     ConstraintLayout cl, clmain;
+    FirebaseAuth mAuth;
+    Boolean showTabAboutMe = false;
 
 
 
     public UserProfileFragment() {
-
-
         //throw arraylist of usermodels of following and followers from db
-
-
-
     }
-    //method to create arraylist of follower and following namelist
-
-   /* private void getSecretRecipe(){
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("recipe")
-                .whereEqualTo("username", "yuan")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            for(QueryDocumentSnapshot document: task.getResult()){
-                                recipeName.add(document.getData().get("recipe_name").toString());
-
-                            }
-                    }
-
-                    }
-                });
-
-        System.out.println(recipeName.size());
-
-    }*/
 
     /**
      * Use this factory method to create a new instance of
@@ -121,13 +92,16 @@ public class UserProfileFragment extends Fragment implements EditAboutMePopUp.pa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            Bundle bundle = this.getArguments();
+            String action = bundle.getString("action");
+            if(action.equals("updated about me")){
+                showTabAboutMe = true;
+            }
         }
+        mAuth = FirebaseAuth.getInstance();
 
-        UserActivity activity = (UserActivity)  getActivity();
-        userID = activity.getUserID();
-
+        userID = mAuth.getCurrentUser().getUid();
+        System.out.println("getUserid"+userID);;
 
         /*for(int i=0; i<recipeName.size(); i++){
             recipeName.add(Integer.toString(i));
@@ -138,7 +112,7 @@ public class UserProfileFragment extends Fragment implements EditAboutMePopUp.pa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        container.removeAllViews();
         return inflater.inflate(R.layout.fragment_user_profile, container, false);
     }
 
@@ -146,6 +120,8 @@ public class UserProfileFragment extends Fragment implements EditAboutMePopUp.pa
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("My Profile");
+        System.out.println("getUserIdin on view created:"+userID);
+
         readData(new FirestoreOnCallBack() {
             Button favCategory = view.findViewById(R.id.Btn_Favourite);
             Button btnFollower = view.findViewById(R.id.Btn_Follower);
@@ -159,32 +135,33 @@ public class UserProfileFragment extends Fragment implements EditAboutMePopUp.pa
             @Override
             public void onCallBack(UserModel usermodel,  ArrayList<RecipeModel> createdRecipes) {
                 this.usermodel = usermodel;
-                numFollowers = usermodel.getFollowersNumber();
-                numFollowings = usermodel.getFollowingsNumber();
+                tvUserName.setText(usermodel.getUserName());
+                followerNameList = usermodel.getFollowersName();
+                followerIDList = usermodel.getFollowersId();
+                followingIDList = usermodel.getFollowingsId();
+                followingNameList = usermodel.getFollowingsName();
+                numFollowers = followerNameList.size();
+                numFollowings = followingNameList.size();
                 btnFollower.setText(Integer.toString(numFollowers));
                 btnFollowing.setText(Integer.toString(numFollowings));
-                tvUserName.setText(usermodel.getUserName());
-                followingIDList = usermodel.getFollowingsID();
+
+                for(int i =0; i< createdRecipes.size(); i++){
+                    recipeName.add(createdRecipes.get(i).getTitle());
+                }
 
                 View.OnClickListener followerOCL = new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //pass followerArraylist and followernamelist
-                        followerList = usermodel.getFollowers();
-                        followerIDList = usermodel.getFollowersID();
-                        System.out.println(followerIDList);
-                        followPopUp showFollowList = new followPopUp(view, "follower", followerList, followerIDList, userID, followingIDList);
+                        followPopUp showFollowList = new followPopUp(view, "follower", followerNameList, followerIDList, userID, followingIDList);
                         showFollowList.show(getActivity().getSupportFragmentManager(), "ProfilePicDialog");
                     }
                 };
                 View.OnClickListener followingOCL = new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        followingList = usermodel.getFollowings();
-                        followPopUp showFollowList = new followPopUp(view, "following", followingList, followingIDList,userID, followingIDList);
+                        followPopUp showFollowList = new followPopUp(view, "following", followingNameList, followingIDList,userID, followingIDList);
                         showFollowList.show(getActivity().getSupportFragmentManager(), "ProfilePicDialog");
                     }
-
                 };
 
                 btnFollower.setOnClickListener(followerOCL);
@@ -193,9 +170,11 @@ public class UserProfileFragment extends Fragment implements EditAboutMePopUp.pa
                 View.OnClickListener favCategoryOCL = new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //fetch favourite category
-
-                        Navigation.findNavController(view).navigate(R.id.DestFavouriteCategory);
+                        //Map<String,ArrayList<String>> favMap = usermodel.getFavouriteCategory();
+                        //ArrayList<ArrayList<String>> favourite = new ArrayList<ArrayList<String>>(favMap.values());
+                        Intent intent = new Intent(getActivity(),FavouriteActivity.class);
+                        intent.putExtra("userId", usermodel.getUserId());
+                        startActivity(intent);
                     }
                 };
 
@@ -214,6 +193,9 @@ public class UserProfileFragment extends Fragment implements EditAboutMePopUp.pa
                     tabcontent.setAdapter(recipeAdapter);
                 }
 
+
+
+                TabLayout tabLayout = view.findViewById(R.id.TL_ProfileTab);
                 cl = view.findViewById(R.id.CL_SecretRecipe);
                 cl.setVisibility(View.VISIBLE);
 
@@ -222,7 +204,7 @@ public class UserProfileFragment extends Fragment implements EditAboutMePopUp.pa
 
                 removeChild(ll);
 
-                TabLayout tabLayout = view.findViewById(R.id.TL_ProfileTab);
+
                 tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                     @Override
                     public void onTabSelected(TabLayout.Tab tab) {
@@ -240,12 +222,38 @@ public class UserProfileFragment extends Fragment implements EditAboutMePopUp.pa
                                 addChild(ll, clmain);
                                 ll.setVisibility(View.VISIBLE);
                                 Button edit = view.findViewById(R.id.Btn_Edit);
+                                TextView description = view.findViewById(R.id.TV_TabDescription);
+                                TextView email = view.findViewById(R.id.TV_TabEmail);
+                                TextView country = view.findViewById(R.id.TV_TabCountry);
+                                TextView level = view.findViewById(R.id.TV_TabLevel);
+                                TextView prefer = view.findViewById(R.id.TV_TabPreferences);
+                                description.setText(usermodel.getDescription());
+
+                                if(usermodel.getShowEmail()){
+                                    email.setText(usermodel.getEmailAddr());
+                                }
+                                else{
+                                    email.setText("Email Address is not allowed to be shown");
+                                }
+
+                                country.setText(usermodel.getCountry());
+                                level.setText(usermodel.getLevel());
+                                if(usermodel.getShowPreferences()){
+                                    prefer.setText(usermodel.getPreferences().get(0));
+                                }
+                                else{
+                                    prefer.setText("Preferences is not allowed to be shown");
+                                }
+
                                 View.OnClickListener editOCL = new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        EditAboutMePopUp editAboutMePopUp = new EditAboutMePopUp();
-                                        editAboutMePopUp.setTargetFragment(UserProfileFragment.this,1);
-                                        editAboutMePopUp.show(getFragmentManager(),"deleteOrMoveTo");
+                                        Intent intent = new Intent(getActivity(), UserActivity.class);
+                                        intent.putExtra("fragmentname", "EditAboutMe");
+                                        intent.putExtra("usermodel", usermodel);
+                                        System.out.println("Model in up fragment"+ usermodel.getUserName());
+                                        System.out.println("Preferences in up"+usermodel.getPreferences());
+                                        startActivity(intent);
                                     }
                                 };
                                 edit.setOnClickListener(editOCL);
@@ -276,7 +284,6 @@ public class UserProfileFragment extends Fragment implements EditAboutMePopUp.pa
     }
 
 
-
     public void removeChild(ViewGroup viewgroup){
         ((ViewGroup)viewgroup.getParent()).removeView(viewgroup);
 
@@ -284,11 +291,6 @@ public class UserProfileFragment extends Fragment implements EditAboutMePopUp.pa
 
     public void addChild(ViewGroup child, ViewGroup parent){
         parent.addView(child);
-    }
-
-    @Override
-    public void getData(String gender, Integer age, String country) {
-        System.out.println("Gender: "+gender+"age: "+ age+"Country: "+country);
     }
 
     private class CustomAdapter extends BaseAdapter {
@@ -319,7 +321,6 @@ public class UserProfileFragment extends Fragment implements EditAboutMePopUp.pa
             text.setText(recipeName.get(i));
 
             return view1;
-
         }
     }
 
@@ -327,79 +328,36 @@ public class UserProfileFragment extends Fragment implements EditAboutMePopUp.pa
        FirebaseFirestore db = FirebaseFirestore.getInstance();
        CollectionReference userCollection = db.collection("user");
        CollectionReference recipeCollection = db.collection("recipe");
-
-       ArrayList<RecipeModel> createdRecipes = new ArrayList<>();
-       UserModel usermodel = new UserModel();
-
-       userCollection.document(userID).get()
-               .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+       System.out.println("Userid readData:"+ userID);
+       userCollection.whereEqualTo("userId", userID).get()
+               .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                    @Override
-                   public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
+                   public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                       if(task.isSuccessful()){
+                           ArrayList<RecipeModel> recipeModelList = new ArrayList<>();
+                           UserModel usermodel = new UserModel();
+                           for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
+                                usermodel = queryDocumentSnapshot.toObject(UserModel.class);
+                               //System.out.println(documentSnapshot.get("userId"));
+                               System.out.println(usermodel.getUserId());
 
-                       System.out.println(documentSnapshot.get("userName"));
-                       usermodel.setUserName((String) documentSnapshot.get("userName"));
-                       ArrayList<String> followingsID = (ArrayList<String>) documentSnapshot.get("followings");
-                       ArrayList<String> followings = new ArrayList<>();
-                       for(int i =0; i<followingsID.size();i++){
-                           System.out.println(followingsID.get(i));
-                           usermodel.setFollowingsID(followingsID.get(i));
-
-                       }
-                       if(followingsID != null){
-                           for(int i =0; i< followingsID.size(); i++){
-                               userCollection.document(followingsID.get(i)).get()
-                                       .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                           @Override
-                                           public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
-                                               usermodel.setFollowings((String) documentSnapshot.get("userName"));
-                                           }
-                                       });
                            }
-                       }
-
-                       userCollection.whereArrayContains("followings",userID).get()
-                               .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                   @Override
-                                   public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                                       if(task.isSuccessful()){
-                                           for(QueryDocumentSnapshot document : task.getResult()){
-                                               usermodel.setFollowersID(document.getId());
-                                               usermodel.setFollowers((String) document.get("userName"));
-
-
+                           recipeCollection.whereEqualTo("userId", usermodel.getUserId()).get()
+                                   .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+                                       @Override
+                                       public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                           if(task.isSuccessful()){
+                                               for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
+                                                   recipeModelList.add(queryDocumentSnapshot.toObject(RecipeModel.class));
+                                               }
                                            }
-                                           recipeCollection.whereEqualTo("userID", userID).get()
-                                                   .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                       @Override
-                                                       public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                           if(task.isSuccessful()){
-                                                               for(QueryDocumentSnapshot document : task.getResult()){
-                                                                   RecipeModel recipeModel = new RecipeModel();
-                                                                   recipeModel = document.toObject(RecipeModel.class);
-                                                                   createdRecipes.add(recipeModel);
-                                                               }
-                                                               firestoreOnCallBack.onCallBack(usermodel,  createdRecipes);
-                                                           }
-                                                           else{
-                                                               Log.w("ERROR", "Error getting created recipe.", task.getException());
-                                                           }
-                                                       }
-                                                   });
-
                                        }
-                                       else{
-                                           Log.w("ERROR", "Error getting documents.", task.getException());
-                                       }
-                                   }
-                               });
+                                   });
 
-
+                           firestoreOnCallBack.onCallBack(usermodel,recipeModelList);
+                       }
                    }
                });
-
-
-
 
 
 
@@ -409,9 +367,7 @@ public class UserProfileFragment extends Fragment implements EditAboutMePopUp.pa
 
     private interface FirestoreOnCallBack{
 
-
-        void onCallBack(UserModel usermodel, ArrayList<RecipeModel>createdRecipes);
-
+        void onCallBack(UserModel usermodel, ArrayList<RecipeModel>recipeModels);
 
     }
 }

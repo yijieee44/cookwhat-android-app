@@ -1,44 +1,34 @@
 package com.example.cookwhat.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class UserModel   {
+public class UserModel implements Parcelable {
 
     private String userId;
     private int profilePic;
     private String userName;
     private String emailAddr;
-
-
-    private ArrayList<String> preferences = new ArrayList<>();
-
-    private ArrayList<String> favouriteCategory =  new ArrayList<>();
-
-
-    private ArrayList<String> followers = new ArrayList<>();
-
-    private ArrayList<String> followings = new ArrayList<>();
-
-    private ArrayList<String> followingsID = new ArrayList<>();
-
-    private ArrayList<String> followersID = new ArrayList<>();
-
-    private ArrayList<String> favouriteFood;
-
-
-
-    //private Map<String, ArrayList<String>> favouriteCategory;
-
+    private String description;
+    private Boolean isShowPreferences;
+    private Boolean isShowEmail;
+    private String country;
+    private String level;
+    private List<String> preference = new ArrayList<>();
+    private ArrayList<Integer> preferencesResId = new ArrayList<>();
+    private ArrayList<String> followersName = new ArrayList<>();
+    private ArrayList<String> followingsName = new ArrayList<>();
+    private ArrayList<String> followingsId = new ArrayList<>();
+    private ArrayList<String> followersId = new ArrayList<>();
+    private Map<String, ArrayList<String>> favouriteCategory = new HashMap<>();
 
 
     private String password;
-
-    private ArrayList<String> followersNameList;
-
-    private ArrayList<String> followingsNameList;
-
-
 
     public UserModel(String userName, String emailAddr, String password){
         this.userName = userName;
@@ -47,12 +37,51 @@ public class UserModel   {
     }
 
     public UserModel() {
+        String[] favCategory = {"Arabic", "Chinese", "European", "Indian", "Mediterranean", "Korean", "Japanese", "South-East Asia" } ;
+        for(int i =0; i<favCategory.length; i++){
+            this.favouriteCategory.put(favCategory[i],new ArrayList<String>());
+        }
+        this.isShowEmail = false;
+        this.isShowPreferences = false;
     }
+
+
+    protected UserModel(Parcel in) {
+        userId = in.readString();
+        profilePic = in.readInt();
+        userName = in.readString();
+        emailAddr = in.readString();
+        description = in.readString();
+        country = in.readString();
+        level = in.readString();
+        byte tmpIsShowPreferences = in.readByte();
+        isShowPreferences = tmpIsShowPreferences == 0 ? null : tmpIsShowPreferences == 1;
+        byte tmpIsShowEmail = in.readByte();
+        isShowEmail = tmpIsShowEmail == 0 ? null : tmpIsShowEmail == 1;
+        preference = in.createStringArrayList();
+        followersName = in.createStringArrayList();
+        followingsName = in.createStringArrayList();
+        followingsId = in.createStringArrayList();
+        followersId = in.createStringArrayList();
+        password = in.readString();
+    }
+
+    public static final Creator<UserModel> CREATOR = new Creator<UserModel>() {
+        @Override
+        public UserModel createFromParcel(Parcel in) {
+            return new UserModel(in);
+        }
+
+        @Override
+        public UserModel[] newArray(int size) {
+            return new UserModel[size];
+        }
+    };
 
     public String getUserId() { return userId; }
 
-    public void setFavouriteCategory(String addCategory) {
-        this.favouriteCategory.add(1,addCategory);
+    public void setFavouriteCategory(Map <String, ArrayList<String>> favouriteCategory) {
+        this.favouriteCategory = favouriteCategory;
     }
 
     public void setEmailAddr(String emailAddr) {
@@ -60,30 +89,25 @@ public class UserModel   {
     }
 
 
-
-
-    public void setFollowers(String follower) {
-        this.followers.add(follower) ;
+    public void setFollowersName(ArrayList<String> followersName) {
+        this.followersName = followersName;
     }
 
-    public void setFollowings(String following) {
-        this.followings.add(following);
+    public void setFollowingsName(ArrayList<String> followingsName) {
+        this.followingsName = followingsName;
     }
 
-    public void setFollowersID(String followerID) {
-        this.followersID.add(followerID) ;
+    public void setFollowersId(ArrayList<String> followersId) {
+        this.followersId = followersId;
     }
 
-    public void setFollowingsID(String followingID) {
-        this.followingsID.add(followingID);
+    public void setFollowingsId(ArrayList<String> followingsId) {
+        this.followingsId = followingsId;
     }
 
-    public void setPreferences(String prefer) {
-        this.preferences.add(prefer);
+    public void setPreferences(List<String> preference) {
+        this.preference = preference;
     }
-
-
-
 
     public void setUserName(String userName) {
         this.userName = userName;
@@ -95,50 +119,10 @@ public class UserModel   {
 
     public void setUserId(String userId) { this.userId = userId; }
 
-    /*public ArrayList <String> getFollowersNameList(){
-        ArrayList<String>namelist = new ArrayList<>();
-        if (followers != null){
-            for (int i =0; i<this.followers.size();i++){
-                namelist.add(this.followers.get(i).getUserName());
-            }
-            Collections.sort(namelist);
-        }
-        return namelist;
-    }*/
-
-
     public void setPassword(String password) {
         this.password = password;
     }
 
-   /* public UserModel getSpecificFollower(String followername){
-        ArrayList<String> namelist = this.getFollowersNameList();
-        if (namelist.contains(followername)){
-            int p = this.followers.indexOf(followername);
-            return this.followers.get(p);
-        }
-        return null;
-    }*/
-
-   /* public ArrayList <String> getFollowingsNameList(){
-        ArrayList<String>namelist = new ArrayList<>();
-        if (followings != null) {
-            for (int i =0; i<this.followings.size();i++){
-                namelist.add(this.followings.get(i).getUserName());
-            }
-            Collections.sort(namelist);
-        }
-        return namelist;
-    }
-
-    public UserModel getSpecificFollowing(String followingname){
-        ArrayList<String> namelist = this.getFollowingsNameList();
-        if (namelist.contains(followingname)){
-            int p = this.followings.indexOf(followingname);
-            return this.followings.get(p);
-        }
-        return null;
-    }*/
 
     public int getProfilePic() {
         return profilePic;
@@ -148,37 +132,33 @@ public class UserModel   {
         return password;
     }
 
-    public ArrayList<String> getPreferences() {
-        return preferences;
+    public List<String> getPreferences() {
+        return preference;
     }
 
-    public ArrayList<String> getFavouriteCategory() {
+    public Map<String, ArrayList<String>> getFavouriteCategory() {
         return favouriteCategory;
     }
 
-    public ArrayList<String> getFavouriteFood() {
-        return favouriteFood;
+
+    public ArrayList<String> getFollowersName() {
+        return followersName;
     }
 
-    public ArrayList<String> getFollowers() {
-        return followers;
+    public ArrayList<String> getFollowingsName() {
+        return followingsName;
     }
 
-    public ArrayList<String> getFollowings() {
-        return followings;
+    public ArrayList<String> getFollowersId() {
+        return followersId; }
+
+    public ArrayList<String> getFollowingsId() {
+        return followingsId;
     }
 
-    public ArrayList<String> getFollowersID() {
-        return followersID;
-    }
+    public Integer getFollowingsNumber(){ return this.followingsName.size(); }
 
-    public ArrayList<String> getFollowingsID() {
-        return followingsID;
-    }
-
-    public Integer getFollowingsNumber(){ return this.followings.size(); }
-
-    public Integer getFollowersNumber(){ return this.followers.size(); }
+    public Integer getFollowersNumber(){ return this.followersName.size(); }
 
     public String getEmailAddr() {
         return emailAddr;
@@ -189,6 +169,81 @@ public class UserModel   {
     }
 
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean getShowPreferences() {
+        return isShowPreferences;
+    }
+
+    public void setShowPreferences(Boolean showPreferences) {
+        isShowPreferences = showPreferences;
+    }
+
+    public Boolean getShowEmail() {
+        return isShowEmail;
+    }
+
+    public void setShowEmail(Boolean showEmail) {
+        isShowEmail = showEmail;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public static Creator<UserModel> getCREATOR() {
+        return CREATOR;
+    }
+
+    public ArrayList<Integer> getPreferencesResId() {
+        return preferencesResId;
+    }
+
+    public void setPreferencesResId(ArrayList<Integer> preferencesResId) {
+        this.preferencesResId = preferencesResId;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(userId);
+        parcel.writeInt(profilePic);
+        parcel.writeString(userName);
+        parcel.writeString(emailAddr);
+        parcel.writeString(description);
+        parcel.writeString(country);
+        parcel.writeString(level);
+        parcel.writeByte((byte) (isShowPreferences == null ? 0 : isShowPreferences ? 1 : 2));
+        parcel.writeByte((byte) (isShowEmail == null ? 0 : isShowEmail ? 1 : 2));
+        parcel.writeStringList(preference);
+        parcel.writeStringList(followersName);
+        parcel.writeStringList(followingsName);
+        parcel.writeStringList(followingsId);
+        parcel.writeStringList(followersId);
+        parcel.writeString(password);
+    }
 }
 
 

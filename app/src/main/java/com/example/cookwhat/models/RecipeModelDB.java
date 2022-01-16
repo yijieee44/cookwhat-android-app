@@ -1,6 +1,7 @@
 package com.example.cookwhat.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeModelDB implements Serializable {
@@ -168,5 +169,38 @@ public class RecipeModelDB implements Serializable {
     }
 
 
+    public List<IngredientModel> ingListToIngredientModel () {
+        List<IngredientModel> ingredientModels = new ArrayList<IngredientModel>();
+
+        for (int i=0; i<this.getIngName().size(); i++) {
+            IngredientModel ingredientModel = new IngredientModel();
+            ingredientModel.setName(this.getIngName().get(i));
+            ingredientModel.setIcon(this.getIngIcon().get(i));
+            ingredientModel.setMemo(this.getIngMemo().get(i));
+            ingredientModel.setQuantity(this.getIngQuantity().get(i));
+            ingredientModel.setWeight(this.getIngWeight().get(i));
+            ingredientModel.setUnitQuantity(this.getIngUnitQuantity().get(i));
+            ingredientModel.setUnitWeight(this.getIngUnitWeight().get(i));
+
+            ingredientModels.add(ingredientModel);
+        }
+
+        return ingredientModels;
+    }
+
+    public List<UtensilModel> utListToUtensilsModel () {
+        List<UtensilModel> utensilModels = new ArrayList<UtensilModel>();
+
+        for (int i=0; i<this.getUtName().size(); i++) {
+            UtensilModel utensilModel = new UtensilModel();
+            utensilModel.setName(this.getUtName().get(i));
+            utensilModel.setIcon(this.getUtIcon().get(i));
+            utensilModel.setMemo(this.getUtMemo().get(i));
+
+            utensilModels.add(utensilModel);
+        }
+
+        return utensilModels;
+    }
 
 }

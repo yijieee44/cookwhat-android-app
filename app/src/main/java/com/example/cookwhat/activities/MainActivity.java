@@ -13,6 +13,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
@@ -20,6 +22,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.cookwhat.R;
 import com.example.cookwhat.database.DatabaseHelper;
 import com.example.cookwhat.database.UserTableContract;
+import com.example.cookwhat.fragments.UserProfileFragment;
 import com.example.cookwhat.models.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -125,6 +128,15 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        String action = getIntent().getStringExtra("action");
+
+        if(action != null){
+            if(action.equals("updated about me")){
+                startFragment(action);
+            }
+        }
+
+
         //DB Code
 //        FirebaseFirestore db = FirebaseFirestore.getInstance();
 //        IngredientModel model = new IngredientModel();
@@ -255,6 +267,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         dbHelper.close();
         super.onDestroy();
+    }
+
+    public void startFragment(String action){
+        UserProfileFragment userProfileFragment = new UserProfileFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putString("action",action);
+        userProfileFragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.NHFMain, userProfileFragment);
+        fragmentTransaction.commit();
+
     }
 
 }

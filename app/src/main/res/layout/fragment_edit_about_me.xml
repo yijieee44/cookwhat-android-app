@@ -3,62 +3,66 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".fragments.EditAboutMe">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:onClick="hideKeyBoard">
 
             <EditText
                 android:id="@+id/ET_Description"
-                android:layout_width="215dp"
-                android:layout_height="38dp"
+                android:layout_width="342dp"
+                android:layout_height="106dp"
                 android:layout_marginBottom="24dp"
+                android:background="@color/nude"
                 android:ems="10"
                 android:fontFamily="sans-serif"
                 android:gravity="start|top"
                 android:hint="Tell us more about you"
                 android:inputType="textMultiLine"
                 android:singleLine="false"
-                android:textSize="14sp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/textView14"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.25"
+                app:layout_constraintHorizontal_bias="0.48"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/TV_Description"
-                android:layout_width="95dp"
-                android:layout_height="19dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="8dp"
                 android:fontFamily="@font/candyjelly"
                 android:text="Description"
-                android:textSize="20sp"
+                android:textSize="30sp"
                 app:layout_constraintBottom_toTopOf="@+id/ET_Description"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.158"
+                app:layout_constraintHorizontal_bias="0.14"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/textView14"
-                android:layout_width="114dp"
-                android:layout_height="17dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/candyjelly"
                 android:text="Email Address"
-                android:textSize="20sp"
+                android:textSize="30sp"
                 app:layout_constraintBottom_toTopOf="@+id/TV_AbtMeEmail"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.168"
@@ -71,32 +75,32 @@
                 android:layout_marginBottom="4dp"
                 android:fontFamily="sans-serif"
                 android:text="TextView"
-                android:textSize="14sp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/CB_ShowEmail"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.141"
+                app:layout_constraintHorizontal_bias="0.14"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <CheckBox
                 android:id="@+id/CB_ShowEmail"
-                android:layout_width="198dp"
-                android:layout_height="22dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 android:text="Show Email Address to Others"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/textView9"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.234"
+                app:layout_constraintHorizontal_bias="0.25"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/textView9"
-                android:layout_width="74dp"
-                android:layout_height="19dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
                 android:fontFamily="@font/candyjelly"
                 android:text="Country"
-                android:textSize="20sp"
+                android:textSize="30sp"
                 app:layout_constraintBottom_toTopOf="@+id/SPN_Country"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.142"
@@ -104,32 +108,34 @@
 
             <Spinner
                 android:id="@+id/SPN_Country"
-                android:layout_width="200dp"
-                android:layout_height="29dp"
+                android:layout_width="226dp"
+                android:layout_height="44dp"
                 android:layout_marginBottom="24dp"
+                android:background="@color/nude"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/textView10"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.232"
+                app:layout_constraintHorizontal_bias="0.25"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <TextView
                 android:id="@+id/textView10"
-                android:layout_width="179dp"
-                android:layout_height="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
                 android:fontFamily="@font/candyjelly"
                 android:text="Level of Cooking Skills"
-                android:textSize="20sp"
+                android:textSize="30sp"
                 app:layout_constraintBottom_toTopOf="@+id/SPN_Level"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.215"
+                app:layout_constraintHorizontal_bias="0.26"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Spinner
                 android:id="@+id/SPN_Level"
-                android:layout_width="203dp"
-                android:layout_height="29dp"
+                android:layout_width="226dp"
+                android:layout_height="41dp"
                 android:layout_marginBottom="24dp"
                 app:layout_constraintBottom_toTopOf="@+id/textView13"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -144,18 +150,17 @@
                 android:layout_marginBottom="7dp"
                 android:fontFamily="@font/candyjelly"
                 android:text="Preferences"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toTopOf="@+id/CG_AbtMePreferences"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toTopOf="@+id/CG_Preferences"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.147"
+                app:layout_constraintHorizontal_bias="0.16"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <com.google.android.material.chip.ChipGroup
-                android:id="@+id/CG_AbtMePreferences"
-                android:layout_width="310dp"
-                android:layout_height="132dp"
-                android:layout_marginBottom="10dp"
-                android:scrollbars="vertical"
+                android:id="@+id/CG_Preferences"
+                android:layout_width="347dp"
+                android:layout_height="336dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/CB_ShowPreferences"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
@@ -168,168 +173,168 @@
                     android:text="American" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Arabic"
+                    android:id="@+id/chip5"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Arabic" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Chinese"
+                    android:id="@+id/chip6"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Chinese" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_French"
+                    android:id="@+id/chip7"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="French" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_German"
+                    android:id="@+id/chip9"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="German" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Greek"
+                    android:id="@+id/chip10"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Greek" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Hungary"
+                    android:id="@+id/chip11"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hungary" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Indian"
+                    android:id="@+id/chip12"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Indian" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Italian"
+                    android:id="@+id/chip13"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Italian" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Japanese"
+                    android:id="@+id/chip14"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Japanese" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Korean"
+                    android:id="@+id/chip15"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Korean" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Mediterranean"
+                    android:id="@+id/chip16"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Mediterranean" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Mexican"
+                    android:id="@+id/chip17"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Mexican" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Spanish"
+                    android:id="@+id/chip18"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Spanish" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Thailand"
+                    android:id="@+id/chip19"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Thailand" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Turkey"
+                    android:id="@+id/chip20"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Turkey" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Vietnam"
+                    android:id="@+id/chip21"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Vietnam" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_SoutheastAsia"
+                    android:id="@+id/chip22"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Southeast Asia" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_European"
+                    android:id="@+id/chip23"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="European" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Vegan"
+                    android:id="@+id/chip24"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Vegan" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Meatlovers"
+                    android:id="@+id/chip25"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Meat-lovers" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Halal"
+                    android:id="@+id/chip26"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Halal" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Porkfree"
+                    android:id="@+id/chip27"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Pork-free" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Beeffree"
+                    android:id="@+id/chip28"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Beef-free" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/C_Muttonfree"
+                    android:id="@+id/chip29"
                     style="@style/CustomChipStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -338,10 +343,12 @@
 
             <Button
                 android:id="@+id/Btn_DoneEdit"
-                android:layout_width="77dp"
-                android:layout_height="45dp"
-                android:layout_marginBottom="10dp"
+                android:layout_width="106dp"
+                android:layout_height="71dp"
+                android:layout_marginBottom="40dp"
+                android:fontFamily="@font/candyjelly"
                 android:text="Done"
+                android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -349,14 +356,14 @@
 
             <CheckBox
                 android:id="@+id/CB_ShowPreferences"
-                android:layout_width="222dp"
-                android:layout_height="28dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="63dp"
                 android:text="Show preferences to others"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/Btn_DoneEdit"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.269"
+                app:layout_constraintHorizontal_bias="0.22"
                 app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

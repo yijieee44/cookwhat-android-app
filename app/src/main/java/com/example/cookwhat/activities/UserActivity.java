@@ -1,7 +1,9 @@
 package com.example.cookwhat.activities;
 
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -9,9 +11,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cookwhat.R;
-import com.example.cookwhat.fragments.CreateShowGalleryFragment;
+import com.example.cookwhat.fragments.EditAboutMe;
 import com.example.cookwhat.fragments.FavouriteFragment;
 import com.example.cookwhat.fragments.ViewProfileFragment;
+import com.example.cookwhat.models.UserModel;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -26,12 +29,12 @@ public class UserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user);
 
         String fragmentname = getIntent().getStringExtra("fragmentname");
-        startFragmentViewOtherProfile(fragmentname);
+        startFragment(fragmentname);
 
 
-        Intent i = getIntent();
-        this.userID = i.getStringExtra("userID");
-        System.out.println("In user activity"+userID);
+        //Intent i = getIntent();
+        //this.userID = i.getStringExtra("userID");
+
 
         //NavHostFragment host = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.NHFUser);
 
@@ -41,13 +44,23 @@ public class UserActivity extends AppCompatActivity {
         return this.userID;
     }
 
-    public void startFragmentViewOtherProfile(String fragmentname){
+    public void startFragment(String fragmentname){
         Fragment nfhuser = getSupportFragmentManager().findFragmentById(R.id.NHFUser);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if(fragmentname.equals("viewprofilefragment")){
 
             transaction.replace(R.id.NHFUser, new ViewProfileFragment()).commit();
+        }
+        else if(fragmentname.equals("EditAboutMe")){
+
+            UserModel usermodel = getIntent().getParcelableExtra("usermodel");
+            System.out.println("Usermodel in useractivity:"+ usermodel.getUserName());
+            EditAboutMe editAboutMe = new EditAboutMe();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("usermodel", usermodel);
+            editAboutMe.setArguments(bundle);
+            transaction.replace(R.id.NHFUser,editAboutMe).commit();
         }
     }
 
@@ -76,7 +89,8 @@ public class UserActivity extends AppCompatActivity {
     }
 
 
-
-
-
+    public void hideKeyBoard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),0);
+    }
 }

@@ -100,9 +100,13 @@ public class LoginFragment extends Fragment {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d("SUCCESS", "signInWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
+
+
                                     Intent intentMainActivity = new Intent(getActivity(), MainActivity.class);
                                     intentMainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intentMainActivity);
+
+
 
                                 } else {
                                     // If sign in fails, display a message to the user.
@@ -119,4 +123,5 @@ public class LoginFragment extends Fragment {
 
 
     }
+
 }

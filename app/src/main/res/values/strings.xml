@@ -27,6 +27,9 @@
     <string name="add_photo">&lt;&lt; Add photo</string>
     <string name="preview">Preview</string>
     <string name="edit_sequence_and_delete">&lt;&lt; Edit sequence and delete</string>
+    <string name="click_on_the_item_to_edit_quantity">Click on the item to edit quantity</string>
+    <string name="no_ingredient_added">No ingredient added</string>
+    <string name="no_utensil_added">No utensil added</string>
 
     <string name="i0000_acorn">Acorn</string>
     <string name="i0001_ajinomoto">Ajinomoto</string>
@@ -153,5 +156,13 @@
     <string name="u0009_oven">Oven</string>
     <string name="u0010_microwave">Microwave</string>
     <string name="register_warning">You are already a user of CookWhat.\nPlease proceed to log in.</string>
+    <string-array name="level">
+        <item>Beginner</item>
+        <item>Advanced Beginner</item>
+        <item>Competent</item>
+        <item>Proficient</item>
+        <item>Expert</item>
+        <item>Expert</item>
+    </string-array>
 
 </resources>
