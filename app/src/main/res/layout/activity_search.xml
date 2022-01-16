@@ -26,6 +26,14 @@
             android:layout_gravity="bottom|right"
             android:drawableLeft="@drawable/ic_baseline_search_24"
             android:text="@string/search" />
+
+        <Button
+            android:id="@+id/BtnSearchBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:drawableLeft="@drawable/ic_baseline_chevron_left_24"
+            android:text="@string/back" />
     </FrameLayout>
 
 </LinearLayout>
