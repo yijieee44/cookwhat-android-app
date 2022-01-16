@@ -149,8 +149,8 @@ public class ViewRecipeActivity extends AppCompatActivity {
                     currImageIndex = position;
                     String currImageCaption = recipeModelDB.getSteps().get(currImageIndex).getStep();
 
-                    if (currImageCaption.isEmpty()) {
-                        for (int i = currImageIndex; i > 0; i--) {
+                    if (currImageCaption.isEmpty() && currImageIndex!=0) {
+                        for (int i = currImageIndex; i >= 0; i--) {
                             if (!recipeModelDB.getSteps().get(i).getStep().isEmpty()) {
                                 currImageCaption = recipeModelDB.getSteps().get(i).getStep();
                                 break;
