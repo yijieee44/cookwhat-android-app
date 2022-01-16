@@ -167,35 +167,37 @@ public class CreateCaptionFragment extends Fragment {
                 String newTag = editAddTag.getText().toString();
                 RecipeModel recipeActivity = ((CreateActivity)getActivity()).getNewRecipe();
 
-                if (recipeActivity.getTags().size() < MAX_TAG) {
-                    if (!recipeActivity.getTags().contains(newTag)) {
-                        Chip chip = new Chip(getActivity());
-                        chip.setText("#" + newTag);
-                        chip.setChipBackgroundColorResource(R.color.light_yellow);
-                        chip.setCloseIconVisible(true);
-                        chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                chipGroup.removeView(chip);
-                                List<String> prevTags = recipeActivity.getTags();
-                                prevTags.remove(newTag);
-                                recipeActivity.setTags(prevTags);
-                            }
-                        });
-                        chip.setTextColor(getResources().getColor(R.color.black));
+                if (!newTag.equals("")) {
+                    if (recipeActivity.getTags().size() < MAX_TAG) {
+                        if (!recipeActivity.getTags().contains(newTag)) {
+                            Chip chip = new Chip(getActivity());
+                            chip.setText("#" + newTag);
+                            chip.setChipBackgroundColorResource(R.color.light_yellow);
+                            chip.setCloseIconVisible(true);
+                            chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    chipGroup.removeView(chip);
+                                    List<String> prevTags = recipeActivity.getTags();
+                                    prevTags.remove(newTag);
+                                    recipeActivity.setTags(prevTags);
+                                }
+                            });
+                            chip.setTextColor(getResources().getColor(R.color.black));
 
-                        chipGroup.addView(chip);
-                        editAddTag.setText("");
-                        List<String> prevTags = recipeActivity.getTags();
-                        prevTags.add(newTag);
-                        recipeActivity.setTags(prevTags);
+                            chipGroup.addView(chip);
+                            editAddTag.setText("");
+                            List<String> prevTags = recipeActivity.getTags();
+                            prevTags.add(newTag);
+                            recipeActivity.setTags(prevTags);
+                        } else {
+                            Toast.makeText(getActivity(), "Tag " + newTag + " already added",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(getActivity(), "Tag " + newTag + " already added",
+                        Toast.makeText(getActivity(), "Max tags: 3",
                                 Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(getActivity(), "Max tags: 3",
-                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
