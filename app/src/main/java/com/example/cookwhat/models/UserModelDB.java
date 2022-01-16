@@ -1,5 +1,7 @@
 package com.example.cookwhat.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
@@ -16,6 +18,8 @@ public class UserModelDB implements Serializable {
     private Map<String, ArrayList<String>> favouriteCategory;
     private ArrayList<String> followers;
     private ArrayList<String> followings;
+    private boolean showPreference;
+    private boolean showEmail;
 
 
     public String getUserId() {
@@ -104,5 +108,21 @@ public class UserModelDB implements Serializable {
 
     public void setFollowings(ArrayList<String> followings) {
         this.followings = followings;
+    }
+
+    public boolean isShowPreference() {
+        return showPreference;
+    }
+
+    public void setShowPreference(boolean showPreference) {
+        this.showPreference = showPreference;
+    }
+
+    public boolean isShowEmail() {
+        return showEmail;
+    }
+
+    public void setShowEmail(boolean showEmail) {
+        this.showEmail = showEmail;
     }
 }
