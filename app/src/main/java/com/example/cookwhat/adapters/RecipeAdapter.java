@@ -29,6 +29,7 @@ import com.example.cookwhat.models.RecipeModelDB;
 import com.example.cookwhat.models.RecipeModelSearch;
 import com.example.cookwhat.models.UserModel;
 import com.example.cookwhat.models.UserModelDB;
+import com.example.cookwhat.utils.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -102,14 +103,18 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             holder.userName.setCompoundDrawablesWithIntrinsicBounds(profilePic, 0, 0, 0);
             Picasso.get().load(recipeModelSearch.get(position).getSteps().get(0).getImage()).into(holder.recipeImage);
 
-            Log.d("POSITION:::", ""+position);
             RecipeModelSearch recipe = recipeModelSearch.get(position);
             String[] ingredientsName = new String[recipe.getNonMatchingIngredientIndex().size()];
             int[] ingredientsIcon = new int[recipe.getNonMatchingIngredientIndex().size()];
             int index = 0;
             for(int indexNonExist: recipe.getNonMatchingIngredientIndex()){
                 ingredientsName[index] = recipe.getIngName().get(indexNonExist);
-                ingredientsIcon[index] = recipe.getIngIcon().get(indexNonExist);
+                int iconResourceId = R.drawable.i0067_others;
+                if (recipe.getIngIcon().get(indexNonExist) >= 0  && recipe.getIngIcon().get(indexNonExist) < Constants.INGREDIENTS_ICON.length) {
+                    iconResourceId = Constants.INGREDIENTS_ICON[recipe.getIngIcon().get(indexNonExist)];
+                }
+                ingredientsIcon[index] = iconResourceId;
+
                 index ++;
             }
 
@@ -120,7 +125,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             index = 0;
             for(int indexNonExist: recipe.getNonMatchingUtensilIndex()){
                 utensilsName[index] = recipe.getUtName().get(indexNonExist);
-                utensilsIcon[index] = recipe.getUtIcon().get(indexNonExist);
+                int iconResourceId = R.drawable.i0067_others;
+                if (recipe.getUtIcon().get(indexNonExist) >= 0  && recipe.getUtIcon().get(indexNonExist) < Constants.UTENSILS_ICON.length) {
+                    iconResourceId = Constants.UTENSILS_ICON[recipe.getUtIcon().get(indexNonExist)];
+                }
+                utensilsIcon[index] = iconResourceId;
                 index ++;
             }
 
