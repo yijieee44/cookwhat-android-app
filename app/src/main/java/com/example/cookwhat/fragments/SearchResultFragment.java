@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.example.cookwhat.R;
 import com.example.cookwhat.activities.SearchActivity;
 import com.example.cookwhat.adapters.RecipeAdapter;
@@ -42,12 +44,19 @@ public class SearchResultFragment extends Fragment {
         if(((SearchActivity)getActivity()).getUserList() != null && ((SearchActivity)getActivity()).getRecipeSearchResult() != null){
             userList = ((SearchActivity)getActivity()).getUserList();
             recipeSearchResult = ((SearchActivity)getActivity()).getRecipeSearchResult();
+            TextView noResult = view.findViewById(R.id.TVNoResult);
+            if(recipeSearchResult.size() <=0){
 
-            RecyclerView recipeList = view.findViewById(R.id.RVSearchResult);
-            RecipeAdapter adapter = new RecipeAdapter(new ArrayList<RecipeModelSearch>(recipeSearchResult), new ArrayList<UserModelDB>(userList), getContext(), 1);
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1, GridLayoutManager.VERTICAL, false);
-            recipeList.setLayoutManager(gridLayoutManager);
-            recipeList.setAdapter(adapter);
+                noResult.setVisibility(View.VISIBLE);
+            }
+            else{
+                noResult.setVisibility(View.GONE);
+                RecyclerView recipeList = view.findViewById(R.id.RVSearchResult);
+                RecipeAdapter adapter = new RecipeAdapter(new ArrayList<RecipeModelSearch>(recipeSearchResult), new ArrayList<UserModelDB>(userList), getContext(), 1);
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1, GridLayoutManager.VERTICAL, false);
+                recipeList.setLayoutManager(gridLayoutManager);
+                recipeList.setAdapter(adapter);
+            }
         }
         else{
             ((SearchActivity)getActivity()).toIngredient();

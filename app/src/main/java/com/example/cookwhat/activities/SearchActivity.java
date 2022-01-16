@@ -199,43 +199,52 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         List<String> userIds = new ArrayList<>();
-        for(RecipeModelSearch searchModel: recipeModelSearchList){
-            Log.d("SEQUENCE::", searchModel.getTitle());
-            userIds.add(searchModel.getUserId());
+        if(recipeModelSearchList.size() <=0){
+            userList = new ArrayList<>();
+            recipeSearchResult = new ArrayList<>();
+
+            toResult();
         }
-        List<UserModelDB> tempUserModelArrayList = new ArrayList<>();
-        List<UserModelDB> userModelList = new ArrayList<>();
-        firestoreDb.collection("user")
-                .whereIn("userId", userIds)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d("SUCCESS", document.getId() + " => " + document.getData());
-                        final ObjectMapper mapper = new ObjectMapper();
-                        tempUserModelArrayList.add(mapper.convertValue(document.getData(), UserModelDB.class));
-                    }
-                    for (String userId: userIds){
-                        for (UserModelDB userModel: tempUserModelArrayList){
-                            String userId2 = userModel.getUserId();
-                            if (userId.equals(userId2)){
-                                userModelList.add(userModel);
-                                break;
+        else{
+            for(RecipeModelSearch searchModel: recipeModelSearchList){
+                Log.d("SEQUENCE::", searchModel.getTitle());
+                userIds.add(searchModel.getUserId());
+            }
+            List<UserModelDB> tempUserModelArrayList = new ArrayList<>();
+            List<UserModelDB> userModelList = new ArrayList<>();
+            firestoreDb.collection("user")
+                    .whereIn("userId", userIds)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("SUCCESS", document.getId() + " => " + document.getData());
+                                    final ObjectMapper mapper = new ObjectMapper();
+                                    tempUserModelArrayList.add(mapper.convertValue(document.getData(), UserModelDB.class));
+                                }
+                                for (String userId: userIds){
+                                    for (UserModelDB userModel: tempUserModelArrayList){
+                                        String userId2 = userModel.getUserId();
+                                        if (userId.equals(userId2)){
+                                            userModelList.add(userModel);
+                                            break;
+                                        }
+                                    }
+                                }
+                                userList = userModelList;
+                                recipeSearchResult = recipeModelSearchList;
+
+                                toResult();
+
+                            } else {
+                                Log.w("ERROR", "Error getting documents.", task.getException());
                             }
                         }
-                    }
-                    userList = userModelList;
-                    recipeSearchResult = recipeModelSearchList;
+                    });
+        }
 
-                    toResult();
-
-                } else {
-                    Log.w("ERROR", "Error getting documents.", task.getException());
-                }
-            }
-        });
     }
 
     private void toResult(){
