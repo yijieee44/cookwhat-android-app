@@ -24,6 +24,31 @@ public class RecipeModelDB implements Serializable {
     private List<String> utMemo;
     private List<RecipeCommentModel> comments;
 
+    public RecipeModelDB() {
+
+    }
+
+    public RecipeModelDB(RecipeModelSearch recipeModelSearch){
+        this.setId(recipeModelSearch.getId());
+        this.setComments(recipeModelSearch.getComments());
+        this.setCreatedTime(recipeModelSearch.getCreatedTime());
+        this.setIngIcon(recipeModelSearch.getIngIcon());
+        this.setIngMemo(recipeModelSearch.getIngMemo());
+        this.setIngName(recipeModelSearch.getIngName());
+        this.setIngQuantity(recipeModelSearch.getIngQuantity());
+        this.setIngUnitQuantity(recipeModelSearch.getIngUnitQuantity());
+        this.setIngUnitWeight(recipeModelSearch.getIngUnitWeight());
+        this.setIngWeight(recipeModelSearch.getIngWeight());
+        this.setSteps(recipeModelSearch.getSteps());
+        this.setNumFav(recipeModelSearch.getNumFav());
+        this.setTags(recipeModelSearch.getTags());
+        this.setTitle(recipeModelSearch.getTitle());
+        this.setUtIcon(recipeModelSearch.getUtIcon());
+        this.setUtMemo(recipeModelSearch.getUtMemo());
+        this.setUtName(recipeModelSearch.getUtName());
+        this.setUserId(recipeModelSearch.getUserId());
+    }
+
     public String getId() {
         return id;
     }

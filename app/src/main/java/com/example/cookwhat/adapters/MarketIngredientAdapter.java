@@ -22,7 +22,9 @@ public class MarketIngredientAdapter extends BaseAdapter {
 
     Context context;
     int[] marketIngredientsName;
+    String[] marketIngredientsNameString;
     int[] image;
+    int type = 0;
 
     LayoutInflater inflater;
 
@@ -32,10 +34,23 @@ public class MarketIngredientAdapter extends BaseAdapter {
         this.image = image;
     }
 
+    public MarketIngredientAdapter(Context context, String[] marketIngredientsName, int[] image, int type) {
+        this.context = context;
+        this.marketIngredientsNameString = marketIngredientsName;
+        this.image = image;
+        this.type = 1;
+    }
+
 
     @Override
     public int getCount() {
-        return marketIngredientsName.length;
+        if(type == 1){
+            return marketIngredientsNameString.length;
+        }
+        else{
+            return marketIngredientsName.length;
+        }
+
     }
 
     @Override
@@ -63,7 +78,13 @@ public class MarketIngredientAdapter extends BaseAdapter {
         TextView textView = convertView.findViewById(R.id.TVMarketIngredient);
 
         imageView.setImageResource(image[position]);
-        textView.setText(marketIngredientsName[position]);
+        if(type == 1){
+            textView.setText(marketIngredientsNameString[position]);
+        }
+        else{
+            textView.setText(marketIngredientsName[position]);
+        }
+
 
         return convertView;
     }

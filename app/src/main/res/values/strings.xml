@@ -32,6 +32,11 @@
     <string name="no_utensil_added">No utensil added</string>
     <string name="edit_recipe">Edit Recipe</string>
     <string name="delete_recipe">Delete Recipe</string>
+    <string name="search_result">Search Result</string>
+    <string name="ingredient_dont_have">Ingredient(s) you don\'t have: </string>
+    <string name="utensil_dont_have">Utensil(s) you don\'t have: </string>
+    <string name="no_recipe_found">No recipe found :(</string>
+>>>>>>> 5a43462978e3d2c8123e1f42f58d0d7f5c6810da
 
     <string name="i0000_acorn">Acorn</string>
     <string name="i0001_ajinomoto">Ajinomoto</string>
