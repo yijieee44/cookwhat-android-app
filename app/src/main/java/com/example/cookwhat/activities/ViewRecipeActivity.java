@@ -40,6 +40,7 @@ import com.example.cookwhat.fragments.IngredientDetailDialogFragment;
 import com.example.cookwhat.models.IngredientModel;
 import com.example.cookwhat.models.RecipeCommentModel;
 import com.example.cookwhat.models.RecipeModelDB;
+import com.example.cookwhat.models.RecipeStepModel;
 import com.example.cookwhat.models.UserModel;
 import com.example.cookwhat.models.UserModelDB;
 import com.example.cookwhat.models.UtensilModel;
@@ -95,6 +96,10 @@ public class ViewRecipeActivity extends AppCompatActivity {
                         RecipeModelDB editedRecipeModel = (RecipeModelDB) data.getSerializableExtra("recipeModelDB");
 
                         recipeModelDB = editedRecipeModel;
+                        for (RecipeStepModel recipeStepModel : recipeModelDB.getSteps()) {
+                            String storageCode = recipeStepModel.getImage();
+                            recipeStepModel.setImage("https://firebasestorage.googleapis.com/v0/b/cookwhat.appspot.com/o/images%2F" + storageCode + "?alt=media");
+                        }
                         reloadFromRecipe();
                     }
                 }
