@@ -180,7 +180,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             }
 
             holder.recipeName.setText(recipeModel.get(position).getTitle());
-            holder.tag.setText(recipeModel.get(position).getTags().get(0));
+            if(recipeModel.get(position).getTags().size() > 0) {
+                holder.tag.setText(recipeModel.get(position).getTags().get(0));
+            } else{
+                holder.tag.setVisibility(View.GONE);
+            }
             holder.numFav.setText(Integer.toString(recipeModel.get(position).getNumFav()));
             holder.userName.setText(username);
             holder.userName.setCompoundDrawablesWithIntrinsicBounds(profilePic, 0, 0, 0);
