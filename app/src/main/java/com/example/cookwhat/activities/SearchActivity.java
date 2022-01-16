@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
@@ -76,12 +77,13 @@ public class SearchActivity extends AppCompatActivity {
 
     List<UserModelDB> userList;
     List<RecipeModelSearch> recipeSearchResult;
+    Dialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
+        loadingDialog = new Dialog(this);
         firestoreDb = FirebaseFirestore.getInstance();
         fragmentManager = getSupportFragmentManager();
         ingredientModelList = new ArrayList<>();
@@ -110,6 +112,15 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void search(){
+        loadingDialog.setCancelable(false);
+        loadingDialog.setContentView(R.layout.dialog_loading);
+        loadingDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.black_transparent_background));
+
+        int width = (int)(getResources().getDisplayMetrics().widthPixels);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels);
+
+        loadingDialog.getWindow().setLayout(width, height);
+        loadingDialog.show();
         List<IngredientModel> ingredientModelToSearch = ingredientModelList;
         List<UtensilModel> utensilModelToSearch = utensilModelList;
         List<String> ingredientNameToSearch = new ArrayList<>();
@@ -140,6 +151,7 @@ public class SearchActivity extends AppCompatActivity {
 
                                 }
                                 catch (Exception e){
+
                                     Log.w("ERROR", e.toString());
                                 }
                             }
@@ -147,6 +159,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
                         } else {
+                            loadingDialog.cancel();
                             Log.w("ERROR", "Error getting documents.", task.getException());
                         }
                     }
@@ -212,6 +225,7 @@ public class SearchActivity extends AppCompatActivity {
             userList = new ArrayList<>();
             recipeSearchResult = new ArrayList<>();
 
+            loadingDialog.dismiss();
             toResult();
         }
         else{
@@ -244,10 +258,11 @@ public class SearchActivity extends AppCompatActivity {
                                 }
                                 userList = userModelList;
                                 recipeSearchResult = recipeModelSearchList;
-
+                                loadingDialog.dismiss();
                                 toResult();
 
                             } else {
+                                loadingDialog.cancel();
                                 Log.w("ERROR", "Error getting documents.", task.getException());
                             }
                         }
