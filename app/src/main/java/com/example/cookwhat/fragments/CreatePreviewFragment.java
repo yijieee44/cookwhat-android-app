@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -172,52 +173,7 @@ public class CreatePreviewFragment extends Fragment {
     }
 
     private void showINUDialog() {
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-
-        INUDialog.setCancelable(true);
-        INUDialog.setContentView(R.layout.dialog_inu);
-        INUDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.outline_white_background));
-
-        List<IngredientModel> ingredientModels = recipeModel.getIngredients();
-        List<UtensilModel> utensilModels = recipeModel.getUtensils();
-
-        if(ingredientModels.size()>0) {
-            RecyclerView ingredientsRecyclerView = (RecyclerView) INUDialog.findViewById(R.id.RVIngredients);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()) {
-                @Override
-                public boolean canScrollVertically() {
-                    return false;
-                }
-            };
-            ingredientsRecyclerView.setLayoutManager(linearLayoutManager);
-            ingredientsRecyclerView.setAdapter(new IngredientAdapter(getContext(), ingredientModels));
-
-        } else {
-            TextView noIngredientTextView = (TextView) INUDialog.findViewById(R.id.TVNoIngredients);
-            noIngredientTextView.setVisibility(View.VISIBLE);
-        }
-
-        if(utensilModels.size()>0) {
-            RecyclerView utensilsRecyclerView = (RecyclerView) INUDialog.findViewById(R.id.RVUtensils);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()) {
-                @Override
-                public boolean canScrollVertically() {
-                    return false;
-                }
-            };
-            utensilsRecyclerView.setLayoutManager(linearLayoutManager);
-            utensilsRecyclerView.setAdapter(new UtensilAdapter(getContext(), utensilModels));
-
-        } else {
-            TextView noUtensilsTextView = (TextView) INUDialog.findViewById(R.id.TVNoUtensils);
-            noUtensilsTextView.setVisibility(View.VISIBLE);
-        }
-
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.75);
-
-        INUDialog.getWindow().setLayout(width, height);
-
-        INUDialog.show();
+        IngredientAndUtensilDialogFragment dialog = new IngredientAndUtensilDialogFragment(recipeModel.getIngredients(), recipeModel.getUtensils());
+        dialog.show(getParentFragmentManager(),"inuDialog");
     }
 }
