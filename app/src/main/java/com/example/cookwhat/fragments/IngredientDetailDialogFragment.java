@@ -23,6 +23,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.cookwhat.R;
+import com.example.cookwhat.adapters.IngredientAdapter;
+import com.example.cookwhat.utils.Constants;
 
 
 public class IngredientDetailDialogFragment extends DialogFragment {
@@ -74,7 +76,11 @@ public class IngredientDetailDialogFragment extends DialogFragment {
         ingredientNameTV.setText(ingredientName);
 
         ImageView iconImage = getView().findViewById(R.id.IVIngredientIcon);
-        iconImage.setImageResource(icon);
+        int iconResourceId = R.drawable.i0067_others;
+        if (icon >= 0  && icon < Constants.INGREDIENTS_ICON.length) {
+            iconResourceId = Constants.INGREDIENTS_ICON[icon];
+        }
+        iconImage.setImageResource(iconResourceId);
 
         Spinner quantitySpinner = (Spinner) getView().findViewById(R.id.IngredientQuantitySpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(),

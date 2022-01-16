@@ -74,6 +74,10 @@ import java.util.stream.Collectors;
 public class CreateShowGalleryFragment extends Fragment {
     ImageSlider imageSlider;
     int MAX_IMAGES_ALLOWED = 9;
+    int[] INGREDIENTS_ICON = Constants.INGREDIENTS_ICON;
+    int[] INGREDIENTS_NAME = Constants.INGREDIENTS_NAME;
+    int[] UTENSILS_ICON = Constants.UTENSILS_ICON;
+    int[] UTENSIL_NAME = Constants.UTENSILS_NAME;
     Dialog editDialog;
     List<RecipeStepModel> recipeStepModels = new ArrayList<>();
     RecipeModel recipeModel;
@@ -216,17 +220,23 @@ public class CreateShowGalleryFragment extends Fragment {
 
         editDialog = new Dialog(getActivity());
         recipeModel = ((CreateActivity)getActivity()).getNewRecipe();
+        boolean isEdit = ((CreateActivity)getActivity()).getIsEdit();
         recipeStepModels = recipeModel.getSteps();
+
+        if(isEdit) {
+            LinearLayout LLAddEditImages = (LinearLayout) view.findViewById(R.id.LLAddEditImages);
+            LLAddEditImages.setVisibility(View.GONE);
+        }
 
         Button button = (Button) view.findViewById(R.id.BtnAddImages);
         button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                getImagesFromGallery();
-            }
-        });
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        getImagesFromGallery();
+                    }
+                });
 
         Button editButton = (Button) view.findViewById(R.id.BtnEditImages);
         editButton.setOnClickListener(new View.OnClickListener()
@@ -347,11 +357,20 @@ public class CreateShowGalleryFragment extends Fragment {
 
         // Initialize bottom sheet selected
         for (IngredientModel model : ingredientModelList) {
-            selIngredientsItem.add(model.getIcon());
+            if(model.getIcon() == -1) {
+                //custom
+                selCustomIngredients.add(model.getName());
+            } else {
+                selIngredientsItem.add(INGREDIENTS_ICON[model.getIcon()]);
+            }
         }
 
         for (UtensilModel model : utensilModelList) {
-            selUtensilsItem.add(model.getIcon());
+            if(model.getIcon() == -1) {
+                selCustomUtensils.add(model.getName());
+            } else {
+                selUtensilsItem.add(UTENSILS_ICON[model.getIcon()]);
+            }
         }
 
         // check the number of ingredient and utensils
@@ -445,11 +464,8 @@ public class CreateShowGalleryFragment extends Fragment {
             e.printStackTrace();
         }
 
-        int[] ingredientsIcon = Constants.INGREDIENTS_ICON;
-        int[] ingredientsName = Constants.INGREDIENTS_NAME;
-
-        displayIngredientIcon = Arrays.stream(ingredientsIcon).boxed().collect(Collectors.toList());
-        displayIngredientName = Arrays.stream(ingredientsName).boxed().collect(Collectors.toList());
+        displayIngredientIcon = Arrays.stream(INGREDIENTS_ICON).boxed().collect(Collectors.toList());
+        displayIngredientName = Arrays.stream(INGREDIENTS_NAME).boxed().collect(Collectors.toList());
 
         GridView ingredientsGridView = (GridView) bottomSheetDialog.findViewById(R.id.Grid_Market_Ingredients);
         LinearLayout ingredientLayoutCantFind = (LinearLayout) bottomSheetDialog.findViewById(R.id.LayoutIngCantFind);
@@ -464,7 +480,7 @@ public class CreateShowGalleryFragment extends Fragment {
                     }
                 }
         );
-        MarketIngredientAdapter marketIngredientAdapter = new MarketIngredientAdapter(view.getContext(), ingredientsName, ingredientsIcon) {
+        MarketIngredientAdapter marketIngredientAdapter = new MarketIngredientAdapter(view.getContext(), INGREDIENTS_NAME, INGREDIENTS_ICON) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
@@ -496,7 +512,7 @@ public class CreateShowGalleryFragment extends Fragment {
 
                         IngredientModel ingredientModel = new IngredientModel();
                         ingredientModel.setName(getString(displayIngredientName.get(position)));
-                        ingredientModel.setIcon(displayIngredientIcon.get(position));
+                        ingredientModel.setIcon(getIndex(INGREDIENTS_ICON, displayIngredientIcon.get(position)));
                         ingredientAdapter.removeIngredient(ingredientModel);
 
                         recipeModel.setIngredients(ingredientAdapter.getIngredientList());
@@ -506,7 +522,8 @@ public class CreateShowGalleryFragment extends Fragment {
                         selIngredientsItem.add(displayIngredientIcon.get(position));
                         IngredientModel ingredientModel = new IngredientModel();
                         ingredientModel.setName(getString(displayIngredientName.get(position)));
-                        ingredientModel.setIcon(displayIngredientIcon.get(position));
+                        ingredientModel.setIcon(getIndex(INGREDIENTS_ICON, displayIngredientIcon.get(position)));
+
                         ingredientAdapter.addIngredient(ingredientModel);
 
                         recipeModel.setIngredients(ingredientAdapter.getIngredientList());
@@ -528,11 +545,11 @@ public class CreateShowGalleryFragment extends Fragment {
                 List<Integer> selectedIndex = new ArrayList<>();
 
                 int newIndex = 0;
-                for(int i=0; i<ingredientsName.length; i++) {
-                    if(getResources().getString(ingredientsName[i]).toLowerCase().contains(s.toString().toLowerCase())) {
-                        displayIngredientIcon.add(ingredientsIcon[i]);
-                        displayIngredientName.add(ingredientsName[i]);
-                        searchName.add(ingredientsName[i]);
+                for(int i=0; i<INGREDIENTS_NAME.length; i++) {
+                    if(getResources().getString(INGREDIENTS_NAME[i]).toLowerCase().contains(s.toString().toLowerCase())) {
+                        displayIngredientIcon.add(INGREDIENTS_ICON[i]);
+                        displayIngredientName.add(INGREDIENTS_NAME[i]);
+                        searchName.add(INGREDIENTS_NAME[i]);
 
                         if (selIngredientsItem.contains(displayIngredientIcon.get(newIndex))) {
                             selectedIndex.add(newIndex);
@@ -631,11 +648,8 @@ public class CreateShowGalleryFragment extends Fragment {
             e.printStackTrace();
         }
 
-        int[] utensilsIcon = Constants.UTENSILS_ICON;
-        int[] utensilsName = Constants.UTENSILS_NAME;
-
-        displayUtensilIcon = Arrays.stream(utensilsIcon).boxed().collect(Collectors.toList());
-        displayUtensilName = Arrays.stream(utensilsName).boxed().collect(Collectors.toList());
+        displayUtensilIcon = Arrays.stream(UTENSILS_ICON).boxed().collect(Collectors.toList());
+        displayUtensilName = Arrays.stream(UTENSIL_NAME).boxed().collect(Collectors.toList());
 
         GridView utensilsGridView = (GridView) bottomSheetDialog.findViewById(R.id.Grid_Market_Utensils);
         LinearLayout utensilLayoutCantFind = (LinearLayout) bottomSheetDialog.findViewById(R.id.LayoutUntCantFind);
@@ -650,7 +664,7 @@ public class CreateShowGalleryFragment extends Fragment {
                     }
                 }
         );
-        MarketIngredientAdapter marketIngredientAdapter = new MarketIngredientAdapter(view.getContext(), utensilsName, utensilsIcon) {
+        MarketIngredientAdapter marketIngredientAdapter = new MarketIngredientAdapter(view.getContext(), UTENSIL_NAME, UTENSILS_ICON) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
@@ -682,7 +696,7 @@ public class CreateShowGalleryFragment extends Fragment {
 
                         UtensilModel utensilModel = new UtensilModel();
                         utensilModel.setName(getString(displayUtensilName.get(position)));
-                        utensilModel.setIcon(displayUtensilIcon.get(position));
+                        utensilModel.setIcon(getIndex(UTENSILS_ICON, displayUtensilIcon.get(position)));
                         utensilAdapter.removeUtensil(utensilModel);
 
                         recipeModel.setUtensils(utensilAdapter.getUtensilList());
@@ -692,7 +706,7 @@ public class CreateShowGalleryFragment extends Fragment {
                         selUtensilsItem.add(displayUtensilIcon.get(position));
                         UtensilModel utensilModel = new UtensilModel();
                         utensilModel.setName(getString(displayUtensilName.get(position)));
-                        utensilModel.setIcon(displayUtensilIcon.get(position));
+                        utensilModel.setIcon(getIndex(UTENSILS_ICON, displayUtensilIcon.get(position)));
                         utensilAdapter.addUtensil(utensilModel);
 
                         recipeModel.setUtensils(utensilAdapter.getUtensilList());
@@ -714,11 +728,11 @@ public class CreateShowGalleryFragment extends Fragment {
                 List<Integer> selectedIndex = new ArrayList<>();
 
                 int newIndex = 0;
-                for(int i=0; i<utensilsName.length; i++) {
-                    if(getResources().getString(utensilsName[i]).toLowerCase().contains(s.toString().toLowerCase())) {
-                        displayUtensilIcon.add(utensilsIcon[i]);
-                        displayUtensilName.add(utensilsName[i]);
-                        searchName.add(utensilsName[i]);
+                for(int i=0; i<UTENSIL_NAME.length; i++) {
+                    if(getResources().getString(UTENSIL_NAME[i]).toLowerCase().contains(s.toString().toLowerCase())) {
+                        displayUtensilIcon.add(UTENSILS_ICON[i]);
+                        displayUtensilName.add(UTENSIL_NAME[i]);
+                        searchName.add(UTENSIL_NAME[i]);
 
                         if (selUtensilsItem.contains(displayUtensilIcon.get(newIndex))) {
                             selectedIndex.add(newIndex);
@@ -816,6 +830,7 @@ public class CreateShowGalleryFragment extends Fragment {
                     selCustomIngredients.remove(newItem);
                     IngredientModel ingredientModel = new IngredientModel();
                     ingredientModel.setName(newItem);
+                    ingredientModel.setIcon(-1);
                     ingredientAdapter.removeIngredient(ingredientModel);
                 }
             });
@@ -825,7 +840,7 @@ public class CreateShowGalleryFragment extends Fragment {
             selCustomIngredients.add(newItem);
             IngredientModel ingredientModel = new IngredientModel();
             ingredientModel.setName(newItem);
-            ingredientModel.setIcon(R.drawable.i0067_others);
+            ingredientModel.setIcon(-1);
             ingredientAdapter.addIngredient(ingredientModel);
         }
     }
@@ -846,6 +861,7 @@ public class CreateShowGalleryFragment extends Fragment {
                     selCustomUtensils.remove(newItem);
                     UtensilModel utensilModel = new UtensilModel();
                     utensilModel.setName(newItem);
+                    utensilModel.setIcon(-1);
                     utensilAdapter.removeUtensil(utensilModel);
                 }
             });
@@ -855,7 +871,7 @@ public class CreateShowGalleryFragment extends Fragment {
             selCustomUtensils.add(newItem);
             UtensilModel utensilModel = new UtensilModel();
             utensilModel.setName(newItem);
-            utensilModel.setIcon(R.drawable.i0067_others);
+            utensilModel.setIcon(-1);
             utensilAdapter.addUtensil(utensilModel);
         }
     }
@@ -881,5 +897,14 @@ public class CreateShowGalleryFragment extends Fragment {
         } else {
             TVNoUtensilAdded.setVisibility(View.VISIBLE);
         }
+    }
+
+    private int getIndex(int[] list, int item) {
+        for(int i=0; i<list.length; i++) {
+            if (list[i] == item){
+                return i;
+            }
+        }
+        return -1;
     }
 }

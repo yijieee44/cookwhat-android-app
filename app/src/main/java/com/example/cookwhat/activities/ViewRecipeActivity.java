@@ -1,19 +1,28 @@
 package com.example.cookwhat.activities;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -72,6 +81,21 @@ public class ViewRecipeActivity extends AppCompatActivity {
     EditText writeComment;
     Dialog INUDialog;
     RecipeModelDB recipeModelDB;
+    UserModelDB userModelDB;
+
+    ActivityResultLauncher<Intent> createActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == 123) {
+                        Intent data = result.getData();
+                        RecipeModelDB editedRecipeModel = (RecipeModelDB) data.getSerializableExtra("recipeModelDB");
+                        Log.d("hehe", "be");
+                        recipeModelDB = editedRecipeModel;
+                    }
+                }
+            });
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -92,7 +116,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
         userModelDBArrayList = new ArrayList<>();
         userIds = new ArrayList<>();
 
-        UserModelDB userModelDB = (UserModelDB) getIntent().getSerializableExtra("userModel");
+        userModelDB = (UserModelDB) getIntent().getSerializableExtra("userModel");
         recipeModelDB = (RecipeModelDB) getIntent().getSerializableExtra("recipeModel");
 
         imageSlider = (ImageSlider) findViewById(R.id.image_slider);
@@ -154,7 +178,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
         ingredientandutensils.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showINUDialog();
+                showINUDialog(v);
             }
         });
 
@@ -268,6 +292,15 @@ public class ViewRecipeActivity extends AppCompatActivity {
         // created time
         TextView TVCreatedTime = (TextView) findViewById(R.id.TVCreatedTime);
         TVCreatedTime.setText(recipeModelDB.getCreatedTime());
+
+        // option menu
+        Button BtnOptionMenu = (Button) findViewById(R.id.BtnOptionMenu);
+        BtnOptionMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopUpMenu(v);
+            }
+        });
     }
 
     public void readUser(FirestoreCallback firestoreCallback) {
@@ -308,11 +341,38 @@ public class ViewRecipeActivity extends AppCompatActivity {
         void onCallBack(ArrayList<UserModelDB> userModelDBArrayList);
     }
 
-    private void showINUDialog() {
+    private void showINUDialog(View view) {
         List<IngredientModel> ingredientModels = recipeModelDB.ingListToIngredientModel();
         List<UtensilModel> utensilModels = recipeModelDB.utListToUtensilsModel();
 
         IngredientAndUtensilDialogFragment dialog = new IngredientAndUtensilDialogFragment(ingredientModels, utensilModels);
         dialog.show(getSupportFragmentManager(), "inuDialog");
+    }
+
+    private void showPopUpMenu(View v) {
+        PopupMenu popupMenu = new PopupMenu(ViewRecipeActivity.this, v);
+        popupMenu.getMenuInflater().inflate(R.menu.post_nav_menu, popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.edit_post:
+                        Intent intent = new Intent(ViewRecipeActivity.this, CreateActivity.class);
+                        intent.putExtra("recipeModel", recipeModelDB.toRecipeModel());
+                        intent.putExtra("userModel", userModelDB);
+
+                        createActivityResultLauncher.launch(intent);
+//                        Toast.makeText(getApplicationContext(), String.valueOf(item.getTitle()), Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.delete_post:
+                        Toast.makeText(getApplicationContext(), String.valueOf(item.getTitle()), Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return false;
+            }
+        });
+
+        popupMenu.show();
     }
 }

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cookwhat.R;
 import com.example.cookwhat.models.IngredientModel;
 import com.example.cookwhat.models.UtensilModel;
+import com.example.cookwhat.utils.Constants;
 
 import java.util.List;
 
@@ -60,11 +61,18 @@ public class UtensilAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((ViewHolder) holder).textViewName.setText(utensilList.get(position).getName());
-        if(utensilList.get(position).getMemo() != null){
-            ((ViewHolder) holder).textViewDescription.setText(utensilList.get(position).getMemo());
+        UtensilModel utensilModel = utensilList.get(position);
+
+        ((ViewHolder) holder).textViewName.setText(utensilModel.getName());
+        if(utensilModel.getMemo() != null){
+            ((ViewHolder) holder).textViewDescription.setText(utensilModel.getMemo());
         }
-        ((ViewHolder)holder).icon.setImageResource(utensilList.get(position).getIcon());
+
+        int iconResourceId = R.drawable.i0067_others;
+        if (utensilModel.getIcon() >= 0  && utensilModel.getIcon() < Constants.UTENSILS_ICON.length) {
+            iconResourceId = Constants.UTENSILS_ICON[utensilModel.getIcon()];
+        }
+        ((ViewHolder)holder).icon.setImageResource(iconResourceId);
     }
 
     @Override

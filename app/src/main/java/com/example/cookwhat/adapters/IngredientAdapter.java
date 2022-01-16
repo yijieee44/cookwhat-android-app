@@ -2,6 +2,7 @@ package com.example.cookwhat.adapters;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cookwhat.R;
 import com.example.cookwhat.fragments.IngredientDetailDialogFragment;
 import com.example.cookwhat.models.IngredientModel;
+import com.example.cookwhat.utils.Constants;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -77,7 +79,13 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         DecimalFormat format = new DecimalFormat("0.#");
         IngredientModel ingredientModel = ingredientList.get(position);
         ((ViewHolder) holder).textViewName.setText(ingredientModel.getName());
-        ((ViewHolder)holder).icon.setImageResource(ingredientModel.getIcon());
+
+        int iconResourceId = R.drawable.i0067_others;
+        if (ingredientModel.getIcon() >= 0  && ingredientModel.getIcon() < Constants.INGREDIENTS_ICON.length) {
+            iconResourceId = Constants.INGREDIENTS_ICON[ingredientModel.getIcon()];
+        }
+        ((ViewHolder)holder).icon.setImageResource(iconResourceId);
+
         if(ingredientModel.getMemo() != null){
             String text = ingredientModel.getMemo();
             if(ingredientModel.getMemo().length() > 25){

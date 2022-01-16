@@ -2,13 +2,14 @@ package com.example.cookwhat.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeModel {
+public class RecipeModel implements Serializable {
     private String id = "";
     private String userId = "";
-    private int num_fav = 0;
+    private int numFav = 0;
     private String title = "";
     private List<String> tags = new ArrayList<>();
     @JsonIgnore
@@ -40,12 +41,12 @@ public class RecipeModel {
         this.userId = userId;
     }
 
-    public int getNum_fav() {
-        return num_fav;
+    public int getNumFav() {
+        return numFav;
     }
 
-    public void setNum_fav(int num_fav) {
-        this.num_fav = num_fav;
+    public void setNumFav(int numFav) {
+        this.numFav = numFav;
     }
 
     public String getTitle() {
@@ -109,7 +110,7 @@ public class RecipeModel {
         recipeModelDB.setId(this.getId());
         recipeModelDB.setUserId(this.getUserId());
         recipeModelDB.setTitle(this.getTitle());
-        recipeModelDB.setNumFav(this.getNum_fav());
+        recipeModelDB.setNumFav(this.getNumFav());
         recipeModelDB.setCreatedTime(this.getCreatedTime());
         recipeModelDB.setSteps(this.getSteps());
         recipeModelDB.setTags(this.getTags());

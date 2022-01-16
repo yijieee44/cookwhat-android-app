@@ -11,6 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -22,7 +26,9 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.cookwhat.R;
 import com.example.cookwhat.database.DatabaseHelper;
 import com.example.cookwhat.database.UserTableContract;
+import com.example.cookwhat.fragments.HomeFragment;
 import com.example.cookwhat.fragments.UserProfileFragment;
+import com.example.cookwhat.models.RecipeModelDB;
 import com.example.cookwhat.models.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -53,6 +59,19 @@ public class MainActivity extends AppCompatActivity {
     private static final int MENU_ADD = Menu.FIRST;
     private static final int MENU_LOGIN = Menu.FIRST + 1;
     private static final int MENU_LOGOUT = Menu.FIRST + 2;
+
+    ActivityResultLauncher<Intent> createActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == 122) {
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+                    }
+                }
+            });
 
     @Override
     protected void onStart() {
@@ -124,8 +143,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String action = getIntent().getStringExtra("action");
@@ -227,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == MENU_ADD) {
             // direct to create activity
             Intent intentCreateActivity = new Intent(this, CreateActivity.class);
-            startActivity(intentCreateActivity);
+            createActivityResultLauncher.launch(intentCreateActivity);
             return true;
         }
         else if(id == MENU_LOGIN){

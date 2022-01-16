@@ -203,4 +203,19 @@ public class RecipeModelDB implements Serializable {
         return utensilModels;
     }
 
+    public RecipeModel toRecipeModel() {
+        RecipeModel recipeModel = new RecipeModel();
+        recipeModel.setId(this.getId());
+        recipeModel.setUserId(this.getUserId());
+        recipeModel.setTitle(this.getTitle());
+        recipeModel.setNumFav(this.getNumFav());
+        recipeModel.setCreatedTime(this.getCreatedTime());
+        recipeModel.setSteps(this.getSteps());
+        recipeModel.setTags(this.getTags());
+        recipeModel.setComments(this.getComments());
+        recipeModel.setIngredients(this.ingListToIngredientModel());
+        recipeModel.setUtensils(this.utListToUtensilsModel());
+
+        return recipeModel;
+    }
 }

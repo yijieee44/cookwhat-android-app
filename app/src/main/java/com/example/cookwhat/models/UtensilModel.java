@@ -1,6 +1,8 @@
 package com.example.cookwhat.models;
 
-public class UtensilModel {
+import java.io.Serializable;
+
+public class UtensilModel implements Serializable {
     private String recipeId;
     private String name;
     private String memo;

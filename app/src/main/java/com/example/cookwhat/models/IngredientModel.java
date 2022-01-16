@@ -1,6 +1,8 @@
 package com.example.cookwhat.models;
 
-public class IngredientModel {
+import java.io.Serializable;
+
+public class IngredientModel implements Serializable {
     private String recipeId;
     private String name;
     private Double quantity;
