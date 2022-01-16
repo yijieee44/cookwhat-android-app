@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.activities.SearchActivity;
@@ -79,6 +80,8 @@ public class SearchIngredientFragment extends Fragment {
 
     EditText searchUtensils;
     BottomSheetDialog bottomSheetDialog;
+    TextView noIngredient;
+    TextView noUtensil;
 
     List<Integer> selIngredientsItem = new ArrayList<Integer>();
     List<Integer> selUtensilsItem = new ArrayList<Integer>();
@@ -148,6 +151,9 @@ public class SearchIngredientFragment extends Fragment {
             }
         });
 
+        noIngredient = view.findViewById(R.id.TVNoIngredient);
+        noUtensil = view.findViewById(R.id.TVNoUtensil);
+
         int[] ingredientsIcon = Constants.INGREDIENTS_ICON;
         int[] ingredientsName = Constants.INGREDIENTS_NAME;
 
@@ -177,6 +183,19 @@ public class SearchIngredientFragment extends Fragment {
         utensilAdapter = new UtensilAdapter(context, utensilModelList);
         utensilRecycleView.setAdapter(utensilAdapter);
 
+        if(ingredientModelList.size()<=0){
+            noIngredient.setVisibility(View.VISIBLE);
+        }
+        else{
+            noIngredient.setVisibility(View.GONE);
+        }
+
+        if(utensilModelList.size()<=0){
+            noUtensil.setVisibility(View.VISIBLE);
+        }
+        else{
+            noUtensil.setVisibility(View.GONE);
+        }
 
 
         return view;
@@ -208,6 +227,17 @@ public class SearchIngredientFragment extends Fragment {
 
         GridView ingredientsGridView = (GridView) bottomSheetDialog.findViewById(R.id.Grid_Market_Ingredients);
         LinearLayout ingredientLayoutCantFind = (LinearLayout) bottomSheetDialog.findViewById(R.id.LayoutIngCantFind);
+        Button customIngredientButton = bottomSheetDialog.findViewById(R.id.BtnCustomIngredients);
+        customIngredientButton.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        BtnAddCustom(view);
+                    }
+                }
+        );
         MarketIngredientAdapter marketIngredientAdapter = new MarketIngredientAdapter(view.getContext(), ingredientsName, ingredientsIcon) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -244,6 +274,12 @@ public class SearchIngredientFragment extends Fragment {
                         ingredientAdapter.removeIngredient(ingredientModel);
                         ingredientAdapter.notifyDataSetChanged();
                         ingredientModelList = ingredientAdapter.getIngredientList();
+                        if(ingredientModelList.size()<=0){
+                            noIngredient.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            noIngredient.setVisibility(View.GONE);
+                        }
                     } else {
                         viewPrev = (View) ingredientsGridView.getChildAt(position);
                         view.setBackgroundColor(getResources().getColor(R.color.light_yellow));
@@ -253,6 +289,12 @@ public class SearchIngredientFragment extends Fragment {
                         ingredientModel.setIcon(displayIngredientIcon.get(position));
                         ingredientAdapter.addIngredient(ingredientModel);
                         ingredientModelList = ingredientAdapter.getIngredientList();
+                        if(ingredientModelList.size()<=0){
+                            noIngredient.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            noIngredient.setVisibility(View.GONE);
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -340,6 +382,13 @@ public class SearchIngredientFragment extends Fragment {
                     IngredientModel ingredientModel = new IngredientModel();
                     ingredientModel.setName(chipItem);
                     ingredientAdapter.removeIngredient(ingredientModel);
+                    ingredientModelList = ingredientAdapter.getIngredientList();
+                    if(ingredientModelList.size()<=0){
+                        noIngredient.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        noIngredient.setVisibility(View.GONE);
+                    }
                 }
             });
             chip.setTextColor(getResources().getColor(R.color.black));
@@ -376,6 +425,17 @@ public class SearchIngredientFragment extends Fragment {
 
         GridView utensilsGridView = (GridView) bottomSheetDialog.findViewById(R.id.Grid_Market_Utensils);
         LinearLayout utensilLayoutCantFind = (LinearLayout) bottomSheetDialog.findViewById(R.id.LayoutUntCantFind);
+        Button customUtensilButton = bottomSheetDialog.findViewById(R.id.BtnCustomUtensils);
+        customUtensilButton.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        BtnAddCustomUtensil(view);
+                    }
+                }
+        );
         MarketIngredientAdapter marketIngredientAdapter = new MarketIngredientAdapter(view.getContext(), utensilsName, utensilsIcon) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -411,6 +471,12 @@ public class SearchIngredientFragment extends Fragment {
                         utensilModel.setIcon(displayUtensilIcon.get(position));
                         utensilAdapter.removeUtensil(utensilModel);
                         utensilModelList = utensilAdapter.getUtensilList();
+                        if(utensilModelList.size()<=0){
+                            noUtensil.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            noUtensil.setVisibility(View.GONE);
+                        }
 
                     } else {
                         viewPrev = (View) utensilsGridView.getChildAt(position);
@@ -421,6 +487,12 @@ public class SearchIngredientFragment extends Fragment {
                         utensilModel.setIcon(displayUtensilIcon.get(position));
                         utensilAdapter.addUtensil(utensilModel);
                         utensilModelList = utensilAdapter.getUtensilList();
+                        if(utensilModelList.size()<=0){
+                            noUtensil.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            noUtensil.setVisibility(View.GONE);
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -508,6 +580,13 @@ public class SearchIngredientFragment extends Fragment {
                     UtensilModel utensilModel = new UtensilModel();
                     utensilModel.setName(chipItem);
                     utensilAdapter.removeUtensil(utensilModel);
+                    utensilModelList = utensilAdapter.getUtensilList();
+                    if(utensilModelList.size()<=0){
+                        noUtensil.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        noUtensil.setVisibility(View.GONE);
+                    }
                 }
             });
             chip.setTextColor(getResources().getColor(R.color.black));
@@ -536,6 +615,13 @@ public class SearchIngredientFragment extends Fragment {
                     IngredientModel ingredientModel = new IngredientModel();
                     ingredientModel.setName(newItem);
                     ingredientAdapter.removeIngredient(ingredientModel);
+                    ingredientModelList = ingredientAdapter.getIngredientList();
+                    if(ingredientModelList.size()<=0){
+                        noIngredient.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        noIngredient.setVisibility(View.GONE);
+                    }
                 }
             });
             chip.setTextColor(getResources().getColor(R.color.black));
@@ -546,6 +632,13 @@ public class SearchIngredientFragment extends Fragment {
             ingredientModel.setName(newItem);
             ingredientModel.setIcon(R.drawable.i0067_others);
             ingredientAdapter.addIngredient(ingredientModel);
+            ingredientModelList = ingredientAdapter.getIngredientList();
+            if(ingredientModelList.size()<=0){
+                noIngredient.setVisibility(View.VISIBLE);
+            }
+            else{
+                noIngredient.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -566,6 +659,13 @@ public class SearchIngredientFragment extends Fragment {
                     UtensilModel utensilModel = new UtensilModel();
                     utensilModel.setName(newItem);
                     utensilAdapter.removeUtensil(utensilModel);
+                    utensilModelList = utensilAdapter.getUtensilList();
+                    if(utensilModelList.size()<=0){
+                        noUtensil.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        noUtensil.setVisibility(View.GONE);
+                    }
                 }
             });
             chip.setTextColor(getResources().getColor(R.color.black));
@@ -576,6 +676,13 @@ public class SearchIngredientFragment extends Fragment {
             utensilModel.setName(newItem);
             utensilModel.setIcon(R.drawable.i0067_others);
             utensilAdapter.addUtensil(utensilModel);
+            utensilModelList = utensilAdapter.getUtensilList();
+            if(utensilModelList.size()<=0){
+                noUtensil.setVisibility(View.VISIBLE);
+            }
+            else{
+                noUtensil.setVisibility(View.GONE);
+            }
         }
     }
 
