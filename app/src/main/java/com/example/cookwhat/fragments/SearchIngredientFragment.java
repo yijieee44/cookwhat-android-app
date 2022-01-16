@@ -187,6 +187,23 @@ public class SearchIngredientFragment extends Fragment {
         utensilAdapter = new UtensilAdapter(context, utensilModelList);
         utensilRecycleView.setAdapter(utensilAdapter);
 
+        for (IngredientModel model : ingredientModelList) {
+            if(model.getIcon() == -1) {
+                //custom
+                selCustomIngredients.add(model.getName());
+            } else {
+                selIngredientsItem.add(INGREDIENTS_ICON[model.getIcon()]);
+            }
+        }
+
+        for (UtensilModel model : utensilModelList) {
+            if(model.getIcon() == -1) {
+                selCustomUtensils.add(model.getName());
+            } else {
+                selUtensilsItem.add(UTENSILS_ICON[model.getIcon()]);
+            }
+        }
+
         if(ingredientModelList.size()<=0){
             noIngredient.setVisibility(View.VISIBLE);
         }

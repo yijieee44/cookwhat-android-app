@@ -36,6 +36,7 @@
     <string name="ingredient_dont_have">Ingredient(s) you don\'t have: </string>
     <string name="utensil_dont_have">Utensil(s) you don\'t have: </string>
     <string name="no_recipe_found">No recipe found :(</string>
+    <string name="back">Back</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="you_wont_be_able_to_revert_this">You will not be able to revert this!</string>
     <string name="delete">Delete</string>

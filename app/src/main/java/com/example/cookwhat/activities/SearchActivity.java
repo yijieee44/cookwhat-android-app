@@ -72,6 +72,7 @@ public class SearchActivity extends AppCompatActivity {
     List<UtensilModel> utensilModelList;
     FirebaseFirestore firestoreDb;
     Button searchButton;
+    Button backButton;
 
     List<UserModelDB> userList;
     List<RecipeModelSearch> recipeSearchResult;
@@ -94,6 +95,16 @@ public class SearchActivity extends AppCompatActivity {
                     Log.d("INGREDIENT::", ingredient.getName());
                 }
                 search();
+            }
+        });
+
+        backButton = findViewById(R.id.BtnSearchBack);
+        backButton.setVisibility(View.GONE);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                toIngredient();
             }
         });
     }
@@ -132,8 +143,6 @@ public class SearchActivity extends AppCompatActivity {
                                     Log.w("ERROR", e.toString());
                                 }
                             }
-
-                            Log.d("ANOTHER SUCCESS!!!", ""+queriedRecipes);
                             organizeAndNavigateToResult(queriedRecipes, ingredientNameToSearch, utensilNameToSearch);
 
 
@@ -253,6 +262,7 @@ public class SearchActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
         searchButton.setVisibility(View.GONE);
+        backButton.setVisibility(View.VISIBLE);
 
     }
 
@@ -262,6 +272,7 @@ public class SearchActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
         searchButton.setVisibility(View.VISIBLE);
+        backButton.setVisibility(View.GONE);
 
     }
 
