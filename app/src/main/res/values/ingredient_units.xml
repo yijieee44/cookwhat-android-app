@@ -2,10 +2,17 @@
 <resources>
     <string-array name="quantity">
         <item>pcs</item>
+        <item>tsp.</item>
+        <item>tbsp.</item>
+        <item>cup</item>
+        <item>bowl</item>
     </string-array>
 
     <string-array name="weight">
-        <item>kg</item>
         <item>g</item>
+        <item>kg</item>
+        <item>ml</item>
+        <item>l</item>
+
     </string-array>
 </resources>
