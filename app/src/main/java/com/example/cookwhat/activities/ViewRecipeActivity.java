@@ -26,16 +26,14 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.interfaces.ItemChangeListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.cookwhat.R;
 import com.example.cookwhat.adapters.CommentAdapter;
-import com.example.cookwhat.adapters.IngredientAdapter;
-import com.example.cookwhat.adapters.UtensilAdapter;
 import com.example.cookwhat.fragments.DeleteRecipeDialogFragment;
 import com.example.cookwhat.fragments.IngredientAndUtensilDialogFragment;
 import com.example.cookwhat.fragments.IngredientDetailDialogFragment;
@@ -46,6 +44,7 @@ import com.example.cookwhat.models.UserModel;
 import com.example.cookwhat.models.UserModelDB;
 import com.example.cookwhat.models.UtensilModel;
 import com.example.cookwhat.utils.Utility;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -242,21 +241,6 @@ public class ViewRecipeActivity extends AppCompatActivity {
                     updateComments(recipeModelDB);
                     writeComment.getText().clear();
 
-                    CommentAdapter commentAdapter = new CommentAdapter(ViewRecipeActivity.this, recipeModelDB.getComments(), userModelDBArrayList);
-                    listView.setAdapter(commentAdapter);
-                    Utility.setListViewHeightBasedOnChildren(listView);
-                    listView.setClickable(true);
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            String userId = recipeModelDB.getComments().get(position).getUserId();
-                            Intent intent = new Intent(ViewRecipeActivity.this, UserActivity.class);
-                            intent.putExtra("fragmentname", "viewprofilefragment");
-                            intent.putExtra("userId", userId);
-                            startActivity(intent);
-                        }
-                    });
-
                     readUser(new FirestoreCallback() {
                         @Override
                         public void onCallBack(ArrayList<UserModelDB> userModelDBArrayList) {
@@ -276,6 +260,21 @@ public class ViewRecipeActivity extends AppCompatActivity {
                             });
                         }
                     });
+
+//                    CommentAdapter commentAdapter = new CommentAdapter(ViewRecipeActivity.this, recipeModelDB.getComments(), userModelDBArrayList);
+//                    listView.setAdapter(commentAdapter);
+//                    Utility.setListViewHeightBasedOnChildren(listView);
+//                    listView.setClickable(true);
+//                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                        @Override
+//                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                            String userId = recipeModelDB.getComments().get(position).getUserId();
+//                            Intent intent = new Intent(ViewRecipeActivity.this, UserActivity.class);
+//                            intent.putExtra("fragmentname", "viewprofilefragment");
+//                            intent.putExtra("userId", userId);
+//                            startActivity(intent);
+//                        }
+//                    });
                 }
             }
         });
@@ -377,6 +376,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("SUCCESS", document.getId() + " => " + document.getData());
                                 final ObjectMapper mapper = new ObjectMapper();
+                                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
                                 userModelDBArrayList.add(mapper.convertValue(document.getData(), UserModelDB.class));
                             }
                             firestoreCallback.onCallBack(userModelDBArrayList);
@@ -448,5 +448,12 @@ public class ViewRecipeActivity extends AppCompatActivity {
         });
 
         popupMenu.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this.getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 }

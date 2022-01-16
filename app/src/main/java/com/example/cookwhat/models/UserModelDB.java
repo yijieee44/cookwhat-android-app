@@ -1,10 +1,10 @@
 package com.example.cookwhat.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
+
 
 public class UserModelDB implements Serializable {
     private String userId;

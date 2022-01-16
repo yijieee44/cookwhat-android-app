@@ -1,9 +1,13 @@
 package com.example.cookwhat.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -119,7 +123,6 @@ public class HomeFragment extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     ArrayList<UserModelDB> tempUserModelArrayList = new ArrayList<>();
                     List<String> userids = new ArrayList<>();
-                    Map mapuserid=new HashMap();
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -134,9 +137,8 @@ public class HomeFragment extends Fragment {
                             }
                             for (int i = 0; i < recipeModelsArray.size();i++){
                                 String tempuserid = recipeModelsArray.get(i).getUserId();
-                                userids.add(tempuserid);
-                                if (!mapuserid.containsKey(tempuserid)){
-                                    mapuserid.put(tempuserid, "");
+                                if(!userids.contains(tempuserid)){
+                                    userids.add(tempuserid);
                                 }
                             }
                             userdb.whereIn("userId", userids)
