@@ -1,20 +1,16 @@
 package com.example.cookwhat.activities;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,9 +27,9 @@ import com.example.cookwhat.R;
 import com.example.cookwhat.adapters.CommentAdapter;
 import com.example.cookwhat.adapters.IngredientAdapter;
 import com.example.cookwhat.adapters.UtensilAdapter;
+import com.example.cookwhat.fragments.IngredientAndUtensilDialogFragment;
 import com.example.cookwhat.models.IngredientModel;
 import com.example.cookwhat.models.RecipeCommentModel;
-import com.example.cookwhat.models.RecipeModel;
 import com.example.cookwhat.models.RecipeModelDB;
 import com.example.cookwhat.models.UserModel;
 import com.example.cookwhat.models.UserModelDB;
@@ -41,29 +37,23 @@ import com.example.cookwhat.models.UtensilModel;
 import com.example.cookwhat.utils.Utility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.auth.User;
 
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public class ViewRecipeActivity extends AppCompatActivity {
 
@@ -319,52 +309,10 @@ public class ViewRecipeActivity extends AppCompatActivity {
     }
 
     private void showINUDialog() {
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-
-        INUDialog.setCancelable(true);
-        INUDialog.setContentView(R.layout.dialog_inu);
-        INUDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.outline_white_background));
-
         List<IngredientModel> ingredientModels = recipeModelDB.ingListToIngredientModel();
         List<UtensilModel> utensilModels = recipeModelDB.utListToUtensilsModel();
 
-        if(ingredientModels.size()>0) {
-            RecyclerView ingredientsRecyclerView = (RecyclerView) INUDialog.findViewById(R.id.RVIngredients);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this) {
-                @Override
-                public boolean canScrollVertically() {
-                    return false;
-                }
-            };
-            ingredientsRecyclerView.setLayoutManager(linearLayoutManager);
-            ingredientsRecyclerView.setAdapter(new IngredientAdapter(this, ingredientModels));
-
-        } else {
-            TextView noIngredientTextView = (TextView) INUDialog.findViewById(R.id.TVNoIngredients);
-            noIngredientTextView.setVisibility(View.VISIBLE);
-        }
-
-        if(utensilModels.size()>0) {
-            RecyclerView utensilsRecyclerView = (RecyclerView) INUDialog.findViewById(R.id.RVUtensils);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this) {
-                @Override
-                public boolean canScrollVertically() {
-                    return false;
-                }
-            };
-            utensilsRecyclerView.setLayoutManager(linearLayoutManager);
-            utensilsRecyclerView.setAdapter(new UtensilAdapter(this, utensilModels));
-
-        } else {
-            TextView noUtensilsTextView = (TextView) INUDialog.findViewById(R.id.TVNoUtensils);
-            noUtensilsTextView.setVisibility(View.VISIBLE);
-        }
-
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.75);
-
-        INUDialog.getWindow().setLayout(width, height);
-
-        INUDialog.show();
+        IngredientAndUtensilDialogFragment dialog = new IngredientAndUtensilDialogFragment(ingredientModels, utensilModels);
+        dialog.show(getSupportFragmentManager(), "inuDialog");
     }
 }
