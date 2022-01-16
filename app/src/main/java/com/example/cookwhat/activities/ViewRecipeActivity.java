@@ -36,7 +36,9 @@ import com.example.cookwhat.R;
 import com.example.cookwhat.adapters.CommentAdapter;
 import com.example.cookwhat.adapters.IngredientAdapter;
 import com.example.cookwhat.adapters.UtensilAdapter;
+import com.example.cookwhat.fragments.DeleteRecipeDialogFragment;
 import com.example.cookwhat.fragments.IngredientAndUtensilDialogFragment;
+import com.example.cookwhat.fragments.IngredientDetailDialogFragment;
 import com.example.cookwhat.models.IngredientModel;
 import com.example.cookwhat.models.RecipeCommentModel;
 import com.example.cookwhat.models.RecipeModelDB;
@@ -82,6 +84,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
     Dialog INUDialog;
     RecipeModelDB recipeModelDB;
     UserModelDB userModelDB;
+    ChipGroup chipGroup;
 
     ActivityResultLauncher<Intent> createActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -91,8 +94,9 @@ public class ViewRecipeActivity extends AppCompatActivity {
                     if (result.getResultCode() == 123) {
                         Intent data = result.getData();
                         RecipeModelDB editedRecipeModel = (RecipeModelDB) data.getSerializableExtra("recipeModelDB");
-                        Log.d("hehe", "be");
+
                         recipeModelDB = editedRecipeModel;
+                        reloadFromRecipe();
                     }
                 }
             });
@@ -303,6 +307,67 @@ public class ViewRecipeActivity extends AppCompatActivity {
         });
     }
 
+    public void reloadFromRecipe() {
+        ArrayList<SlideModel> images = new ArrayList<>();
+
+        for (int z = 0; z < recipeModelDB.getSteps().size(); z++) {
+            images.add(new SlideModel(recipeModelDB.getSteps().get(z).getImage(), null));
+        }
+
+        imageSlider.setImageList(images);
+
+        recipeCaption.setText(recipeModelDB.getSteps().get(0).getStep());
+
+        imageSlider.setItemChangeListener(new ItemChangeListener() {
+            @Override
+            public void onItemChanged(int position) {
+                if (recipeModelDB.getSteps().size() > position) {
+                    currImageIndex = position;
+                    String currImageCaption = recipeModelDB.getSteps().get(currImageIndex).getStep();
+
+                    if (currImageCaption.isEmpty() && currImageIndex!=0) {
+                        for (int i = currImageIndex; i >= 0; i--) {
+                            if (!recipeModelDB.getSteps().get(i).getStep().isEmpty()) {
+                                currImageCaption = recipeModelDB.getSteps().get(i).getStep();
+                                break;
+                            }
+                        }
+                    }
+
+                    recipeCaption.setText(currImageCaption);
+                }
+            }
+        });
+
+        recipeName.setText(recipeModelDB.getTitle());
+
+        addFav.setText(String.valueOf(recipeModelDB.getNumFav()));
+        addFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        // clear all tag
+        chipGroup = (ChipGroup) findViewById(R.id.ChipGroupTag);
+        chipGroup.removeAllViews();
+
+        for (String tag : recipeModelDB.getTags()) {
+            Chip chip = new Chip(this);
+            chip.setText("#" + tag);
+            chip.setClickable(false);
+            chip.setChipBackgroundColorResource(R.color.light_yellow);
+            chip.setTextColor(getResources().getColor(R.color.black));
+
+            chipGroup.addView(chip);
+        }
+
+        // created time
+        TextView TVCreatedTime = (TextView) findViewById(R.id.TVCreatedTime);
+        TVCreatedTime.setText(recipeModelDB.getCreatedTime());
+    }
+
     public void readUser(FirestoreCallback firestoreCallback) {
         userdb.whereIn("userId", userIds).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -366,7 +431,16 @@ public class ViewRecipeActivity extends AppCompatActivity {
 //                        Toast.makeText(getApplicationContext(), String.valueOf(item.getTitle()), Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.delete_post:
-                        Toast.makeText(getApplicationContext(), String.valueOf(item.getTitle()), Toast.LENGTH_SHORT).show();
+                        DeleteRecipeDialogFragment dialog = new DeleteRecipeDialogFragment(recipeModelDB);
+                        dialog.setDialogListener(new DeleteRecipeDialogFragment.DialogListener(){
+                            @Override
+                            public void onFinishEditDialog() {
+                                Log.d("delet", "hehe");
+                                finish();
+                            }
+                        });
+                        dialog.show(getSupportFragmentManager(), "inuDialog");
+//                        Toast.makeText(getApplicationContext(), String.valueOf(item.getTitle()), Toast.LENGTH_SHORT).show();
                         break;
                 }
                 return false;
