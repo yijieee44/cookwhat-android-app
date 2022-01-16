@@ -28,6 +28,7 @@ public class RecipeModelSearch extends RecipeModelDB{
         this.setUtMemo(recipeModelDB.getUtMemo());
         this.setUtName(recipeModelDB.getUtName());
         this.setUserId(recipeModelDB.getUserId());
+        this.setIngWeight(recipeModelDB.getIngWeight());
     }
 
     public List<Integer> getNonMatchingIngredientIndex() {

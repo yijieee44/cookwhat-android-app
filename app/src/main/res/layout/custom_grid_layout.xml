@@ -2,7 +2,8 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:id="@+id/CardView"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     app:cardCornerRadius="5dp"
@@ -13,7 +14,7 @@
     app:layout_constraintTop_toTopOf="parent">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -52,19 +53,75 @@
             android:drawablePadding="5dp"
             android:text="Vegan" />
 
-        <TextView
-            android:id="@+id/TVNumFav"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/TVNumFav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="9dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/rounded_corner"
+                android:drawableLeft="@drawable/ic_baseline_star_24"
+                android:drawablePadding="10dp"
+                android:includeFontPadding="true"
+                android:padding="5dp"
+                android:text="99" />
+
+            <ImageButton
+                android:id="@+id/BtnExpand"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:background="@android:drawable/screen_background_light_transparent"
+                app:srcCompat="@drawable/ic_baseline_expand_more_24" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ExpandableLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="9dp"
-            android:layout_marginBottom="3dp"
-            android:background="@drawable/rounded_corner"
-            android:drawableLeft="@drawable/ic_baseline_star_24"
-            android:drawablePadding="10dp"
-            android:includeFontPadding="true"
-            android:padding="5dp"
-            android:text="99" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/TVDontHaveIngredient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1"
+                android:text="@string/ingredient_dont_have" />
+
+            <GridView
+                android:id="@+id/GVDontHave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1"
+                android:numColumns="4">
+
+            </GridView>
+
+            <TextView
+                android:id="@+id/TVDontHaveUtensil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/utensil_dont_have" />
+
+            <GridView
+                android:id="@+id/GVDontHaveUtensil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_weight="1"
+                android:numColumns="4" />
+        </LinearLayout>
 
     </LinearLayout>
 

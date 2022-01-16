@@ -30,6 +30,9 @@
     <string name="click_on_the_item_to_edit_quantity">Click on the item to edit quantity</string>
     <string name="no_ingredient_added">No ingredient added</string>
     <string name="no_utensil_added">No utensil added</string>
+    <string name="search_result">Search Result</string>
+    <string name="ingredient_dont_have">Ingredient(s) you don\'t have: </string>
+    <string name="utensil_dont_have">Utensil(s) you don\'t have: </string>
 
     <string name="i0000_acorn">Acorn</string>
     <string name="i0001_ajinomoto">Ajinomoto</string>

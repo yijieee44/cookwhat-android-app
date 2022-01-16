@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/DestSearchRecipe"
@@ -9,55 +9,23 @@
     android:orientation="vertical"
     tools:context=".activities.SearchActivity">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/activity_search_fragment_container"
+            android:name="com.example.cookwhat.fragments.SearchIngredientFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="What's in your kitchen?"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:layout_height="match_parent" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/BtnSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:onClick="BtnIngredientsBottomSheet"
-            android:text="Add Ingredient" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/activity_search_ingredient_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:onClick="BtnUtensilsBottomSheet"
-            android:text="Add Utensils" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/activity_search_utensil_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
-
-        <Button
-            android:id="@+id/activity_search_button_submit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:drawableLeft="@drawable/ic_baseline_search_24"
             android:text="@string/search" />
-    </LinearLayout>
+    </FrameLayout>
 
-</androidx.core.widget.NestedScrollView>
+</LinearLayout>
