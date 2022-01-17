@@ -28,11 +28,12 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RV_ProfilePic"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/roundedrec_nude"
+            android:padding="5dp"
             android:scrollbars="horizontal">
 
         </androidx.recyclerview.widget.RecyclerView>

@@ -1,12 +1,15 @@
 package com.example.cookwhat.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,7 +22,8 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
 
         private ArrayList <Integer> profilepic;
         boolean isTick = false;
-        Integer selectedProfilePic;
+        Integer tempSelected = -1;
+        Integer selectedProfilePic = -1;
         ProfileClickListener2 clickListener;
 
         /**
@@ -71,15 +75,18 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
 
 
                 return new ViewHolder(view, new ProfileClickListener(){
-
                         @Override
                         public void onClick(int p, Context context, View view) {
                                 ProfilePicPopUp profilePicPopUp =  new ProfilePicPopUp(p, new ProfilePicPopUp.profilePicPopUpListener() {
                                         @Override
                                         public void onConfirmClicked(boolean clicked) {
                                                 isTick = clicked;
-                                                notifyDataSetChanged();
                                                 clickListener.onItemClicked(p);
+                                                selectedProfilePic = p;
+                                                notifyItemChanged(p);
+                                                if (tempSelected != -1){
+                                                        notifyItemChanged(tempSelected);
+                                                }
                                         }
                                 });
                                 profilePicPopUp.show(((FragmentActivity)context).getSupportFragmentManager(),"ProfilePicDialog");
@@ -94,11 +101,18 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
         // Replace the contents of a view (invoked by the layout manager)
 
         @Override
-        public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+        public void onBindViewHolder(ViewHolder viewHolder, @SuppressLint("RecyclerView") final int position) {
 
                 // Get element from your dataset at this position and replace the
                 // contents of the view with that element
                 viewHolder.getImgView().setImageResource(profilepic.get(position));
+                if (selectedProfilePic == position && isTick){
+                        viewHolder.getImgView().setBackgroundColor(ContextCompat.getColor(viewHolder.context, R.color.dark_yellow));
+                        tempSelected = position;
+                }
+                else if (isTick) {
+                        viewHolder.getImgView().setBackgroundColor(0x00000000);
+                }
         }
 
 
