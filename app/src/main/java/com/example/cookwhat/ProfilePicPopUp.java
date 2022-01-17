@@ -14,10 +14,11 @@ import androidx.fragment.app.DialogFragment;
 public class ProfilePicPopUp extends DialogFragment {
 
     int position;
-    boolean sendConfirm = false;
+    profilePicPopUpListener profilePicPopUpListener;
 
-    public ProfilePicPopUp(int position) {
-        this.position =position+1;
+    public ProfilePicPopUp(int position, profilePicPopUpListener profilePicPopUpListener) {
+        this.position = position+1;
+        this.profilePicPopUpListener = profilePicPopUpListener;
 
     }
 
@@ -37,7 +38,7 @@ public class ProfilePicPopUp extends DialogFragment {
         View.OnClickListener confirmOCL = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer oldprofile;
+                profilePicPopUpListener.onConfirmClicked(true);
                 dismiss();
             }
         };
@@ -53,12 +54,8 @@ public class ProfilePicPopUp extends DialogFragment {
         getDialog().getWindow().setLayout(900,1000);
     }
 
-    public void setConfirm(boolean sendConfirm){
-        this.sendConfirm = sendConfirm;
-    }
-
-    public boolean getConfirm(){
-        return this.sendConfirm;
+    public interface profilePicPopUpListener {
+        public void onConfirmClicked(boolean clicked);
     }
 
 }

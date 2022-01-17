@@ -19,7 +19,8 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
 
         private ArrayList <Integer> profilepic;
         boolean isTick = false;
-        Integer selectedProfilePic ;
+        Integer selectedProfilePic;
+        ProfileClickListener2 clickListener;
 
         /**
          * Provide a reference to the type of views that you are using
@@ -56,8 +57,9 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
 
         }
 
-        public ProfilePicAdapter(ArrayList<Integer> profilepic) {
+        public ProfilePicAdapter(ArrayList<Integer> profilepic, ProfileClickListener2 profileClickListener) {
                this.profilepic = profilepic;
+               this.clickListener = profileClickListener;
         }
 
         // Create new views (invoked by the layout manager)
@@ -72,16 +74,15 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
 
                         @Override
                         public void onClick(int p, Context context, View view) {
-
-                                System.out.println(context.toString());
-                                ProfilePicPopUp profilePicPopUp =  new ProfilePicPopUp(p);
+                                ProfilePicPopUp profilePicPopUp =  new ProfilePicPopUp(p, new ProfilePicPopUp.profilePicPopUpListener() {
+                                        @Override
+                                        public void onConfirmClicked(boolean clicked) {
+                                                isTick = clicked;
+                                                notifyDataSetChanged();
+                                                clickListener.onItemClicked(p);
+                                        }
+                                });
                                 profilePicPopUp.show(((FragmentActivity)context).getSupportFragmentManager(),"ProfilePicDialog");
-                                isTick = profilePicPopUp.getConfirm();
-                                selectedProfilePic = p;
-
-                                if(isTick){
-                                        notifyDataSetChanged();
-                                }
                                 view.setClickable(true);
                                 view.setEnabled(true);
 
@@ -112,10 +113,9 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
 
         }
 
-
-
-
-
+        public interface ProfileClickListener2 {
+                public void onItemClicked(int position);
+        }
 }
 
 
