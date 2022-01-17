@@ -48,7 +48,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/ETLoginUsername"
+            android:id="@+id/ETLoginEmailAddress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
@@ -57,7 +57,7 @@
             android:background="#FFD368"
             android:ems="10"
             android:fontFamily="sans-serif-condensed-medium"
-            android:hint="Username"
+            android:hint="@string/emailaddr"
             android:inputType="textPersonName"
             android:minHeight="48dp"
             android:padding="10dp"
@@ -83,7 +83,7 @@
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ETLoginUsername" />
+            app:layout_constraintTop_toBottomOf="@+id/ETLoginEmailAddress" />
 
         <Button
             android:id="@+id/BtnGo"

@@ -3,11 +3,13 @@ package com.example.cookwhat.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +36,8 @@ public class LoginFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private FirebaseAuth mAuth;
     String userID;
+    boolean cond1 = false;
+    boolean cond2 = false;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -84,37 +88,58 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Button BtnLogin = view.findViewById(R.id.BtnGo);
+        EditText editTextEmail = view.findViewById(R.id.ETLoginEmailAddress);
+        EditText editTextPassword = view.findViewById(R.id.ETLoginPassword);
         View.OnClickListener OCLLogin = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                EditText editTextEmail = view.findViewById(R.id.ETLoginUsername);
                 String email = editTextEmail.getText().toString();
-                EditText editTextPassword = view.findViewById(R.id.ETLoginPassword);
+                if (email.trim().equalsIgnoreCase("")) {
+                    editTextEmail.setError("This field can not be blank");
+                }
+                else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                    editTextEmail.setError("Invalid email address");
+                }
+                else{
+                    cond1 = true;
+                }
+
                 String password = editTextPassword.getText().toString();
-                Log.d("SUCCESS", email);
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d("SUCCESS", "signInWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
+                if (password.trim().equalsIgnoreCase("")) {
+                    editTextPassword.setError("This field can not be blank");
+                }
+                else if (password.length()<6){
+                    editTextPassword.setError("Password must contain at least 6 characters");
+                }
+                else{
+                    cond2 = true;
+                }
+
+                if(cond1 && cond2){
+                    mAuth.signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d("SUCCESS", "signInWithEmail:success");
+                                        FirebaseUser user = mAuth.getCurrentUser();
 
 
-                                    Intent intentMainActivity = new Intent(getActivity(), MainActivity.class);
-                                    intentMainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intentMainActivity);
+                                        Intent intentMainActivity = new Intent(getActivity(), MainActivity.class);
+                                        intentMainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intentMainActivity);
 
 
 
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w("ERROR", "signInWithEmail:failure", task.getException());
-
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Log.w("ERROR", "signInWithEmail:failure", task.getException());
+                                        Toast.makeText(getContext(), "Failed to log in. Incorrect email address or password.", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
 
             }
         };
