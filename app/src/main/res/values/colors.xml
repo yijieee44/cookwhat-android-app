@@ -13,4 +13,5 @@
     <color name="nude">#FFF4CC</color>
     <color name="red">#FFB30000</color>
     <color name="weirdyellow">#DDC68F</color>
+    <color name="transparent">#00000000</color>
 </resources>
