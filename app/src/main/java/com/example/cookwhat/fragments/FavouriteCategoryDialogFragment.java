@@ -610,7 +610,7 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                 if (favouriteCategory.isEmpty()){
                     ArrayList<String> recipeids = new ArrayList<>();
                     recipeids.add(recipeId);
-                    favouriteCategory.put("South-East-Asia", recipeids);
+                    favouriteCategory.put("South-East Asia", recipeids);
                     userModelDB.setFavouriteCategory(favouriteCategory);
                     updateUser(userModelDB);
                     Toast.makeText(getContext(), "Saved recipe to " + BtnSEA.getText(), Toast.LENGTH_SHORT).show();
@@ -624,11 +624,11 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                     count++;
                 }
                 else {
-                    ArrayList<String> recipeids = favouriteCategory.get("South-East-Asia");
+                    ArrayList<String> recipeids = favouriteCategory.get("South-East Asia");
                     if (recipeids == null){
                         recipeids = new ArrayList<>();
                         recipeids.add(recipeId);
-                        favouriteCategory.put("South-East-Asia", recipeids);
+                        favouriteCategory.put("South-East Asia", recipeids);
                         userModelDB.setFavouriteCategory(favouriteCategory);
                         updateUser(userModelDB);
                         Toast.makeText(getContext(), "Saved recipe to " + BtnSEA.getText(), Toast.LENGTH_SHORT).show();
@@ -643,7 +643,7 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                     }
                     else if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
                         recipeids.add(recipeId);
-                        favouriteCategory.put("South-East-Asia", recipeids);
+                        favouriteCategory.put("South-East Asia", recipeids);
                         userModelDB.setFavouriteCategory(favouriteCategory);
                         updateUser(userModelDB);
                         Toast.makeText(getContext(), "Saved recipe to " + BtnSEA.getText(), Toast.LENGTH_SHORT).show();
@@ -657,7 +657,7 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                         count++;
                     } else if (recipeids.contains(recipeId)) {
                         recipeids.remove(recipeId);
-                        favouriteCategory.put("South-East-Asia", recipeids);
+                        favouriteCategory.put("South-East Asia", recipeids);
                         userModelDB.setFavouriteCategory(favouriteCategory);
                         updateUser(userModelDB);
                         Toast.makeText(getContext(), "Recipe is removed from " + BtnSEA.getText(), Toast.LENGTH_SHORT).show();

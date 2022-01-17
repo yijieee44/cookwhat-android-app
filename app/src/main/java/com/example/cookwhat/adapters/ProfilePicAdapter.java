@@ -1,6 +1,7 @@
 package com.example.cookwhat.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,21 +97,7 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
 
                 // Get element from your dataset at this position and replace the
                 // contents of the view with that element
-                /*Drawable drawable = ContextCompat.getDrawable(context, profilepic.get(p));
-                Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(bitmap);
-
-                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-                drawable.draw(canvas);*/
-
-                //viewHolder.getImgView().setImageBitmap(bitmap);
                 viewHolder.getImgView().setImageResource(profilepic.get(position));
-                System.out.println("print");
-                if(isTick && selectedProfilePic == position){
-                        System.out.println("Here");
-                        //viewHolder.getImgView().findViewById(R.id.IV_Tick).setVisibility(View.VISIBLE);
-                }
-
         }
 
 

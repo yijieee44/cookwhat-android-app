@@ -1,100 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:background="#FFD368"
-    tools:context=".fragments.RegisterFragment"
-    android:onClick="hideKeyboard">
+    android:onClick="hideKeyboard"
+    android:orientation="vertical"
+    tools:context=".fragments.RegisterFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <EditText
-        android:id="@+id/ETRegisterPassword"
-        android:layout_width="360dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="44dp"
-        android:background="#FFF4CC"
-        android:ems="10"
-        android:fontFamily="@font/candyjelly"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:minHeight="48dp"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ETRegisterEmail" />
-
-    <EditText
-        android:id="@+id/ETRegisterUsername"
-        android:layout_width="360dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="36dp"
-        android:background="#FFF4CC"
-        android:ems="10"
-        android:fontFamily="@font/candyjelly"
-        android:hint="Username"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TVRegister" />
-
     <ImageView
         android:id="@+id/IVRegister"
-        android:layout_width="189dp"
-        android:layout_height="141dp"
-        android:layout_marginTop="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/cat_create_new_account"
-        tools:src="@drawable/cat_create_new_account" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/cat_create_new_account" />
 
     <TextView
         android:id="@+id/TVRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="-30dp"
+        android:layout_marginRight="5dp"
         android:fontFamily="@font/absolutejoyful"
         android:text="Create New Account"
         android:textColor="#000000"
-        android:textSize="48sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/IVRegister" />
+        android:textSize="48sp" />
+
+    <EditText
+        android:id="@+id/ETRegisterPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp"
+        android:background="#FFF4CC"
+        android:ems="10"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:padding="20dp"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/ETRegisterUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
+        android:background="#FFF4CC"
+        android:ems="10"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:hint="@string/username"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:padding="20dp"
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/ETRegisterEmail"
-        android:layout_width="360dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
         android:background="#FFF4CC"
         android:ems="10"
-        android:fontFamily="@font/candyjelly"
-        android:hint="E-mail"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:hint="@string/emailaddr"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ETRegisterUsername" />
+        android:padding="20dp"
+        android:textSize="24sp" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button3"
-        android:layout_width="87dp"
-        android:layout_height="87dp"
-        android:layout_marginTop="48dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
         android:background="@drawable/next_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ETRegisterPassword"
-        tools:ignore="SpeakableTextPresentCheck" />
+        android:padding="25dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

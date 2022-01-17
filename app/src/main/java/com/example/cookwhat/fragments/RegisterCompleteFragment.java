@@ -3,6 +3,7 @@ package com.example.cookwhat.fragments;
 
 import static android.content.ContentValues.TAG;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -104,7 +105,7 @@ public class RegisterCompleteFragment extends Fragment {
 
         profilepic =  new ArrayList<>();
         for(int i =0 ; i<33; i++){
-            String name = "ic_profile_pic" + i+1;
+            String name = "ic_profile_pic_" + String.valueOf(i+1);
             int resourceId = getResources().getIdentifier(name, "drawable", getActivity().getPackageName());
             profilepic.add(resourceId);
         }
@@ -150,7 +151,7 @@ public class RegisterCompleteFragment extends Fragment {
 
         FirebaseFirestore firestoreDb = FirebaseFirestore.getInstance();
 
-        Button BtnRegister = view.findViewById(R.id.BtnRegisterComplete);
+        Button BtnRegister = view.findViewById(R.id.Btn_Register);
         View.OnClickListener OCLRegister = new View.OnClickListener(){
 
             @Override
