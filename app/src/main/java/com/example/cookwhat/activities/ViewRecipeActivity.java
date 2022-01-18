@@ -216,9 +216,16 @@ public class ViewRecipeActivity extends AppCompatActivity {
         userPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
-                intent.putExtra("fragmentname", "viewprofilefragment");
-                startActivity(intent);
+                readCurrentUser(new FirestoreCallback2() {
+                    @Override
+                    public void onCallBack(UserModelDB currentUser) {
+                        Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                        intent.putExtra("fragmentname", "viewprofilefragment");
+                        intent.putExtra("userId", recipeModelDB.getUserId());
+                        intent.putExtra("currentUserModel", currentUser);
+                        startActivity(intent);
+                    }
+                });
             }
         });
 
@@ -237,11 +244,17 @@ public class ViewRecipeActivity extends AppCompatActivity {
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            String userId = recipeModelDB.getComments().get(position).getUserId();
-                            Intent intent = new Intent(ViewRecipeActivity.this, UserActivity.class);
-                            intent.putExtra("fragmentname", "viewprofilefragment");
-                            intent.putExtra("userId", userId);
-                            startActivity(intent);
+                            readCurrentUser(new FirestoreCallback2() {
+                                @Override
+                                public void onCallBack(UserModelDB currentUser) {
+                                    String userId = recipeModelDB.getComments().get(position).getUserId();
+                                    Intent intent = new Intent(ViewRecipeActivity.this, UserActivity.class);
+                                    intent.putExtra("fragmentname", "viewprofilefragment");
+                                    intent.putExtra("userId", userId);
+                                    intent.putExtra("currentUserModel", currentUser);
+                                    startActivity(intent);
+                                }
+                            });
                         }
                     });
                 }
@@ -277,11 +290,17 @@ public class ViewRecipeActivity extends AppCompatActivity {
                             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    String userId = recipeModelDB.getComments().get(position).getUserId();
-                                    Intent intent = new Intent(ViewRecipeActivity.this, UserActivity.class);
-                                    intent.putExtra("fragmentname", "viewprofilefragment");
-                                    intent.putExtra("userId", userId);
-                                    startActivity(intent);
+                                    readCurrentUser(new FirestoreCallback2() {
+                                        @Override
+                                        public void onCallBack(UserModelDB currentUser) {
+                                            String userId = recipeModelDB.getComments().get(position).getUserId();
+                                            Intent intent = new Intent(ViewRecipeActivity.this, UserActivity.class);
+                                            intent.putExtra("fragmentname", "viewprofilefragment");
+                                            intent.putExtra("userId", userId);
+                                            intent.putExtra("currentUserModel", currentUser);
+                                            startActivity(intent);
+                                        }
+                                    });
                                 }
                             });
                         }
