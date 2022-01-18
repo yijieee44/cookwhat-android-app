@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,9 @@ public class RegisterFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private FirebaseAuth mAuth;
+    boolean cond1 = false;
+    boolean cond2 = false;
+    boolean cond3 = false;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -98,43 +102,49 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
+        EditText editTextUsername = view.findViewById(R.id.ETRegisterUsername);
+        EditText editTextEmail = view.findViewById(R.id.ETRegisterEmail);
+        EditText editTextPassword = view.findViewById(R.id.ETRegisterPassword);
 
         Button BtnNext = view.findViewById(R.id.button3);
         View.OnClickListener OCLNext = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                EditText editTextUsername = view.findViewById(R.id.ETRegisterUsername);
                 String username = editTextUsername.getText().toString();
-                EditText editTextEmail = view.findViewById(R.id.ETRegisterEmail);
+                if (username.isEmpty() || username.equals("")){
+                    editTextUsername.setError("This field can not be blank");
+                }
+                else{
+                    cond1 = true;
+                }
+
                 String email = editTextEmail.getText().toString();
-                EditText editTextPassword = view.findViewById(R.id.ETRegisterPassword);
+                if (email.trim().equalsIgnoreCase("")) {
+                    editTextEmail.setError("This field can not be blank");
+                }
+                else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                    editTextEmail.setError("Invalid email address");
+                }
+                else{
+                    cond2 = true;
+                }
+
                 String password = editTextPassword.getText().toString();
-                System.out.println("password here"+password);
+                if (password.trim().equalsIgnoreCase("")) {
+                    editTextPassword.setError("This field can not be blank");
+                }
+                else if (password.length()<6){
+                    editTextPassword.setError("Password must contain at least 6 characters");
+                }
+                else{
+                    cond3 = true;
+                }
 
-                readData(new FirestoreCallback(){
-
-                    @Override
-                    public void onCallBackCheckExisting(boolean isExisting) {
-
-                        if (username.equals("")){
-                            editTextUsername.setHint("Username must be filled!");
-                            //editTextUsername.setHintTextColor(Integer.parseInt("@color/red"));
-                        }
-
-                        if (email.equals("")){
-                            editTextEmail.setHint("Email must be filled!");
-                            //editTextEmail.setHintTextColor(Integer.parseInt("@color/red"));
-                        }
-
-                        if (password.equals("")){
-                            editTextPassword.setHint("Username must be filled!");
-                           //editTextPassword.setHintTextColor(Integer.parseInt("@color/red"));
-                        }
-                        else  {
+                if (cond1 && cond2 && cond3){
+                    readData(new FirestoreCallback(){
+                        @Override
+                        public void onCallBackCheckExisting(boolean isExisting) {
                             if (isExisting){
-
                                 AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                                 alert.setMessage(R.string.register_warning);
                                 alert.setCancelable(false);
@@ -142,7 +152,6 @@ public class RegisterFragment extends Fragment {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         Navigation.findNavController(view).navigate(R.id.DestLogin);
-
                                     }
                                 });
                                 alert.setNegativeButton("OK", new DialogInterface.OnClickListener() {
@@ -156,24 +165,13 @@ public class RegisterFragment extends Fragment {
 
                             }
                             else{
-
                                 String[] details = {username, email, password};
                                 LoginActivity activity = (LoginActivity) getActivity();
                                 activity.setRegisterDetails(details);
-
-                                
                             }
-
                         }
-
-                    }
-                }, email );
-
-
-
-
-
-
+                    }, email);
+                }
             }
         };
 
@@ -201,7 +199,6 @@ public class RegisterFragment extends Fragment {
                         else{
                             System.out.println("Not enter"+isExisting);
                         }
-
                     }
                 });
     }

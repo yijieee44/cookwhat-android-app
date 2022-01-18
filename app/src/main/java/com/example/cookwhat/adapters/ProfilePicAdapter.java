@@ -1,11 +1,15 @@
 package com.example.cookwhat.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,7 +22,9 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
 
         private ArrayList <Integer> profilepic;
         boolean isTick = false;
-        Integer selectedProfilePic ;
+        Integer tempSelected = -1;
+        Integer selectedProfilePic = -1;
+        ProfileClickListener2 clickListener;
 
         /**
          * Provide a reference to the type of views that you are using
@@ -55,8 +61,9 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
 
         }
 
-        public ProfilePicAdapter(ArrayList<Integer> profilepic) {
+        public ProfilePicAdapter(ArrayList<Integer> profilepic, ProfileClickListener2 profileClickListener) {
                this.profilepic = profilepic;
+               this.clickListener = profileClickListener;
         }
 
         // Create new views (invoked by the layout manager)
@@ -68,19 +75,21 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
 
 
                 return new ViewHolder(view, new ProfileClickListener(){
-
                         @Override
                         public void onClick(int p, Context context, View view) {
-
-                                System.out.println(context.toString());
-                                ProfilePicPopUp profilePicPopUp =  new ProfilePicPopUp(p);
+                                ProfilePicPopUp profilePicPopUp =  new ProfilePicPopUp(p, new ProfilePicPopUp.profilePicPopUpListener() {
+                                        @Override
+                                        public void onConfirmClicked(boolean clicked) {
+                                                isTick = clicked;
+                                                clickListener.onItemClicked(p);
+                                                selectedProfilePic = p;
+                                                notifyItemChanged(p);
+                                                if (tempSelected != -1){
+                                                        notifyItemChanged(tempSelected);
+                                                }
+                                        }
+                                });
                                 profilePicPopUp.show(((FragmentActivity)context).getSupportFragmentManager(),"ProfilePicDialog");
-                                isTick = profilePicPopUp.getConfirm();
-                                selectedProfilePic = p;
-
-                                if(isTick){
-                                        notifyDataSetChanged();
-                                }
                                 view.setClickable(true);
                                 view.setEnabled(true);
 
@@ -92,25 +101,18 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
         // Replace the contents of a view (invoked by the layout manager)
 
         @Override
-        public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+        public void onBindViewHolder(ViewHolder viewHolder, @SuppressLint("RecyclerView") final int position) {
 
                 // Get element from your dataset at this position and replace the
                 // contents of the view with that element
-                /*Drawable drawable = ContextCompat.getDrawable(context, profilepic.get(p));
-                Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(bitmap);
-
-                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-                drawable.draw(canvas);*/
-
-                //viewHolder.getImgView().setImageBitmap(bitmap);
                 viewHolder.getImgView().setImageResource(profilepic.get(position));
-                System.out.println("print");
-                if(isTick && selectedProfilePic == position){
-                        System.out.println("Here");
-                        //viewHolder.getImgView().findViewById(R.id.IV_Tick).setVisibility(View.VISIBLE);
+                if (selectedProfilePic == position && isTick){
+                        viewHolder.getImgView().setBackgroundColor(ContextCompat.getColor(viewHolder.context, R.color.dark_yellow));
+                        tempSelected = position;
                 }
-
+                else if (isTick) {
+                        viewHolder.getImgView().setBackgroundColor(0x00000000);
+                }
         }
 
 
@@ -125,10 +127,9 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
 
         }
 
-
-
-
-
+        public interface ProfileClickListener2 {
+                public void onItemClicked(int position);
+        }
 }
 
 

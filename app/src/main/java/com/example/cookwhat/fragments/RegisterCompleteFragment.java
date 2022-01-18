@@ -3,9 +3,11 @@ package com.example.cookwhat.fragments;
 
 import static android.content.ContentValues.TAG;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -61,6 +63,9 @@ public class RegisterCompleteFragment extends Fragment {
     String email;
     ArrayList<Integer> profilepic ;
     ArrayList<String> chipsName = new ArrayList<>();
+    int prof_pic = 0;
+    boolean cond1 = false;
+    boolean cond2 = false;
 
 
     public RegisterCompleteFragment() {
@@ -105,7 +110,7 @@ public class RegisterCompleteFragment extends Fragment {
 
         profilepic =  new ArrayList<>();
         for(int i =0 ; i<33; i++){
-            String name = "ic_profile_pic" + i+1;
+            String name = "ic_profile_pic_" + String.valueOf(i+1);
             int resourceId = getResources().getIdentifier(name, "drawable", getActivity().getPackageName());
             profilepic.add(resourceId);
         }
@@ -136,7 +141,12 @@ public class RegisterCompleteFragment extends Fragment {
         LinearLayoutManager recycleViewLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         profilePicRV.setLayoutManager(recycleViewLayoutManager);
 
-        ProfilePicAdapter adapter = new ProfilePicAdapter(profilepic);
+        ProfilePicAdapter adapter = new ProfilePicAdapter(profilepic, new ProfilePicAdapter.ProfileClickListener2() {
+            @Override
+            public void onItemClicked(int position) {
+                prof_pic = profilepic.get(position);
+            }
+        });
 
         LinearLayoutManager HorizontalScroll = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
 
@@ -144,115 +154,104 @@ public class RegisterCompleteFragment extends Fragment {
         profilePicRV.setAdapter(adapter);
 
 
+
         UserModelDB usermodel = new UserModelDB();
+
         usermodel.setUserName(username);
         usermodel.setEmailAddr(email);
 
 
         FirebaseFirestore firestoreDb = FirebaseFirestore.getInstance();
 
-        Button BtnRegister = view.findViewById(R.id.Btn_RegisterComplete);
+ Button BtnRegister = view.findViewById(R.id.Btn_Register);
+        ChipGroup chipGroup = view.findViewById(R.id.CG_Preferences);
+
         View.OnClickListener OCLRegister = new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
-                ChipGroup chipGroup = view.findViewById(R.id.CG_Preferences);
+                if (prof_pic == 0){
+                    Toast.makeText(getContext(), "Please select a profile picture", Toast.LENGTH_SHORT).show();
+                }
+                else if (profilepic.contains(prof_pic)){
+                    cond1 = true;
+                    usermodel.setProfilePic(prof_pic);
+                }
+
                 List<Integer> chips = chipGroup.getCheckedChipIds();
                 ArrayList<String> chipsSelected = new ArrayList<>();
                 for(int i =0; i<chips.size(); i++){
                     Chip chip = view.findViewById(chips.get(i));
                     chipsSelected.add((String) chip.getText());
                 }
-                usermodel.setPreference(chipsSelected);
 
-                //addNewUser(usermodel);
-                mAuth = FirebaseAuth.getInstance();
 
-                //Log.d("SUCCESS", email);
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d("SUCCESS", "createUserWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    String userId = user.getUid();
-                                    usermodel.setUserId(userId);
-                                    /*firestoreDb.collection("user")
-                                            .add(usermodel)
-                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                @Override
-                                                public void onSuccess(DocumentReference documentReference) {
-                                                    Log.d("SUCCESS", "DocumentSnapshot added with ID: " + documentReference.getId());
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w("ERROR", "Error adding document", e);
-                                                }
-                                            });*/
 
-                                    firestoreDb.collection("user").document(userId)
-                                            .set(usermodel);
+                if (chipsSelected.isEmpty()){
+                    Toast.makeText(getContext(), "Please select at least 1 preference", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    cond2 = true;
+                    usermodel.setPreference(chipsSelected);
+                }
 
-                                    user.sendEmailVerification()
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Log.d("SUCCESS", "Email sent.");
-                                                        LoginActivity activity = (LoginActivity) getActivity();
-                                                        activity.onRegisterSuccessful();
+
+                if (cond1 && cond2){
+                    //addNewUser(usermodel);
+                    mAuth = FirebaseAuth.getInstance();
+                    mAuth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d("SUCCESS", "createUserWithEmail:success");
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        String userId = user.getUid();
+                                        usermodel.setUserId(userId);
+
+                                        firestoreDb.collection("user").document(userId)
+                                                .set(usermodel);
+
+                                        user.sendEmailVerification()
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            Log.d("SUCCESS", "Email sent.");
+                                                            LoginActivity activity = (LoginActivity) getActivity();
+                                                            activity.onRegisterSuccessful();
+                                                        }
                                                     }
+                                                });
+
+                                        Toast.makeText(getActivity(), "Successfully registered!!",
+                                                Toast.LENGTH_SHORT).show();
+
+                                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                .setDisplayName(username)
+                                                .build();
+
+                                        user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d("SUCCESS", "Updated profile");
                                                 }
-                                            });
-
-                                    Toast.makeText(getActivity(), "Successfully registered!!",
-                                            Toast.LENGTH_SHORT).show();
-
-                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                            .setDisplayName(username)
-                                            .build();
-
-                                    user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                Log.d("SUCCESS", "Updated profile");
                                             }
-                                        }
-                                    });
+                                        });
 
-                                } else {
-                                    Log.w("ERROR", "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(getActivity(), "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Log.w("ERROR", "createUserWithEmail:failure", task.getException());
+                                        Toast.makeText(getActivity(), "Authentication failed.",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
-
-
+                            });
+                }
             }};
-
-
         BtnRegister.setOnClickListener(OCLRegister);
-
     }
-
-
-
-    /*public static List<Integer> getDrawable(List<String> name, Context context) {
-        List<Integer> img = new ArrayList<>();
-        for(int i =0 ; i<name.size(); i++){
-            int resourceId = context.getResources().getIdentifier(name.get(i), "drawable", context.getPackageName());
-            img.add(Integer.parseInt(String.valueOf(context.getResources().getDrawable(resourceId))));
-        }
-
-        return img;
-
-    }*/
 
     public void addNewUser(UserModel usermodel){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
