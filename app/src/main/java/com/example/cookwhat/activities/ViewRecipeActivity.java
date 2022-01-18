@@ -309,12 +309,18 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
         // option menu
         Button BtnOptionMenu = (Button) findViewById(R.id.BtnOptionMenu);
-        BtnOptionMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPopUpMenu(v);
-            }
-        });
+
+        if (user.getUid().equals(recipeModelDB.getUserId())) {
+            BtnOptionMenu.setVisibility(View.VISIBLE);
+            BtnOptionMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showPopUpMenu(v);
+                }
+            });
+        } else {
+            BtnOptionMenu.setVisibility(View.GONE);
+        }
     }
 
     public void reloadFromRecipe() {
