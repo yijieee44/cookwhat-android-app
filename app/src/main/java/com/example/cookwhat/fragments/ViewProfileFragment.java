@@ -1,24 +1,36 @@
 package com.example.cookwhat.fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.cookwhat.ExpandableHeightGridView;
 import com.example.cookwhat.R;
-import com.example.cookwhat.followPopUp;
+import com.example.cookwhat.activities.ViewRecipeActivity;
+import com.example.cookwhat.models.RecipeModelDB;
+import com.example.cookwhat.models.UserModelDB;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -38,15 +50,18 @@ public class ViewProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     String selectedUserID;
-    String selectedUsername;
+    UserModelDB currentUser;
+
     Boolean haveFollowed = false;
     Boolean isFollowing = false;
     ArrayList<String> recipeName = new ArrayList<>();
     ArrayList<Integer> Img;
-    ArrayList<String> followerList = new ArrayList<>();
-    ArrayList<String> followingList = new ArrayList<>();
+    ArrayList<String> followerNameList = new ArrayList<>();
+    ArrayList<String> followingNameList = new ArrayList<>();
     ArrayList<String> followerIDList = new ArrayList<>();
     ArrayList<String> followingIDList = new ArrayList<>();
+    int numFollowers = 0;
+    int numFollowings = 0;
 
     public ViewProfileFragment() {
         //Fetch selectedUserID info
@@ -83,6 +98,15 @@ public class ViewProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+        if (getActivity().getIntent()!= null) {
+
+            this.selectedUserID = getActivity().getIntent().getStringExtra("userId");
+            this.currentUser = (UserModelDB) getActivity().getIntent().getSerializableExtra("userModel");
+
+        } else {
+            Log.d("USERID::", "null user id");
+        }
+        System.out.println("selectedUserId" + selectedUserID);
 
 
 
@@ -90,155 +114,191 @@ public class ViewProfileFragment extends Fragment {
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-        Bundle bundle = getArguments();
-        System.out.println("bundle received"+ bundle);
-        if(bundle != null){
-            this.selectedUserID = bundle.getString("viewUserID");
-            this.selectedUsername = bundle.getString("viewUsername");
-            this.haveFollowed = bundle.getBoolean("isFollowing");
-            System.out.println(haveFollowed);
+        super.onViewCreated(view, savedInstanceState);
+        readData(new FirestoreOnCallBack() {
+            UserModelDB selectedUser = new UserModelDB();
 
-        }
-        else{
-            Log.d("ErrorType","null details on selected user to view");
-        }
-        Button showFollow = view.findViewById(R.id.Btn_ShowFollow);
-        System.out.println("ViewCreated:"+ haveFollowed);
-
-        if(haveFollowed == true){
-            showFollow.setText("Unfollow");
-        }
-        else{
-            showFollow.setText("Follow");
-        }
-
-        View.OnClickListener showFollowOCL = new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                String showFollowText = showFollow.getText().toString();
+            public void onCallBackUser(UserModelDB usermodel) {
+                System.out.println("In oncallback"+selectedUserID);
+                selectedUser = usermodel;
 
-                if (showFollowText.equals("Unfollow")){
-                    //remove existing following
-                    showFollow.setText("Follow");
-                }
-                else{
-                    //add new following
+            }
+
+            Button btnFollower = view.findViewById(R.id.Btn_FollowFollower);
+            Button btnFollowing = view.findViewById(R.id.Btn_FollowFollowing);
+            ImageView profilepic = view.findViewById(R.id.IV_FollowProfile);
+            TextView profileName = view.findViewById(R.id.TV_FollowProfileName);
+            @Override
+            public void onCallBack(ArrayList<RecipeModelDB> createdRecipe, ArrayList<String> recipeImage) {
+
+                profileName.setText(selectedUser.getUserName());
+                followerNameList = selectedUser.getFollowersName();
+                followerIDList = selectedUser.getFollowersId();
+                followingIDList = selectedUser.getFollowingsId();
+                followingNameList = selectedUser.getFollowingsName();
+                numFollowers = followerNameList.size();
+                numFollowings = followingNameList.size();
+                btnFollower.setText(Integer.toString(numFollowers));
+                btnFollowing.setText(Integer.toString(numFollowings));
+                profilepic.setImageResource(selectedUser.getProfilePic());
+                Button showFollow = view.findViewById(R.id.Btn_ShowFollow);
+
+                if(selectedUser.getFollowersId().contains(currentUser.getUserId())){
                     showFollow.setText("Unfollow");
                 }
-            }
-        };
 
-        showFollow.setOnClickListener(showFollowOCL);
-
-
-        Button follower = view.findViewById(R.id.Btn_FollowFollower);
-        Button following = view.findViewById(R.id.Btn_FollowFollowing);
-
-        View.OnClickListener followerOCL = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //pass followerArraylist and followernamelist
-                followPopUp followList = new followPopUp(view, "follower",followerList, followerIDList,selectedUserID,followingIDList);
-                followList.show(getActivity().getSupportFragmentManager(), "followerDialog");
-            }
-        };
-
-        View.OnClickListener followingOCL = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                followPopUp followList = new followPopUp(view, "following", followingList,followingIDList,selectedUserID,followingIDList);
-                followList.show(getActivity().getSupportFragmentManager(), "followingDialog");
-            }
-        };
-
-        follower.setOnClickListener(followerOCL);
-        following.setOnClickListener(followingOCL);
-
-        if (isFollowing == true){
-            follower.setEnabled(true);
-            follower.setClickable(true);
-            following.setEnabled(true);
-            following.setClickable(true);
-        }
-        else{
-            following.setEnabled(false);
-            following.setClickable(false);
-        }
-
-
-
-        if (recipeName == null){
-            String noRecipe = "Nothing to show here.\nLet's get started on sharing your secret recipes!";
-            TextView textcontent = view.findViewById(R.id.TV_Empty);
-            textcontent.setText(noRecipe);
-
-        }
-        else{
-            view.findViewById(R.id.TV_Empty).setVisibility(View.INVISIBLE);
-            ExpandableHeightGridView tabcontent = view.findViewById(R.id.FollowTabContent);
-            ViewProfileFragment.CustomAdapter recipeAdapter = new ViewProfileFragment.CustomAdapter();
-            tabcontent.setExpanded(true);
-            tabcontent.setAdapter(recipeAdapter);
-        }
-
-        ConstraintLayout cl = view.findViewById(R.id.CL_FollowSecretRecipe);
-        cl.setVisibility(View.VISIBLE);
-
-        LinearLayout ll = view.findViewById(R.id.LL_FollowAboutMe);
-        ConstraintLayout clmain = view.findViewById(R.id.CS_Follow);
-
-        removeChild(ll);
-
-        TabLayout tabLayout = view.findViewById(R.id.TL_FollowProfileTab);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-                switch(tab.getPosition()){
-                    case 0:
-                    {
-                        removeChild(ll);
-                        addChild(cl, clmain);
-                        cl.setVisibility(View.VISIBLE);
-                        break;
-
-                    }
-                    case 1:
-                    {
-                        removeChild(cl);
-                        addChild(ll, clmain);
-                        ll.setVisibility(View.VISIBLE);
-                        break;
-                    }
+                else{
+                    showFollow.setText("Follow");
                 }
 
+                View.OnClickListener showFollowOCL = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String showFollowText = showFollow.getText().toString();
+
+                        if (showFollowText.equals("Unfollow")) {
+                            //remove existing following
+                            showFollow.setText("Follow");
+                        } else {
+                            //add new following
+                            showFollow.setText("Unfollow");
+                        }
+                    }
+                };
+
+                showFollow.setOnClickListener(showFollowOCL);
+
+                View.OnClickListener followerOCL = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //pass followerArraylist and followernamelist
+                        //followPopUp followList = new followPopUp(view, "follower",followerList, followerIDList,selectedUserID,followingIDList);
+                        // followList.show(getActivity().getSupportFragmentManager(), "followerDialog");
+                    }
+                };
+
+                View.OnClickListener followingOCL = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // followPopUp followList = new followPopUp(view, "following", followingList,followingIDList,selectedUserID,followingIDList);
+                        //followList.show(getActivity().getSupportFragmentManager(), "followingDialog");
+                    }
+                };
+
+                btnFollower.setOnClickListener(followerOCL);
+                btnFollowing.setOnClickListener(followingOCL);
+
+                if (isFollowing == true) {
+                    btnFollower.setEnabled(true);
+                    btnFollower.setClickable(true);
+                    btnFollowing.setEnabled(true);
+                    btnFollowing.setClickable(true);
+                } else {
+                    btnFollowing.setEnabled(false);
+                    btnFollowing.setClickable(false);
+                }
+
+                for(RecipeModelDB recipe : createdRecipe){
+                    recipeName.add(recipe.getTitle());
+
+                }
+
+                if (recipeName == null) {
+                    String noRecipe = "Nothing to show here.\nLet's get started on sharing your secret recipes!";
+                    TextView textcontent = view.findViewById(R.id.TV_Empty);
+                    textcontent.setText(noRecipe);
+
+                } else {
+                    view.findViewById(R.id.TV_Empty).setVisibility(View.INVISIBLE);
+                    ExpandableHeightGridView tabcontent = view.findViewById(R.id.FollowTabContent);
+                    CustomAdapter recipeAdapter = new CustomAdapter(recipeName, recipeImage, createdRecipe);
+                    tabcontent.setExpanded(true);
+                    tabcontent.setAdapter(recipeAdapter);
+                    tabcontent.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            RecipeModelDB recipeModelDB = (RecipeModelDB) recipeAdapter.getItem(i);
+                            Intent intent = new Intent(getContext(), ViewRecipeActivity.class);
+                            intent.putExtra("userModel", selectedUser);
+                            intent.putExtra("recipeModel",recipeModelDB);
+                            startActivity(intent);
+
+                        }
+                    });
+                }
+
+
+                ConstraintLayout cl = view.findViewById(R.id.CL_FollowSecretRecipe);
+                cl.setVisibility(View.VISIBLE);
+
+                LinearLayout ll = view.findViewById(R.id.LL_FollowAboutMe);
+                ConstraintLayout clmain = view.findViewById(R.id.CS_Follow);
+
+                removeChild(ll);
+
+                TabLayout tabLayout = view.findViewById(R.id.TL_FollowProfileTab);
+                tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+
+                        switch (tab.getPosition()) {
+                            case 0: {
+                                removeChild(ll);
+                                addChild(cl, clmain);
+                                cl.setVisibility(View.VISIBLE);
+                                break;
+
+                            }
+                            case 1: {
+                                removeChild(cl);
+                                addChild(ll, clmain);
+                                ll.setVisibility(View.VISIBLE);
+                                break;
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
+
+                    }
+
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
+
+                    }
+
+                });
+
             }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
 
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-
-        });
+        }, selectedUserID);
 
 
     }
 
-    public void removeChild(ViewGroup viewgroup){
-        ((ViewGroup)viewgroup.getParent()).removeView(viewgroup);
+    public void removeChild(ViewGroup viewgroup) {
+        ((ViewGroup) viewgroup.getParent()).removeView(viewgroup);
 
     }
 
-    public void addChild(ViewGroup child, ViewGroup parent){
+    public void addChild(ViewGroup child, ViewGroup parent) {
         parent.addView(child);
     }
 
     private class CustomAdapter extends BaseAdapter {
+
+        ArrayList<String> recipeName = new ArrayList<>();
+        ArrayList<String> recipeImg = new ArrayList<>();
+        ArrayList<RecipeModelDB> recipeModel = new ArrayList<>();
+        public CustomAdapter(ArrayList<String> recipeName, ArrayList<String> recipeImg,ArrayList<RecipeModelDB>recipeModel) {
+            this.recipeName = recipeName;
+            this.recipeImg = recipeImg;
+            this.recipeModel = recipeModel;
+        }
 
         @Override
         public int getCount() {
@@ -247,7 +307,7 @@ public class ViewProfileFragment extends Fragment {
 
         @Override
         public Object getItem(int i) {
-            return null;
+            return recipeModel.get(i);
         }
 
         @Override
@@ -261,12 +321,11 @@ public class ViewProfileFragment extends Fragment {
 
             ImageView img = view1.findViewById(R.id.IV_favCategory);
             TextView text = view1.findViewById(R.id.TV_favCategory);
-
-            img.setImageResource(Img.get(i));
+            Uri uri = Uri.parse(recipeImg.get(i));
+            img.setImageURI(uri);
             text.setText(recipeName.get(i));
 
             return view1;
-
         }
     }
 
@@ -276,6 +335,62 @@ public class ViewProfileFragment extends Fragment {
         container.removeAllViews();
         // Inflate the layout for this fragment
 
+
         return inflater.inflate(R.layout.fragment_view_profile, container, false);
+    }
+
+    public void readData(FirestoreOnCallBack firestoreOnCallBack, String userID) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference userCollection = db.collection("user");
+        CollectionReference recipeCollection = db.collection("recipe");
+        System.out.println("Userid readData:" + userID);
+
+        userCollection.whereEqualTo("userId", userID).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<RecipeModelDB> recipeModelList = new ArrayList<>();
+                            ArrayList<String> recipeImageList = new ArrayList<>();
+                            UserModelDB usermodel = new UserModelDB();
+                            for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                                usermodel = queryDocumentSnapshot.toObject(UserModelDB.class);
+                                //System.out.println(documentSnapshot.get("userId"));
+                                System.out.println("in task result:"+usermodel.getUserId());
+                                firestoreOnCallBack.onCallBackUser(usermodel);
+
+                                recipeCollection.whereEqualTo("userId", usermodel.getUserId()).get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                                                        RecipeModelDB recipe = queryDocumentSnapshot.toObject(RecipeModelDB.class);
+                                                        recipeImageList.add(getResources().getString(R.string.recipe_image_uri) + recipe.getSteps().get(0).getImage() + "?alt=media");
+                                                        recipeModelList.add(recipe);
+                                                        System.out.println("yes here");
+                                                    }
+                                                    System.out.println("reading:" + recipeModelList.size());
+                                                    firestoreOnCallBack.onCallBack(recipeModelList, recipeImageList);
+
+                                                }
+                                            }
+                                        });
+
+
+                            }
+
+
+                        }
+                    }
+                });
+
+    }
+
+    private interface FirestoreOnCallBack{
+
+        void onCallBack(ArrayList<RecipeModelDB>createdRecipe, ArrayList<String> recipeImage);
+        void onCallBackUser(UserModelDB usermodel);
+
     }
 }

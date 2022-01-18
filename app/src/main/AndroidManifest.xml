@@ -59,6 +59,11 @@
             android:exported="false"
             android:label="@string/search_result"
             android:parentActivityName=".activities.MainActivity" />
+        <activity
+            android:name=".activities.FavouriteActivity"
+            android:exported="false"
+            android:label="Favourite Result"
+            android:parentActivityName=".activities.MainActivity" />
     </application>
 
 </manifest>

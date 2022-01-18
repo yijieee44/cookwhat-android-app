@@ -21,8 +21,19 @@
             android:layout_height="match_parent"
             android:elevation="10dp">
 
+            <TextView
+                android:id="@+id/TV_FollowProfileName"
+                android:layout_width="93dp"
+                android:layout_height="64dp"
+                android:text="TextView"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.097"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/IV_FollowProfileFrame" />
+
             <ImageView
-                android:id="@+id/IV_FollowProfile"
+                android:id="@+id/IV_FollowProfileFrame"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
@@ -31,6 +42,16 @@
                 app:layout_constraintHorizontal_bias="0.461"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/IV_FollowProfile"
+                android:layout_width="77dp"
+                android:layout_height="61dp"
+                app:layout_constraintBottom_toBottomOf="@+id/IV_FollowProfileFrame"
+                app:layout_constraintEnd_toEndOf="@+id/IV_FollowProfileFrame"
+                app:layout_constraintStart_toStartOf="@+id/IV_FollowProfileFrame"
+                app:layout_constraintTop_toTopOf="@+id/IV_FollowProfileFrame"
+                tools:src="@tools:sample/avatars" />
 
             <androidx.appcompat.widget.AppCompatButton
 
@@ -61,7 +82,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/Btn_FollowFollower" />
 
             <androidx.appcompat.widget.AppCompatButton
-
                 android:id="@+id/Btn_FollowFollowing"
                 android:layout_width="78dp"
                 android:layout_height="74dp"
@@ -90,12 +110,13 @@
 
             <Button
                 android:id="@+id/Btn_ShowFollow"
-                android:layout_width="296dp"
-                android:layout_height="59dp"
-                android:layout_marginStart="56dp"
-                android:layout_marginBottom="12dp"
+                android:layout_width="234dp"
+                android:layout_height="54dp"
+                android:layout_marginBottom="16dp"
                 android:text="Follow"
                 app:layout_constraintBottom_toTopOf="@+id/TL_FollowProfileTab"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.81"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <LinearLayout
@@ -126,10 +147,11 @@
                 android:id="@+id/CL_FollowSecretRecipe"
                 android:layout_width="match_parent"
                 android:layout_height="375dp"
-                android:layout_marginTop="285dp"
+                android:layout_marginTop="10dp"
                 android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/TL_FollowProfileTab">
 
                 <TextView
                     android:id="@+id/TV_Empty"
@@ -162,9 +184,8 @@
                 android:layout_width="376dp"
                 android:layout_height="55dp"
 
-                android:layout_marginStart="16dp"
-
                 android:layout_marginTop="220dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tabMode="fixed"

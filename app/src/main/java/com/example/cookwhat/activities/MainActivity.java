@@ -26,10 +26,9 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.cookwhat.R;
 import com.example.cookwhat.database.DatabaseHelper;
 import com.example.cookwhat.database.UserTableContract;
-import com.example.cookwhat.fragments.HomeFragment;
 import com.example.cookwhat.fragments.UserProfileFragment;
-import com.example.cookwhat.models.RecipeModelDB;
 import com.example.cookwhat.models.UserModel;
+import com.example.cookwhat.models.UserModelDB;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -149,7 +148,8 @@ public class MainActivity extends AppCompatActivity {
 
         if(action != null){
             if(action.equals("updated about me")){
-                startFragment(action);
+                UserModelDB userModelDB = (UserModelDB) getIntent().getSerializableExtra("usermodel");
+                startFragment(action, userModelDB);
             }
         }
 
@@ -286,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void startFragment(String action){
+    public void startFragment(String action, UserModelDB userModelDB){
         UserProfileFragment userProfileFragment = new UserProfileFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

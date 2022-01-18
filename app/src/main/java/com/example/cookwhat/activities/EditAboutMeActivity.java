@@ -1,8 +1,10 @@
 package com.example.cookwhat.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -31,9 +33,18 @@ public class EditAboutMeActivity extends AppCompatActivity {
     UserModelDB userModel;
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_about_me);
+        Intent intent = getIntent();
+        userModel = (UserModelDB) intent.getSerializableExtra("usermodel");
+
 
         String[] ISOcountriesCodes = Locale.getISOCountries();
         ArrayList<String> countries = new ArrayList<>();
@@ -113,7 +124,8 @@ public class EditAboutMeActivity extends AppCompatActivity {
                 updateAboutMe(userModel);
                 Intent intent = new Intent(EditAboutMeActivity.this, MainActivity.class);
                 intent.putExtra("usermodel",userModel);
-                setResult(120,intent);
+                intent.putExtra("action", "updated about me");
+                startActivity(intent);
 
 
             }
@@ -131,4 +143,9 @@ public class EditAboutMeActivity extends AppCompatActivity {
     }
 
 
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),0);
+    }
 }

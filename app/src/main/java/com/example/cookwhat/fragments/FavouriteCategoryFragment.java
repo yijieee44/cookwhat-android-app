@@ -19,8 +19,6 @@ import com.example.cookwhat.adapters.FavouriteCategoryAdapter;
 import com.example.cookwhat.models.UserModelDB;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,7 +36,7 @@ public class FavouriteCategoryFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     UserModelDB userModel = new UserModelDB();
-    List<String> categoryName = new ArrayList<>();
+    ArrayList<String> categoryName = new ArrayList<>();
     ArrayList<Integer> categoryImg = new ArrayList<>();
 
     public FavouriteCategoryFragment() {
@@ -88,10 +86,14 @@ public class FavouriteCategoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("My Favourite Category");
 
-        categoryName = Arrays.asList(getResources().getStringArray(R.array.favourite_categories));
+        String[]category= getResources().getStringArray(R.array.favourite_categories);
+
+        for(String c : category){
+            categoryName.add(c);
+        }
 
         GridView favCategory = (GridView)view.findViewById(R.id.GV_FavouriteCategory);
-        FavouriteCategoryAdapter adapter = new FavouriteCategoryAdapter((ArrayList<String>) categoryName, categoryImg);
+        FavouriteCategoryAdapter adapter = new FavouriteCategoryAdapter( categoryName, categoryImg);
         favCategory.setAdapter(adapter);
 
         favCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
