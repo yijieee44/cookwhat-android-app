@@ -3,6 +3,7 @@ package com.example.cookwhat.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -11,15 +12,26 @@ public class UserModelDB implements Serializable {
     private int profilePic;
     private String userName;
     private String emailAddr;
-    private int level;
+    private String level;
     private String country;
     private String description;
-    private ArrayList<String> preference;
-    private Map<String, ArrayList<String>> favouriteCategory;
-    private ArrayList<String> followers;
-    private ArrayList<String> followings;
+    private ArrayList<String> preference = new ArrayList<>();
+    private Map<String, ArrayList<String>> favouriteCategory = new HashMap<>();
+    private ArrayList<String> followersName = new ArrayList<>();
+    private ArrayList<String> followingsName = new ArrayList<>();
+    private ArrayList<String> followingsId = new ArrayList<>();
+    private ArrayList<String> followersId = new ArrayList<>();
     private boolean showPreference;
     private boolean showEmail;
+
+    public UserModelDB(){
+        String[] favCategory = {"Arabic", "Chinese", "European", "Indian", "Mediterranean", "Korean", "Japanese", "South-East Asia", "Others" } ;
+        for(int i =0; i<favCategory.length; i++){
+            this.favouriteCategory.put(favCategory[i],new ArrayList<String>());
+        }
+        this.showEmail = false;
+        this.showPreference = false;
+    }
 
 
     public String getUserId() {
@@ -54,11 +66,11 @@ public class UserModelDB implements Serializable {
         this.emailAddr = emailAddr;
     }
 
-    public int getLevel() {
+    public String getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(String level) {
         this.level = level;
     }
 
@@ -94,20 +106,36 @@ public class UserModelDB implements Serializable {
         this.favouriteCategory = favouriteCategory;
     }
 
-    public ArrayList<String> getFollowers() {
-        return followers;
+    public ArrayList<String> getFollowersName() {
+        return followersName;
     }
 
-    public void setFollowers(ArrayList<String> followers) {
-        this.followers = followers;
+    public ArrayList<String> getFollowingsName() {
+        return followingsName;
     }
 
-    public ArrayList<String> getFollowings() {
-        return followings;
+    public void setFollowingsName(ArrayList<String> followingsName) {
+        this.followingsName = followingsName;
     }
 
-    public void setFollowings(ArrayList<String> followings) {
-        this.followings = followings;
+    public ArrayList<String> getFollowingsId() {
+        return followingsId;
+    }
+
+    public void setFollowingsId(ArrayList<String> followingsId) {
+        this.followingsId = followingsId;
+    }
+
+    public ArrayList<String> getFollowersId() {
+        return followersId;
+    }
+
+    public void setFollowersId(ArrayList<String> followersId) {
+        this.followersId = followersId;
+    }
+
+    public void setFollowersName(ArrayList<String> followersName) {
+        this.followersName = followersName;
     }
 
     public boolean isShowPreference() {

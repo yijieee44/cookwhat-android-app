@@ -2,6 +2,7 @@ package com.example.cookwhat.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +17,21 @@ import androidx.annotation.Nullable;
 import com.example.cookwhat.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FavouriteAdapter extends ArrayAdapter<String> {
-    ArrayList<String> favouriteList;
+    ArrayList<String> recipeId;
+    ArrayList<String>recipeName;
+    ArrayList<String>recipeImg;
+    ArrayList<List<String>>tags;
     Context context;
 
-    public FavouriteAdapter(@NonNull Context context, @SuppressLint("SupportAnnotationUsage") @LayoutRes ArrayList<String> list) {
-        super(context, 0,list);
-        this.favouriteList = list;
+    public FavouriteAdapter(@NonNull Context context, @SuppressLint("SupportAnnotationUsage") @LayoutRes ArrayList<String> recipeId, ArrayList<String>recipeName, ArrayList<String>recipeImg, ArrayList<List<String>>tags) {
+        super(context, 0,recipeId);
+        this.recipeId = recipeId;
+        this.recipeName = recipeName;
+        this.recipeImg = recipeImg;
+        this.tags = tags;
         this.context = context;
     }
 
@@ -51,11 +59,12 @@ public class FavouriteAdapter extends ArrayAdapter<String> {
         tag1.setText(favouriteList.get(i).getTags().get(0));
         tag2.setText(favouriteList.get(i).getTags().get(1));
         tag3.setText(favouriteList.get(i).getTags().get(2));*/
-        favName.setText("hi"+favouriteList.get(i));
-        tag1.setText("hihi");
-        tag2.setText("favouriteList.get(i)");
-        tag3.setText("favouriteList.get(i)");
-
+        favName.setText(recipeName.get(i));
+        Uri uri = Uri.parse(recipeImg.get(i));
+        favImg.setImageURI(uri);
+        tag1.setText(tags.get(i).get(0));
+        tag2.setText(tags.get(i).get(1));
+        tag3.setText(tags.get(i).get(2));
 
         return view1;
 
@@ -63,13 +72,20 @@ public class FavouriteAdapter extends ArrayAdapter<String> {
     }
 
     public void removeItem(int i){
-        this.favouriteList.remove(i);
+        this.recipeId.remove(i);
+        this.recipeName.remove(i);
+        this.recipeImg.remove(i);
+        this.tags.remove(i);
         notifyDataSetChanged();
 
     }
 
     @Override
     public int getCount() {
-        return this.favouriteList.size();
+        return this.recipeName.size();
+    }
+
+    public ArrayList<String> getRecipeId(){
+        return recipeId;
     }
 }

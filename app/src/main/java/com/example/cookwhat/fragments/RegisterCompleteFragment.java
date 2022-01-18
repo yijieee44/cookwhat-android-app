@@ -21,6 +21,7 @@ import com.example.cookwhat.R;
 import com.example.cookwhat.activities.LoginActivity;
 import com.example.cookwhat.adapters.ProfilePicAdapter;
 import com.example.cookwhat.models.UserModel;
+import com.example.cookwhat.models.UserModelDB;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -143,14 +144,14 @@ public class RegisterCompleteFragment extends Fragment {
         profilePicRV.setAdapter(adapter);
 
 
-        UserModel usermodel = new UserModel();
+        UserModelDB usermodel = new UserModelDB();
         usermodel.setUserName(username);
         usermodel.setEmailAddr(email);
-        usermodel.setPassword(password);
+
 
         FirebaseFirestore firestoreDb = FirebaseFirestore.getInstance();
 
-        Button BtnRegister = view.findViewById(R.id.BtnRegisterComplete);
+        Button BtnRegister = view.findViewById(R.id.Btn_RegisterComplete);
         View.OnClickListener OCLRegister = new View.OnClickListener(){
 
             @Override
@@ -162,7 +163,7 @@ public class RegisterCompleteFragment extends Fragment {
                     Chip chip = view.findViewById(chips.get(i));
                     chipsSelected.add((String) chip.getText());
                 }
-                usermodel.setPreferences(chipsSelected);
+                usermodel.setPreference(chipsSelected);
 
                 //addNewUser(usermodel);
                 mAuth = FirebaseAuth.getInstance();

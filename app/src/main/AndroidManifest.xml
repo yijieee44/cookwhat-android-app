@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CookWhat">
         <activity
+            android:name=".activities.EditAboutMeActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.CookWhat.noActionBar">
@@ -55,7 +58,7 @@
             android:name=".activities.SearchKeywordResultActivity"
             android:exported="false"
             android:label="@string/search_result"
-            android:parentActivityName=".activities.MainActivity"/>
+            android:parentActivityName=".activities.MainActivity" />
     </application>
 
 </manifest>

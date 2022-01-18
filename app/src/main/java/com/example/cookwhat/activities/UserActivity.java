@@ -12,9 +12,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.fragments.EditAboutMe;
-import com.example.cookwhat.fragments.FavouriteFragment;
 import com.example.cookwhat.fragments.ViewProfileFragment;
-import com.example.cookwhat.models.UserModel;
+import com.example.cookwhat.models.UserModelDB;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -40,9 +39,6 @@ public class UserActivity extends AppCompatActivity {
 
     }
 
-    public String getUserID(){
-        return this.userID;
-    }
 
     public void startFragment(String fragmentname){
         Fragment nfhuser = getSupportFragmentManager().findFragmentById(R.id.NHFUser);
@@ -54,26 +50,19 @@ public class UserActivity extends AppCompatActivity {
         }
         else if(fragmentname.equals("EditAboutMe")){
 
-            UserModel usermodel = getIntent().getParcelableExtra("usermodel");
+            UserModelDB usermodel = (UserModelDB) getIntent().getSerializableExtra("usermodel");
             System.out.println("Usermodel in useractivity:"+ usermodel.getUserName());
             EditAboutMe editAboutMe = new EditAboutMe();
             Bundle bundle = new Bundle();
-            bundle.putParcelable("usermodel", usermodel);
+            bundle.putSerializable("usermodel", usermodel);
             editAboutMe.setArguments(bundle);
             transaction.replace(R.id.NHFUser,editAboutMe).commit();
         }
     }
 
-    public void setCategoryName(String categoryName) {
-        FragmentManager fm =getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        FavouriteFragment f2 = new FavouriteFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("categoryName",categoryName);
-        f2.setArguments(bundle);
-        ft.add(R.id.NHFUser,f2);
-        ft.commit();
-    }
+
+
+
 
     public void getUserIDToView(String userID, String userName, Boolean isFollowing){
         FragmentManager fm = getSupportFragmentManager();

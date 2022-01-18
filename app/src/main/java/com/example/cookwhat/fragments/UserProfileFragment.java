@@ -1,6 +1,7 @@
 package com.example.cookwhat.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -21,8 +26,8 @@ import com.example.cookwhat.R;
 import com.example.cookwhat.activities.FavouriteActivity;
 import com.example.cookwhat.activities.UserActivity;
 import com.example.cookwhat.followPopUp;
-import com.example.cookwhat.models.RecipeModel;
-import com.example.cookwhat.models.UserModel;
+import com.example.cookwhat.models.RecipeModelDB;
+import com.example.cookwhat.models.UserModelDB;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
@@ -52,7 +57,6 @@ public class UserProfileFragment extends Fragment {
     private String mParam2;
     private String userID;
     ArrayList<String> recipeName =new ArrayList<>();
-    ArrayList<Integer> Img = new ArrayList<>();
     ArrayList<String> followerNameList = new ArrayList<>();
     ArrayList<String> followingNameList = new ArrayList<>();
     ArrayList<String> followerIDList = new ArrayList<>();
@@ -63,21 +67,25 @@ public class UserProfileFragment extends Fragment {
     ConstraintLayout cl, clmain;
     FirebaseAuth mAuth;
     Boolean showTabAboutMe = false;
+    TextView description ;
+    TextView email;
+    TextView country ;
+    TextView level ;
+    TextView prefer;
 
 
-
-    public UserProfileFragment() {
-        //throw arraylist of usermodels of following and followers from db
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment UserProfile.
-     */
+    ActivityResultLauncher<Intent> editAboutMeActivityLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == 120) {
+                        Intent intent = result.getData();
+                        UserModelDB editedUserModel = (UserModelDB) intent.getSerializableExtra("usermodel");
+                        reloadForEditedUserModel(editedUserModel);
+                    }
+                }
+            });
     // TODO: Rename and change types and number of parameters
     public static UserProfileFragment newInstance(String param1, String param2) {
         UserProfileFragment fragment = new UserProfileFragment();
@@ -103,10 +111,6 @@ public class UserProfileFragment extends Fragment {
         userID = mAuth.getCurrentUser().getUid();
         System.out.println("getUserid"+userID);;
 
-        /*for(int i=0; i<recipeName.size(); i++){
-            recipeName.add(Integer.toString(i));
-            Img.add(R.drawable.addbutton);
-        }*/
     }
 
     @Override
@@ -128,12 +132,12 @@ public class UserProfileFragment extends Fragment {
             Button btnFollowing = view.findViewById(R.id.Btn_Following);
             TextView tvUserName  = view.findViewById(R.id.TV_UserName);
 
-            UserModel usermodel = new UserModel();
+            UserModelDB usermodel = new UserModelDB();
             int numFollowers;
             int numFollowings;
 
             @Override
-            public void onCallBack(UserModel usermodel,  ArrayList<RecipeModel> createdRecipes) {
+            public void onCallBack(UserModelDB usermodel,  ArrayList<RecipeModelDB> createdRecipes, ArrayList<String>recipeImages) {
                 this.usermodel = usermodel;
                 tvUserName.setText(usermodel.getUserName());
                 followerNameList = usermodel.getFollowersName();
@@ -173,7 +177,7 @@ public class UserProfileFragment extends Fragment {
                         //Map<String,ArrayList<String>> favMap = usermodel.getFavouriteCategory();
                         //ArrayList<ArrayList<String>> favourite = new ArrayList<ArrayList<String>>(favMap.values());
                         Intent intent = new Intent(getActivity(),FavouriteActivity.class);
-                        intent.putExtra("userId", usermodel.getUserId());
+                        intent.putExtra("usermodel", usermodel);
                         startActivity(intent);
                     }
                 };
@@ -188,12 +192,10 @@ public class UserProfileFragment extends Fragment {
                 } else {
                     view.findViewById(R.id.TV_Empty).setVisibility(View.INVISIBLE);
                     tabcontent = view.findViewById(R.id.tabcontent);
-                    CustomAdapter recipeAdapter = new CustomAdapter();
+                    CustomAdapter recipeAdapter = new CustomAdapter(recipeName, recipeImages);
                     tabcontent.setExpanded(true);
                     tabcontent.setAdapter(recipeAdapter);
                 }
-
-
 
                 TabLayout tabLayout = view.findViewById(R.id.TL_ProfileTab);
                 cl = view.findViewById(R.id.CL_SecretRecipe);
@@ -222,14 +224,15 @@ public class UserProfileFragment extends Fragment {
                                 addChild(ll, clmain);
                                 ll.setVisibility(View.VISIBLE);
                                 Button edit = view.findViewById(R.id.Btn_Edit);
-                                TextView description = view.findViewById(R.id.TV_TabDescription);
-                                TextView email = view.findViewById(R.id.TV_TabEmail);
-                                TextView country = view.findViewById(R.id.TV_TabCountry);
-                                TextView level = view.findViewById(R.id.TV_TabLevel);
-                                TextView prefer = view.findViewById(R.id.TV_TabPreferences);
+                                description = view.findViewById(R.id.TV_TabDescription);
+                                email = view.findViewById(R.id.TV_TabEmail);
+                                country = view.findViewById(R.id.TV_TabCountry);
+                                level = view.findViewById(R.id.TV_TabLevel);
+                                prefer = view.findViewById(R.id.TV_TabPreferences);
+
                                 description.setText(usermodel.getDescription());
 
-                                if(usermodel.getShowEmail()){
+                                if(usermodel.isShowEmail()){
                                     email.setText(usermodel.getEmailAddr());
                                 }
                                 else{
@@ -238,8 +241,8 @@ public class UserProfileFragment extends Fragment {
 
                                 country.setText(usermodel.getCountry());
                                 level.setText(usermodel.getLevel());
-                                if(usermodel.getShowPreferences()){
-                                    prefer.setText(usermodel.getPreferences().get(0));
+                                if(usermodel.isShowPreference()){
+                                    prefer.setText(usermodel.getPreference().get(0));
                                 }
                                 else{
                                     prefer.setText("Preferences is not allowed to be shown");
@@ -249,11 +252,10 @@ public class UserProfileFragment extends Fragment {
                                     @Override
                                     public void onClick(View view) {
                                         Intent intent = new Intent(getActivity(), UserActivity.class);
-                                        intent.putExtra("fragmentname", "EditAboutMe");
                                         intent.putExtra("usermodel", usermodel);
                                         System.out.println("Model in up fragment"+ usermodel.getUserName());
-                                        System.out.println("Preferences in up"+usermodel.getPreferences());
-                                        startActivity(intent);
+                                        System.out.println("Preferences in up"+usermodel.getPreference());
+                                        editAboutMeActivityLauncher.launch(intent);
                                     }
                                 };
                                 edit.setOnClickListener(editOCL);
@@ -295,6 +297,14 @@ public class UserProfileFragment extends Fragment {
 
     private class CustomAdapter extends BaseAdapter {
 
+        ArrayList<String> recipeName = new ArrayList<>();
+        ArrayList<String> recipeImg = new ArrayList<>();
+
+        public CustomAdapter(ArrayList<String> recipeName, ArrayList<String> recipeImg) {
+            this.recipeName = recipeName;
+            this.recipeImg = recipeImg;
+        }
+
         @Override
         public int getCount() {
             return recipeName.size();
@@ -316,8 +326,8 @@ public class UserProfileFragment extends Fragment {
 
             ImageView img = view1.findViewById(R.id.IV_favCategory);
             TextView text = view1.findViewById(R.id.TV_favCategory);
-
-            img.setImageResource(Img.get(i));
+            Uri uri = Uri.parse(recipeImg.get(i));
+            img.setImageURI(uri);
             text.setText(recipeName.get(i));
 
             return view1;
@@ -334,10 +344,11 @@ public class UserProfileFragment extends Fragment {
                    @Override
                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
                        if(task.isSuccessful()){
-                           ArrayList<RecipeModel> recipeModelList = new ArrayList<>();
-                           UserModel usermodel = new UserModel();
+                           ArrayList<RecipeModelDB> recipeModelList = new ArrayList<>();
+                           ArrayList<String> recipeImageList = new ArrayList<>();
+                           UserModelDB usermodel = new UserModelDB();
                            for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
-                                usermodel = queryDocumentSnapshot.toObject(UserModel.class);
+                                usermodel = queryDocumentSnapshot.toObject(UserModelDB.class);
                                //System.out.println(documentSnapshot.get("userId"));
                                System.out.println(usermodel.getUserId());
 
@@ -348,13 +359,15 @@ public class UserProfileFragment extends Fragment {
                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                            if(task.isSuccessful()){
                                                for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
-                                                   recipeModelList.add(queryDocumentSnapshot.toObject(RecipeModel.class));
+                                                   RecipeModelDB recipe = queryDocumentSnapshot.toObject(RecipeModelDB.class);
+                                                   recipeImageList.add(getResources().getString(R.string.recipe_image_uri)+recipe.getSteps().get(0).getImage());
+                                                   recipeModelList.add(recipe);
                                                }
                                            }
                                        }
                                    });
 
-                           firestoreOnCallBack.onCallBack(usermodel,recipeModelList);
+                           firestoreOnCallBack.onCallBack(usermodel,recipeModelList, recipeImageList);
                        }
                    }
                });
@@ -365,9 +378,29 @@ public class UserProfileFragment extends Fragment {
 
    }
 
+   public void reloadForEditedUserModel(UserModelDB editedUserModel){
+       description.setText(editedUserModel.getDescription());
+
+       if(editedUserModel.isShowEmail()){
+           email.setText(editedUserModel.getEmailAddr());
+       }
+       else{
+           email.setText("Email Address is not allowed to be shown");
+       }
+
+       country.setText(editedUserModel.getCountry());
+       level.setText(editedUserModel.getLevel());
+       if(editedUserModel.isShowPreference()){
+           prefer.setText(editedUserModel.getPreference().get(0));
+       }
+       else{
+           prefer.setText("Preferences is not allowed to be shown");
+       }
+   }
+
     private interface FirestoreOnCallBack{
 
-        void onCallBack(UserModel usermodel, ArrayList<RecipeModel>recipeModels);
+        void onCallBack(UserModelDB usermodel, ArrayList<RecipeModelDB>createdRecipe, ArrayList<String> recipeImage);
 
     }
 }

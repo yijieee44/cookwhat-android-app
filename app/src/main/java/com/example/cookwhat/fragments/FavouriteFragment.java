@@ -14,10 +14,17 @@ import androidx.fragment.app.Fragment;
 
 import com.example.cookwhat.OptionPopUp;
 import com.example.cookwhat.R;
-import com.example.cookwhat.activities.SearchActivity;
+import com.example.cookwhat.activities.ViewRecipeActivity;
 import com.example.cookwhat.adapters.FavouriteAdapter;
+import com.example.cookwhat.models.RecipeModelDB;
+import com.example.cookwhat.models.UserModelDB;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,39 +41,14 @@ public class FavouriteFragment extends Fragment implements OptionPopUp.passData 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    ArrayList<String> favouriteList;
+    ArrayList<String> recipeIdList = new ArrayList<>();
     FavouriteAdapter favouriteAdapter;
     ListView listview;
+    UserModelDB userModelDB;
+    String selectedCategoryName;
 
 
     public FavouriteFragment() {
-        /*Bundle bundle = getArguments();
-        if(bundle != null){
-            String categoryName = bundle.getString("categoryName");
-            System.out.println(categoryName);
-
-        }*/
-        favouriteList = new ArrayList<>();
-        favouriteList.add("One");
-        favouriteList.add("Two");
-        favouriteList.add("Three");
-        favouriteList.add("Four");
-        favouriteList.add("Five");
-        favouriteList.add("Six");
-        favouriteList.add("Seven");
-        favouriteList.add("Eight");
-        favouriteList.add("Nine");
-        favouriteList.add("Ten");
-        favouriteList.add("Eleven");
-        favouriteList.add("Twelve");
-        favouriteList.add("Thirteen");
-        favouriteList.add("Fourteen");
-        favouriteList.add("Fifteen");
-
-
-        System.out.println("Next come to here?");
-        //fetch favourite from category selected
-        // Required empty public constructor
 
     }
 
@@ -94,6 +76,7 @@ public class FavouriteFragment extends Fragment implements OptionPopUp.passData 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        container.removeAllViews();
         return inflater.inflate(R.layout.fragment_favourite, container, false);
     }
 
@@ -101,40 +84,62 @@ public class FavouriteFragment extends Fragment implements OptionPopUp.passData 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        recipeIdList = userModelDB.getFavouriteCategory().get(selectedCategoryName);
         listview =(ListView) view.findViewById(R.id.LV_FavouriteList);
-        favouriteAdapter = new FavouriteAdapter(getContext(),favouriteList);
-        listview.setAdapter(favouriteAdapter);
-        System.out.println("In onviewcreated:"+favouriteAdapter.getCount());
 
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        readData(new FirestoreOnCallBack(){
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getActivity(), SearchActivity.class);
-                intent.putExtra("action", "viewRecipe");
-                startActivity(intent);
+            public void onCallBackRecipe(ArrayList<RecipeModelDB> recipeModel, ArrayList<String> recipeName, ArrayList<String> recipeImage, ArrayList<List<String>> tags) {
+                favouriteAdapter = new FavouriteAdapter(getContext(),recipeIdList, recipeName, recipeImage, tags);
+                listview.setAdapter(favouriteAdapter);
+                System.out.println("In onviewcreated:"+favouriteAdapter.getCount());
 
+
+                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent = new Intent(getActivity(), ViewRecipeActivity.class);
+                        intent.putExtra("recipeModel", recipeModel.get(i));
+                        startActivity(intent);
+
+                    }
+                });
+
+
+                listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()  {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                        OptionPopUp optionPopUp = new OptionPopUp(i);
+                        optionPopUp.setTargetFragment(FavouriteFragment.this,1);
+                        optionPopUp.show(getFragmentManager(),"deleteOrMoveTo");
+
+                        return true;
+                    }
+                });
             }
-        });
+
+        }, recipeIdList);
 
 
-        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()  {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                OptionPopUp optionPopUp = new OptionPopUp(i);
-                optionPopUp.setTargetFragment(FavouriteFragment.this,1);
-                optionPopUp.show(getFragmentManager(),"deleteOrMoveTo");
-
-                return true;
-            }
-        });
 
 
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(getArguments() != null){
+            Bundle bundle = new Bundle();
+            userModelDB = (UserModelDB) bundle.getSerializable("usermodel");
+            selectedCategoryName = bundle.getString("selectedCategoryName");
+        }
+    }
+
+
+    @Override
     public void getOption(String option, Integer i) {
+        Boolean isRemove = false;
         if(option.equals("delete")){
             System.out.println("yes, i m entering delete processss");
             //favouriteList.remove(i);
@@ -142,16 +147,62 @@ public class FavouriteFragment extends Fragment implements OptionPopUp.passData 
             favouriteAdapter.removeItem(i);
             System.out.println(i);
             System.out.println(favouriteAdapter.getCount());
+            isRemove = true;
 
             //System.out.println(favouriteAdapter.getCount());
             //listview.setAdapter(favouriteAdapter);
 
         }
         else if(option.equals("moveTo")){
-            favouriteList.remove(i);
+            favouriteAdapter.removeItem(i);
+            isRemove = false;
             //favouriteAdapter.removeItem(i);
             //listview.setAdapter(favouriteAdapter);
         }
+
+
+        updateData(isRemove, userModelDB,selectedCategoryName, i, userModelDB.getUserId());
+    }
+
+    public void readData(FirestoreOnCallBack firestoreOnCallBack, ArrayList<String>recipeId){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        ArrayList<String>recipeName = new ArrayList<>();
+        ArrayList<String>recipeImage =  new ArrayList<>();
+        ArrayList<List<String>>recipeTags = new ArrayList<>();
+        ArrayList<RecipeModelDB>recipeModel = new ArrayList<>();
+        for(String id : recipeId){
+            db.collection("recipe").document(id).get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
+                            RecipeModelDB recipemodel = new RecipeModelDB();
+                            recipemodel = documentSnapshot.toObject(RecipeModelDB.class);
+                            recipeModel.add(recipemodel);
+                            recipeName.add((String) documentSnapshot.get("title"));
+                            recipeImage.add(getResources().getString(R.string.recipe_image_uri) + recipemodel.getSteps().get(0).getImage());
+                            recipeTags.add(recipemodel.getTags());
+                        }
+                    });
+            if(id.equals(recipeId.get(recipeId.size()-1))){
+                firestoreOnCallBack.onCallBackRecipe(recipeModel, recipeName, recipeImage,recipeTags);
+            }
+
+
+        }
+    }
+
+    public void updateData(Boolean isRemove,UserModelDB userModelDB, String selectedCategoryName, int recipeInx, String userId){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String,ArrayList<String>> favouriteFood = userModelDB.getFavouriteCategory() ;
+        String recipeIdToBeMoved = favouriteFood.get(selectedCategoryName).get(recipeInx);
+        favouriteFood.get(selectedCategoryName).remove(recipeInx);
+        userModelDB.setFavouriteCategory(favouriteFood);
+        db.collection("user").document(userId).update("favouriteCategory", favouriteFood);
+
+    }
+
+    public interface FirestoreOnCallBack{
+        void onCallBackRecipe(ArrayList<RecipeModelDB>recipeModel, ArrayList<String>recipeName, ArrayList<String>recipeImage, ArrayList<List<String>>tags);
     }
 }
 

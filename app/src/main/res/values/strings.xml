@@ -178,6 +178,7 @@
     <string name="u0009_oven">Oven</string>
     <string name="u0010_microwave">Microwave</string>
     <string name="register_warning">You are already a user of CookWhat.\nPlease proceed to log in.</string>
+    <string name="recipe_image_uri">https://firebasestorage.googleapis.com/v0/b/cookwhat.appspot.com/o/images%2F</string>
     <string-array name="level">
         <item>Beginner</item>
         <item>Advanced Beginner</item>
@@ -186,5 +187,17 @@
         <item>Expert</item>
         <item>Expert</item>
     </string-array>
+    <string-array name="favourite_categories">
+        <item>Arabic</item>
+        <item>Chinese</item>
+        <item>European</item>
+        <item>Indian</item>
+        <item>Mediterranean</item>
+        <item>Korean</item>
+        <item>Japanese</item>
+        <item>South-East Asia</item>
+        <item>Others</item>
+    </string-array>
+
 
 </resources>

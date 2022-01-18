@@ -23,28 +23,30 @@
 
             <ImageView
                 android:id="@+id/IV_Profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="111dp"
+                android:layout_height="110dp"
                 android:layout_marginTop="28dp"
                 android:src="@drawable/circle"
                 app:layout_constraintEnd_toStartOf="@+id/Btn_Follower"
-                app:layout_constraintHorizontal_bias="0.535"
+                app:layout_constraintHorizontal_bias="0.477"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
 
                 android:id="@+id/Btn_Follower"
-                android:layout_width="78dp"
-                android:layout_height="74dp"
-                android:layout_marginTop="36dp"
-                android:layout_marginEnd="44dp"
+                android:layout_width="92dp"
+                android:layout_height="88dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="24dp"
                 android:background="@drawable/whitecircle"
                 android:gravity="center"
                 android:paddingTop="20dp"
                 android:text="88"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toStartOf="@+id/Btn_Following"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -62,56 +64,59 @@
 
             <TextView
                 android:id="@+id/TV_Follower"
-                android:layout_width="82dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="23dp"
-                android:layout_marginEnd="32dp"
+                android:layout_width="91dp"
+                android:layout_height="33dp"
+                android:layout_marginStart="156dp"
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:text="Followers"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/TV_Following"
-                app:layout_constraintStart_toEndOf="@+id/TV_UserName"
+                app:layout_constraintHorizontal_bias="0.08"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/Btn_Follower" />
 
             <androidx.appcompat.widget.AppCompatButton
 
                 android:id="@+id/Btn_Following"
-                android:layout_width="78dp"
-                android:layout_height="74dp"
-                android:layout_marginTop="36dp"
-                android:layout_marginEnd="52dp"
+                android:layout_width="92dp"
+                android:layout_height="88dp"
+                android:layout_marginTop="28dp"
                 android:background="@drawable/whitecircle"
                 android:gravity="center"
                 android:paddingTop="20dp"
                 android:text="88"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.863"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/TV_Following"
-                android:layout_width="98dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="40dp"
+                android:layout_width="101dp"
+                android:layout_height="38dp"
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:text="Followings"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.88"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/Btn_Following" />
 
             <androidx.appcompat.widget.AppCompatButton
 
                 android:id="@+id/Btn_Favourite"
-                android:layout_width="272dp"
-                android:layout_height="44dp"
+                android:layout_width="197dp"
+                android:layout_height="59dp"
                 android:background="@drawable/roundedrecbtn"
                 android:drawableEnd="@drawable/favourite"
                 android:drawableRight="@drawable/favourite"
                 android:drawablePadding="0dp"
+                android:fontFamily="@font/candyjelly"
                 android:gravity="center"
                 android:paddingLeft="15dp"
                 android:paddingTop="15dp"
@@ -119,10 +124,10 @@
                 android:paddingBottom="15dp"
                 android:text="see your"
                 android:textColor="#744518"
-                android:textSize="28sp"
+                android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintHorizontal_bias="0.795"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.269" />
@@ -186,7 +191,7 @@
                 android:id="@+id/CL_SecretRecipe"
                 android:layout_width="match_parent"
                 android:layout_height="375dp"
-                android:layout_marginTop="285dp"
+                android:layout_marginTop="300dp"
                 android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -222,9 +227,8 @@
                 android:layout_width="376dp"
                 android:layout_height="55dp"
 
-                android:layout_marginStart="16dp"
-
-                android:layout_marginTop="220dp"
+                android:layout_marginTop="236dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tabMode="fixed"

@@ -12,12 +12,15 @@ import android.widget.GridView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cookwhat.R;
+import com.example.cookwhat.activities.FavouriteActivity;
 import com.example.cookwhat.adapters.FavouriteCategoryAdapter;
+import com.example.cookwhat.models.UserModelDB;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,17 +37,12 @@ public class FavouriteCategoryFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    ArrayList<String> categoryName = new ArrayList<>();
+    UserModelDB userModel = new UserModelDB();
+    List<String> categoryName = new ArrayList<>();
     ArrayList<Integer> categoryImg = new ArrayList<>();
 
     public FavouriteCategoryFragment() {
         //getUserFavouriteCategory
-        for (int i = 0; i < 10; i++) {
-            categoryName.add(Integer.toString(i));
-            categoryImg.add(R.drawable.addbutton);
-        }
-
-
         // Required empty public constructor
     }
 
@@ -71,9 +69,11 @@ public class FavouriteCategoryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+           Bundle bundle = this.getArguments();
+           userModel = (UserModelDB) bundle.getSerializable("usermodel");
+
         }
+
     }
 
     @Override
@@ -88,25 +88,19 @@ public class FavouriteCategoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("My Favourite Category");
 
+        categoryName = Arrays.asList(getResources().getStringArray(R.array.favourite_categories));
 
         GridView favCategory = (GridView)view.findViewById(R.id.GV_FavouriteCategory);
-        FavouriteCategoryAdapter adapter = new FavouriteCategoryAdapter(categoryName, categoryImg);
+        FavouriteCategoryAdapter adapter = new FavouriteCategoryAdapter((ArrayList<String>) categoryName, categoryImg);
         favCategory.setAdapter(adapter);
 
         favCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String categoryName = adapter.getCategoryName(i);
-                //fetch recipe based on categoryName
-                //UserActivity activity = (UserActivity) getActivity();
-                //activity.setCategoryName(categoryName);
-                FavouriteFragment fragment = new FavouriteFragment();
+                String selectedCategory = adapter.getCategoryName(i);
 
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.NHFUser, fragment,"FavouriteFragment");
-                transaction.commit();
-
-
+                FavouriteActivity activity = (FavouriteActivity) getActivity();
+                activity.startFavourite(userModel,selectedCategory);
                 //Navigation.findNavController(view).navigate(R.id.DestFavourite);
 
             }
