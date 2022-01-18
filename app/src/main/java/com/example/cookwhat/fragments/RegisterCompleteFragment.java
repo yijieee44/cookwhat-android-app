@@ -57,12 +57,10 @@ public class RegisterCompleteFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    UserModel userModel;
     String username;
     String password;
     String email;
     ArrayList<Integer> profilepic ;
-    ArrayList<String> chipsName = new ArrayList<>();
     int prof_pic = 0;
     boolean cond1 = false;
     boolean cond2 = false;
@@ -163,7 +161,7 @@ public class RegisterCompleteFragment extends Fragment {
 
         FirebaseFirestore firestoreDb = FirebaseFirestore.getInstance();
 
- Button BtnRegister = view.findViewById(R.id.Btn_Register);
+        Button BtnRegister = view.findViewById(R.id.Btn_Register);
         ChipGroup chipGroup = view.findViewById(R.id.CG_Preferences);
 
         View.OnClickListener OCLRegister = new View.OnClickListener(){
@@ -197,7 +195,6 @@ public class RegisterCompleteFragment extends Fragment {
 
 
                 if (cond1 && cond2){
-                    //addNewUser(usermodel);
                     mAuth = FirebaseAuth.getInstance();
                     mAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -251,27 +248,5 @@ public class RegisterCompleteFragment extends Fragment {
                 }
             }};
         BtnRegister.setOnClickListener(OCLRegister);
-    }
-
-    public void addNewUser(UserModel usermodel){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("user")
-                .add(usermodel)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(@NonNull DocumentReference documentReference) {
-                        Log.d(TAG,"DocumentSnapshot written with ID"+ documentReference.getId());
-                        //documentReference.update("preferences",usermodel.getPreferences());
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document",e);
-                    }
-                });
-
-
     }
 }

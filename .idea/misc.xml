@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< Updated upstream
         <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/drawable/ic_send_svgrepo_com.xml" value="0.10208333333333333" />
         <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/drawable/ic_tag_svgrepo_com.xml" value="0.10208333333333333" />
         <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/activity_main.xml" value="0.1" />
@@ -15,6 +16,31 @@
         <entry key="..\:/Users/user/Documents/Sem 7/WIX3004_Mobile Application/cookwhat-android-app/app/src/main/res/layout/activity_edit_about_me.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/user/Documents/Sem 7/WIX3004_Mobile Application/cookwhat-android-app/app/src/main/res/layout/fragment_register_complete.xml" value="0.264" />
         <entry key="..\:/Users/user/Documents/Sem 7/WIX3004_Mobile Application/cookwhat-android-app/app/src/main/res/layout/fragment_user_profile.xml" value="0.25416666666666665" />
+=======
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/drawable/black_transparent_background.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/drawable/transparent_background.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/activity_create.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/activity_search.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/activity_search_keyword_result.xml" value="0.264" />
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/activity_view_recipe.xml" value="0.17604166666666668" />
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/custom_grid_layout.xml" value="0.3328748280605227" />
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/fragment_create_caption.xml" value="0.20677083333333332" />
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/fragment_create_show_gallery.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/fragment_home.xml" value="0.264" />
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/fragment_search_ingredient.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/fragment_search_result.xml" value="0.16875" />
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/list_comment.xml" value="0.16770833333333332" />
+        <entry key="..\:/Users/OWNER/Desktop/cookwhat-android-app/app/src/main/res/layout/search_result_layout.xml" value="0.4" />
+        <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/activity_login.xml" value="0.2708333333333333" />
+        <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/activity_testing.xml" value="0.2708333333333333" />
+        <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/fragment_get_started.xml" value="0.33" />
+        <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/fragment_home.xml" value="0.19166666666666668" />
+        <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/fragment_login.xml" value="0.25" />
+        <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/fragment_register.xml" value="0.2708333333333333" />
+        <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/fragment_register_complete.xml" value="0.2708333333333333" />
+        <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/pop_up_profile_pic.xml" value="0.2708333333333333" />
+        <entry key="..\:/Users/melis/AndroidStudioProjects/cookwhat-android-app/app/src/main/res/layout/profile_pic_item.xml" value="0.19166666666666668" />
+>>>>>>> Stashed changes
       </map>
     </option>
   </component>
