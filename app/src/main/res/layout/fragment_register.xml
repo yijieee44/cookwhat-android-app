@@ -18,26 +18,30 @@
 
         <ImageView
             android:id="@+id/IVRegister"
-            android:layout_width="wrap_content"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="25dp"
             android:layout_marginRight="5dp"
             android:src="@drawable/cat_create_new_account" />
 
         <TextView
             android:id="@+id/TVRegister"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="-30dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="10dp"
+            android:textAlignment="center"
             android:fontFamily="@font/absolutejoyful"
             android:text="Create New Account"
+            android:autoSizeTextType="uniform"
             android:textColor="#000000"
-            android:textSize="48sp" />
+            android:autoSizeMinTextSize="30sp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeStepGranularity="2sp"/>
 
         <EditText
             android:id="@+id/ETRegisterUsername"
@@ -92,11 +96,12 @@
             android:id="@+id/button3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/next_button"
-            android:padding="25dp" />
+            android:background="@drawable/next_button" />
 
     </LinearLayout>
 
