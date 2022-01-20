@@ -222,7 +222,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), UserActivity.class);
                         intent.putExtra("fragmentname", "viewprofilefragment");
                         intent.putExtra("userId", recipeModelDB.getUserId());
-                        intent.putExtra("currentUserModel", currentUser);
+                        intent.putExtra("userModel", currentUser);
                         startActivity(intent);
                     }
                 });
@@ -251,7 +251,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
                                     Intent intent = new Intent(ViewRecipeActivity.this, UserActivity.class);
                                     intent.putExtra("fragmentname", "viewprofilefragment");
                                     intent.putExtra("userId", userId);
-                                    intent.putExtra("currentUserModel", currentUser);
+                                    intent.putExtra("userModel", currentUser);
                                     startActivity(intent);
                                 }
                             });
@@ -297,7 +297,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
                                             Intent intent = new Intent(ViewRecipeActivity.this, UserActivity.class);
                                             intent.putExtra("fragmentname", "viewprofilefragment");
                                             intent.putExtra("userId", userId);
-                                            intent.putExtra("currentUserModel", currentUser);
+                                            intent.putExtra("userModel", currentUser);
                                             startActivity(intent);
                                         }
                                     });
@@ -411,8 +411,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this.getApplicationContext(), MainActivity.class);
-        startActivity(intent);
+        this.finish();
     }
 
 
@@ -535,8 +534,6 @@ public class ViewRecipeActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
-                Intent intent = new Intent(this.getApplicationContext(), MainActivity.class);
-                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);

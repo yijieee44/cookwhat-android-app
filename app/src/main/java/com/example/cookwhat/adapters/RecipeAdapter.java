@@ -285,7 +285,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                             Intent intent = new Intent(itemView.getContext(), UserActivity.class);
                             intent.putExtra("fragmentname", "viewprofilefragment");
                             intent.putExtra("userId", userId);
-                            intent.putExtra("currentUserModel", currentUser);
+                            intent.putExtra("userModel", currentUser);
                             itemView.getContext().startActivity(intent);
                         }
                     });
