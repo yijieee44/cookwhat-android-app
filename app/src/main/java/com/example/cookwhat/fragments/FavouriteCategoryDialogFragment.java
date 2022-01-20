@@ -40,6 +40,9 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
     public CollectionReference recipedb;
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
     int count = 0;
+    String catName = "";
+    Button BtnAddFav, BtnArabic, BtnChinese, BtnEuropean, BtnIndia, BtnJapan, BtnKorea, BtnMediterranean,
+    BtnSEA, BtnOther;
 
     public FavouriteCategoryDialogFragment(UserModelDB userModelDB, RecipeModelDB recipeModelDB) {
         this.userModelDB = userModelDB;
@@ -75,16 +78,16 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
         userdb = db.collection("user");
         recipedb = db.collection("recipe");
 
-        Button BtnAddFav = (Button) getActivity().findViewById(R.id.BtnAddFav);
-        Button BtnArabic = (Button) view.findViewById(R.id.BtnArabic);
-        Button BtnChinese = (Button) view.findViewById(R.id.BtnChinese);
-        Button BtnEuropean = (Button) view.findViewById(R.id.BtnEuropean);
-        Button BtnIndia = (Button) view.findViewById(R.id.BtnIndia);
-        Button BtnJapan = (Button) view.findViewById(R.id.BtnJapan);
-        Button BtnKorea = (Button) view.findViewById(R.id.BtnKorea);
-        Button BtnMediterranean = (Button) view.findViewById(R.id.BtnMediterranean);
-        Button BtnSEA = (Button) view.findViewById(R.id.BtnSEA);
-        Button BtnOther = (Button) view.findViewById(R.id.BtnOther);
+        BtnAddFav = (Button) getActivity().findViewById(R.id.BtnAddFav);
+        BtnArabic = (Button) view.findViewById(R.id.BtnArabic);
+        BtnChinese = (Button) view.findViewById(R.id.BtnChinese);
+        BtnEuropean = (Button) view.findViewById(R.id.BtnEuropean);
+        BtnIndia = (Button) view.findViewById(R.id.BtnIndia);
+        BtnJapan = (Button) view.findViewById(R.id.BtnJapan);
+        BtnKorea = (Button) view.findViewById(R.id.BtnKorea);
+        BtnMediterranean = (Button) view.findViewById(R.id.BtnMediterranean);
+        BtnSEA = (Button) view.findViewById(R.id.BtnSEA);
+        BtnOther = (Button) view.findViewById(R.id.BtnOther);
 
         Map<String, ArrayList<String>> favouriteCategory = userModelDB.getFavouriteCategory();
 
@@ -92,6 +95,7 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
             for (Map.Entry<String,ArrayList<String>> entry : favouriteCategory.entrySet())
                 if (entry.getValue().contains(recipeId)){
                     count++;
+                    catName = entry.getKey();;
                     if (entry.getKey().equals(BtnArabic.getText())){BtnArabic.setBackgroundColor(getResources().getColor(R.color.dark_yellow));}
                     else if (entry.getKey().equals(BtnChinese.getText())){BtnChinese.setBackgroundColor(getResources().getColor(R.color.dark_yellow));}
                     else if (entry.getKey().equals(BtnEuropean.getText())){BtnEuropean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));}
@@ -101,6 +105,7 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                     else if (entry.getKey().equals(BtnMediterranean.getText())){BtnMediterranean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));}
                     else if (entry.getKey().equals(BtnSEA.getText())){BtnSEA.setBackgroundColor(getResources().getColor(R.color.dark_yellow));}
                     else if (entry.getKey().equals(BtnOther.getText())){BtnOther.setBackgroundColor(getResources().getColor(R.color.dark_yellow));}
+                    break;
                 }
         }
 
@@ -108,70 +113,44 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View v) {
-                if (favouriteCategory.isEmpty()){
-                    ArrayList<String> recipeids = new ArrayList<>();
+                ArrayList<String> recipeids = favouriteCategory.get("Arabic");
+                if (recipeids.isEmpty() || !recipeids.contains(recipeId)){
                     recipeids.add(recipeId);
                     favouriteCategory.put("Arabic", recipeids);
                     userModelDB.setFavouriteCategory(favouriteCategory);
                     updateUser(userModelDB);
                     Toast.makeText(getContext(), "Saved recipe to " + BtnArabic.getText(), Toast.LENGTH_SHORT).show();
+                    if (count==1){
+                        ArrayList<String> recipeids2 = favouriteCategory.get(catName);
+                        recipeids2.remove(recipeId);
+                        favouriteCategory.put(catName, recipeids2);
+                        userModelDB.setFavouriteCategory(favouriteCategory);
+                        updateUser(userModelDB);
+                        deselectAllButtons();
+                    }
                     if (count==0){
                         recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
+                        count++;
                     }
+                    catName = BtnArabic.getText().toString();
                     BtnArabic.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                    count++;
                 }
-                else {
-                    ArrayList<String> recipeids = favouriteCategory.get("Arabic");
-                    if (recipeids == null){
-                        recipeids = new ArrayList<>();
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("Arabic", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnArabic.getText(), Toast.LENGTH_SHORT).show();
-                        recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnArabic.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-                    }
-                    else if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("Arabic", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnArabic.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnArabic.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-                    } else if (recipeids.contains(recipeId)) {
-                        recipeids.remove(recipeId);
-                        favouriteCategory.put("Arabic", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Recipe is removed from " + BtnArabic.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==1){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        }
-                        BtnArabic.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        count--;
-                    }
+                else if (recipeids.contains(recipeId)){
+                    recipeids.remove(recipeId);
+                    favouriteCategory.put("Arabic", recipeids);
+                    userModelDB.setFavouriteCategory(favouriteCategory);
+                    updateUser(userModelDB);
+                    Toast.makeText(getContext(), "Recipe is removed from " + BtnArabic.getText(), Toast.LENGTH_SHORT).show();
+                    recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
+                    updateRecipe(recipeModelDB);
+                    BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
+                    BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    BtnArabic.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    count--;
+                    catName = "";
                 }
             }
         });
@@ -180,70 +159,44 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View v) {
-                if (favouriteCategory == null){
-                    Map<String, ArrayList<String>> favouriteCategory = new HashMap<>();
-                    ArrayList<String> recipeids = new ArrayList<>();
+                ArrayList<String> recipeids = favouriteCategory.get("Chinese");
+                if (recipeids.isEmpty() || !recipeids.contains(recipeId)){
                     recipeids.add(recipeId);
                     favouriteCategory.put("Chinese", recipeids);
                     userModelDB.setFavouriteCategory(favouriteCategory);
                     updateUser(userModelDB);
                     Toast.makeText(getContext(), "Saved recipe to " + BtnChinese.getText(), Toast.LENGTH_SHORT).show();
+                    if (count==1){
+                        ArrayList<String> recipeids2 = favouriteCategory.get(catName);
+                        recipeids2.remove(recipeId);
+                        favouriteCategory.put(catName, recipeids2);
+                        userModelDB.setFavouriteCategory(favouriteCategory);
+                        updateUser(userModelDB);
+                        deselectAllButtons();
+                    }
                     if (count==0){
                         recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
+                        count++;
                     }
+                    catName = BtnChinese.getText().toString();
                     BtnChinese.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                    count++;
                 }
-                else {
-                    ArrayList<String> recipeids = favouriteCategory.get("Chinese");
-                    if (recipeids == null){
-                        recipeids = new ArrayList<>();
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("Chinese", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnChinese.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnChinese.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-                    }
-                    else if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("Chinese", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnChinese.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnChinese.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-                    } else if (recipeids.contains(recipeId)) {
-                        recipeids.remove(recipeId);
-                        favouriteCategory.put("Chinese", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Recipe is removed from " + BtnChinese.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==1){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        }
-                        BtnChinese.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        count--;
-                    }
+                else if (recipeids.contains(recipeId)){
+                    recipeids.remove(recipeId);
+                    favouriteCategory.put("Chinese", recipeids);
+                    userModelDB.setFavouriteCategory(favouriteCategory);
+                    updateUser(userModelDB);
+                    Toast.makeText(getContext(), "Recipe is removed from " + BtnChinese.getText(), Toast.LENGTH_SHORT).show();
+                    recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
+                    updateRecipe(recipeModelDB);
+                    BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
+                    BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    BtnChinese.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    count--;
+                    catName = "";
                 }
             }
         });
@@ -252,69 +205,44 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View v) {
-                if (favouriteCategory.isEmpty()){
-                    ArrayList<String> recipeids = new ArrayList<>();
+                ArrayList<String> recipeids = favouriteCategory.get("European");
+                if (recipeids.isEmpty() || !recipeids.contains(recipeId)){
                     recipeids.add(recipeId);
                     favouriteCategory.put("European", recipeids);
                     userModelDB.setFavouriteCategory(favouriteCategory);
                     updateUser(userModelDB);
                     Toast.makeText(getContext(), "Saved recipe to " + BtnEuropean.getText(), Toast.LENGTH_SHORT).show();
+                    if (count==1){
+                        ArrayList<String> recipeids2 = favouriteCategory.get(catName);
+                        recipeids2.remove(recipeId);
+                        favouriteCategory.put(catName, recipeids2);
+                        userModelDB.setFavouriteCategory(favouriteCategory);
+                        updateUser(userModelDB);
+                        deselectAllButtons();
+                    }
                     if (count==0){
                         recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
+                        count++;
                     }
+                    catName = BtnEuropean.getText().toString();
                     BtnEuropean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                    count++;
                 }
-                else {
-                    ArrayList<String> recipeids = favouriteCategory.get("European");
-                    if (recipeids == null){
-                        recipeids = new ArrayList<>();
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("European", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnEuropean.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnEuropean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-                    }
-                    else if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("European", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnEuropean.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnEuropean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-                    } else if (recipeids.contains(recipeId)) {
-                        recipeids.remove(recipeId);
-                        favouriteCategory.put("European", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Recipe is removed from " + BtnEuropean.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==1){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        }
-                        BtnEuropean.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        count--;
-                    }
+                else if (recipeids.contains(recipeId)){
+                    recipeids.remove(recipeId);
+                    favouriteCategory.put("European", recipeids);
+                    userModelDB.setFavouriteCategory(favouriteCategory);
+                    updateUser(userModelDB);
+                    Toast.makeText(getContext(), "Recipe is removed from " + BtnEuropean.getText(), Toast.LENGTH_SHORT).show();
+                    recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
+                    updateRecipe(recipeModelDB);
+                    BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
+                    BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    BtnEuropean.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    count--;
+                    catName = "";
                 }
             }
         });
@@ -323,70 +251,44 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View v) {
-                if (favouriteCategory.isEmpty()){
-                    ArrayList<String> recipeids = new ArrayList<>();
+                ArrayList<String> recipeids = favouriteCategory.get("Indian");
+                if (recipeids.isEmpty() || !recipeids.contains(recipeId)){
                     recipeids.add(recipeId);
-                    favouriteCategory.put("India", recipeids);
+                    favouriteCategory.put("Indian", recipeids);
                     userModelDB.setFavouriteCategory(favouriteCategory);
                     updateUser(userModelDB);
                     Toast.makeText(getContext(), "Saved recipe to " + BtnIndia.getText(), Toast.LENGTH_SHORT).show();
+                    if (count==1){
+                        ArrayList<String> recipeids2 = favouriteCategory.get(catName);
+                        recipeids2.remove(recipeId);
+                        favouriteCategory.put(catName, recipeids2);
+                        userModelDB.setFavouriteCategory(favouriteCategory);
+                        updateUser(userModelDB);
+                        deselectAllButtons();
+                    }
                     if (count==0){
                         recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
+                        count++;
                     }
+                    catName = BtnIndia.getText().toString();
                     BtnIndia.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                    count++;
                 }
-                else {
-                    ArrayList<String> recipeids = favouriteCategory.get("India");
-                    if (recipeids == null){
-                        recipeids = new ArrayList<>();
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("India", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnIndia.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnIndia.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-
-                    }
-                    if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("India", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnIndia.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnIndia.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-                    } else if (recipeids.contains(recipeId)) {
-                        recipeids.remove(recipeId);
-                        favouriteCategory.put("India", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Recipe is removed from " + BtnIndia.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==1){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        }
-                        BtnIndia.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        count--;
-                    }
+                else if (recipeids.contains(recipeId)){
+                    recipeids.remove(recipeId);
+                    favouriteCategory.put("Indian", recipeids);
+                    userModelDB.setFavouriteCategory(favouriteCategory);
+                    updateUser(userModelDB);
+                    Toast.makeText(getContext(), "Recipe is removed from " + BtnIndia.getText(), Toast.LENGTH_SHORT).show();
+                    recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
+                    updateRecipe(recipeModelDB);
+                    BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
+                    BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    BtnIndia.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    count--;
+                    catName = "";
                 }
             }
         });
@@ -395,69 +297,44 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View v) {
-                if (favouriteCategory.isEmpty()){
-                    ArrayList<String> recipeids = new ArrayList<>();
+                ArrayList<String> recipeids = favouriteCategory.get("Japanese");
+                if (recipeids.isEmpty() || !recipeids.contains(recipeId)){
                     recipeids.add(recipeId);
-                    favouriteCategory.put("Japan", recipeids);
+                    favouriteCategory.put("Japanese", recipeids);
                     userModelDB.setFavouriteCategory(favouriteCategory);
                     updateUser(userModelDB);
                     Toast.makeText(getContext(), "Saved recipe to " + BtnJapan.getText(), Toast.LENGTH_SHORT).show();
+                    if (count==1){
+                        ArrayList<String> recipeids2 = favouriteCategory.get(catName);
+                        recipeids2.remove(recipeId);
+                        favouriteCategory.put(catName, recipeids2);
+                        userModelDB.setFavouriteCategory(favouriteCategory);
+                        updateUser(userModelDB);
+                        deselectAllButtons();
+                    }
                     if (count==0){
                         recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
+                        count++;
                     }
+                    catName = BtnJapan.getText().toString();
                     BtnJapan.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                    count++;
                 }
-                else {
-                    ArrayList<String> recipeids = favouriteCategory.get("Japan");
-                    if (recipeids == null){
-                        recipeids = new ArrayList<>();
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("Japan", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnJapan.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnJapan.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-                    }
-                    else if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("Japan", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnJapan.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnJapan.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-                    } else if (recipeids.contains(recipeId)) {
-                        recipeids.remove(recipeId);
-                        favouriteCategory.put("Japan", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Recipe is removed from " + BtnJapan.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==1){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        }
-                        BtnJapan.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        count--;
-                    }
+                else if (recipeids.contains(recipeId)){
+                    recipeids.remove(recipeId);
+                    favouriteCategory.put("Japanese", recipeids);
+                    userModelDB.setFavouriteCategory(favouriteCategory);
+                    updateUser(userModelDB);
+                    Toast.makeText(getContext(), "Recipe is removed from " + BtnJapan.getText(), Toast.LENGTH_SHORT).show();
+                    recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
+                    updateRecipe(recipeModelDB);
+                    BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
+                    BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    BtnJapan.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    count--;
+                    catName = "";
                 }
             }
         });
@@ -466,69 +343,44 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View v) {
-                if (favouriteCategory.isEmpty()){
-                    ArrayList<String> recipeids = new ArrayList<>();
+                ArrayList<String> recipeids = favouriteCategory.get("Korean");
+                if (recipeids.isEmpty() || !recipeids.contains(recipeId)){
                     recipeids.add(recipeId);
-                    favouriteCategory.put("Korea", recipeids);
+                    favouriteCategory.put("Korean", recipeids);
                     userModelDB.setFavouriteCategory(favouriteCategory);
                     updateUser(userModelDB);
                     Toast.makeText(getContext(), "Saved recipe to " + BtnKorea.getText(), Toast.LENGTH_SHORT).show();
+                    if (count==1){
+                        ArrayList<String> recipeids2 = favouriteCategory.get(catName);
+                        recipeids2.remove(recipeId);
+                        favouriteCategory.put(catName, recipeids2);
+                        userModelDB.setFavouriteCategory(favouriteCategory);
+                        updateUser(userModelDB);
+                        deselectAllButtons();
+                    }
                     if (count==0){
                         recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
+                        count++;
                     }
+                    catName = BtnKorea.getText().toString();
                     BtnKorea.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                    count++;
                 }
-                else {
-                    ArrayList<String> recipeids = favouriteCategory.get("Korea");
-                    if (recipeids == null){
-                        recipeids = new ArrayList<>();
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("Korea", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnKorea.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnKorea.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-                    }
-                    else if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("Korea", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnKorea.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnKorea.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-                    } else if (recipeids.contains(recipeId)) {
-                        recipeids.remove(recipeId);
-                        favouriteCategory.put("Korea", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Recipe is removed from " + BtnKorea.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==1){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        }
-                        BtnKorea.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        count--;
-                    }
+                else if (recipeids.contains(recipeId)){
+                    recipeids.remove(recipeId);
+                    favouriteCategory.put("Korean", recipeids);
+                    userModelDB.setFavouriteCategory(favouriteCategory);
+                    updateUser(userModelDB);
+                    Toast.makeText(getContext(), "Recipe is removed from " + BtnKorea.getText(), Toast.LENGTH_SHORT).show();
+                    recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
+                    updateRecipe(recipeModelDB);
+                    BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
+                    BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    BtnKorea.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    count--;
+                    catName = "";
                 }
             }
         });
@@ -537,69 +389,44 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View v) {
-                if (favouriteCategory.isEmpty()){
-                    ArrayList<String> recipeids = new ArrayList<>();
+                ArrayList<String> recipeids = favouriteCategory.get("Mediterranean");
+                if (recipeids.isEmpty() || !recipeids.contains(recipeId)){
                     recipeids.add(recipeId);
                     favouriteCategory.put("Mediterranean", recipeids);
                     userModelDB.setFavouriteCategory(favouriteCategory);
                     updateUser(userModelDB);
                     Toast.makeText(getContext(), "Saved recipe to " + BtnMediterranean.getText(), Toast.LENGTH_SHORT).show();
+                    if (count==1){
+                        ArrayList<String> recipeids2 = favouriteCategory.get(catName);
+                        recipeids2.remove(recipeId);
+                        favouriteCategory.put(catName, recipeids2);
+                        userModelDB.setFavouriteCategory(favouriteCategory);
+                        updateUser(userModelDB);
+                        deselectAllButtons();
+                    }
                     if (count==0){
                         recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
+                        count++;
                     }
+                    catName = BtnMediterranean.getText().toString();
                     BtnMediterranean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                    count++;
                 }
-                else {
-                    ArrayList<String> recipeids = favouriteCategory.get("Mediterranean");
-                    if (recipeids == null){
-                        recipeids = new ArrayList<>();
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("Mediterranean", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnMediterranean.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnMediterranean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-                    }
-                    else if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("Mediterranean", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnMediterranean.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnMediterranean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-                    } else if (recipeids.contains(recipeId)) {
-                        recipeids.remove(recipeId);
-                        favouriteCategory.put("Mediterranean", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Recipe is removed from " + BtnMediterranean.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==1){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        }
-                        BtnMediterranean.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        count--;
-                    }
+                else if (recipeids.contains(recipeId)){
+                    recipeids.remove(recipeId);
+                    favouriteCategory.put("Mediterranean", recipeids);
+                    userModelDB.setFavouriteCategory(favouriteCategory);
+                    updateUser(userModelDB);
+                    Toast.makeText(getContext(), "Recipe is removed from " + BtnMediterranean.getText(), Toast.LENGTH_SHORT).show();
+                    recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
+                    updateRecipe(recipeModelDB);
+                    BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
+                    BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    BtnMediterranean.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    count--;
+                    catName = "";
                 }
             }
         });
@@ -608,69 +435,44 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View v) {
-                if (favouriteCategory.isEmpty()){
-                    ArrayList<String> recipeids = new ArrayList<>();
+                ArrayList<String> recipeids = favouriteCategory.get("South-East Asia");
+                if (recipeids.isEmpty() || !recipeids.contains(recipeId)){
                     recipeids.add(recipeId);
                     favouriteCategory.put("South-East Asia", recipeids);
                     userModelDB.setFavouriteCategory(favouriteCategory);
                     updateUser(userModelDB);
                     Toast.makeText(getContext(), "Saved recipe to " + BtnSEA.getText(), Toast.LENGTH_SHORT).show();
+                    if (count==1){
+                        ArrayList<String> recipeids2 = favouriteCategory.get(catName);
+                        recipeids2.remove(recipeId);
+                        favouriteCategory.put(catName, recipeids2);
+                        userModelDB.setFavouriteCategory(favouriteCategory);
+                        updateUser(userModelDB);
+                        deselectAllButtons();
+                    }
                     if (count==0){
                         recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
+                        count++;
                     }
+                    catName = BtnSEA.getText().toString();
                     BtnSEA.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                    count++;
                 }
-                else {
-                    ArrayList<String> recipeids = favouriteCategory.get("South-East Asia");
-                    if (recipeids == null){
-                        recipeids = new ArrayList<>();
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("South-East Asia", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnSEA.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnSEA.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-                    }
-                    else if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("South-East Asia", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnSEA.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnSEA.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-                    } else if (recipeids.contains(recipeId)) {
-                        recipeids.remove(recipeId);
-                        favouriteCategory.put("South-East Asia", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Recipe is removed from " + BtnSEA.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==1){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        }
-                        BtnSEA.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        count--;
-                    }
+                else if (recipeids.contains(recipeId)){
+                    recipeids.remove(recipeId);
+                    favouriteCategory.put("South-East Asia", recipeids);
+                    userModelDB.setFavouriteCategory(favouriteCategory);
+                    updateUser(userModelDB);
+                    Toast.makeText(getContext(), "Recipe is removed from " + BtnSEA.getText(), Toast.LENGTH_SHORT).show();
+                    recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
+                    updateRecipe(recipeModelDB);
+                    BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
+                    BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    BtnSEA.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    count--;
+                    catName = "";
                 }
             }
         });
@@ -679,69 +481,44 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View v) {
-                if (favouriteCategory.isEmpty()){
-                    ArrayList<String> recipeids = new ArrayList<>();
+                ArrayList<String> recipeids = favouriteCategory.get("Others");
+                if (recipeids.isEmpty() || !recipeids.contains(recipeId)){
                     recipeids.add(recipeId);
-                    favouriteCategory.put("Other", recipeids);
+                    favouriteCategory.put("Others", recipeids);
                     userModelDB.setFavouriteCategory(favouriteCategory);
                     updateUser(userModelDB);
                     Toast.makeText(getContext(), "Saved recipe to " + BtnOther.getText(), Toast.LENGTH_SHORT).show();
+                    if (count==1){
+                        ArrayList<String> recipeids2 = favouriteCategory.get(catName);
+                        recipeids2.remove(recipeId);
+                        favouriteCategory.put(catName, recipeids2);
+                        userModelDB.setFavouriteCategory(favouriteCategory);
+                        updateUser(userModelDB);
+                        deselectAllButtons();
+                    }
                     if (count==0){
                         recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
+                        count++;
                     }
+                    catName = BtnOther.getText().toString();
                     BtnOther.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                    count++;
                 }
-                else {
-                    ArrayList<String> recipeids = favouriteCategory.get("Other");
-                    if (recipeids == null){
-                        recipeids = new ArrayList<>();
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("Other", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnOther.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnOther.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-                    }
-                    else if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
-                        recipeids.add(recipeId);
-                        favouriteCategory.put("Other", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Saved recipe to " + BtnOther.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==0){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        }
-                        BtnOther.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        count++;
-                    } else if (recipeids.contains(recipeId)) {
-                        recipeids.remove(recipeId);
-                        favouriteCategory.put("Other", recipeids);
-                        userModelDB.setFavouriteCategory(favouriteCategory);
-                        updateUser(userModelDB);
-                        Toast.makeText(getContext(), "Recipe is removed from " + BtnOther.getText(), Toast.LENGTH_SHORT).show();
-                        if (count==1){
-                            recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
-                            updateRecipe(recipeModelDB);
-                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
-                            BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        }
-                        BtnOther.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                        count--;
-                    }
+                else if (recipeids.contains(recipeId)){
+                    recipeids.remove(recipeId);
+                    favouriteCategory.put("Others", recipeids);
+                    userModelDB.setFavouriteCategory(favouriteCategory);
+                    updateUser(userModelDB);
+                    Toast.makeText(getContext(), "Recipe is removed from " + BtnOther.getText(), Toast.LENGTH_SHORT).show();
+                    recipeModelDB.setNumFav(recipeModelDB.getNumFav() - 1);
+                    updateRecipe(recipeModelDB);
+                    BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
+                    BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    BtnOther.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+                    count--;
+                    catName = "";
                 }
             }
         });
@@ -787,5 +564,17 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
 
     public interface DialogListener {
         void onFinishEditDialog();
+    }
+
+    public void deselectAllButtons(){
+        BtnArabic.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+        BtnChinese.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+        BtnEuropean.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+        BtnIndia.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+        BtnJapan.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+        BtnKorea.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+        BtnMediterranean.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+        BtnSEA.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
+        BtnOther.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
     }
 }

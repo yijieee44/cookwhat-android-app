@@ -149,10 +149,9 @@ public class FavouriteCategoryFragment extends Fragment {
         onBackToUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getActivity(), MainActivity.class);
-                i.putExtra("isFromFavourite",true);
-                startActivity(i);
-
+                Intent intent = new Intent();
+                getActivity().setResult(122, intent);
+                getActivity().finish();
             }
         });
 

@@ -48,9 +48,9 @@
     <string name="arabic">Arabic</string>
     <string name="southeastasia">South-East Asia</string>
     <string name="chinese">Chinese</string>
-    <string name="japan">Japan</string>
-    <string name="korea">Korea</string>
-    <string name="india">India</string>
+    <string name="japan">Japanese</string>
+    <string name="korea">Korean</string>
+    <string name="india">Indian</string>
     <string name="delete">Delete</string>
     <string name="recipe">Recipe</string>
     <string name="user">User</string>
