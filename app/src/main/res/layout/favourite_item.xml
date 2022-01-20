@@ -34,6 +34,29 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/TV_Tag1"
+        android:layout_width="68dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="2dp"
+        android:text="TextView"
+        android:textColor="@color/grey"
+        android:visibility="visible"
+        app:layout_constraintStart_toEndOf="@+id/IV_Tag1"
+        app:layout_constraintTop_toBottomOf="@+id/TV_FavouriteName" />
+
+    <TextView
+        android:id="@+id/TV_Tag2"
+        android:layout_width="68dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="9dp"
+        android:text="TextView"
+        android:visibility="visible"
+        android:textColor="@color/grey"
+        app:layout_constraintStart_toEndOf="@+id/IV_Tag2"
+        app:layout_constraintTop_toBottomOf="@+id/TV_Tag1" />
+
+    <TextView
         android:id="@+id/TV_Tag3"
         android:layout_width="68dp"
         android:layout_height="17dp"
@@ -44,17 +67,6 @@
         android:textColor="@color/grey"
         app:layout_constraintStart_toEndOf="@+id/IV_Tag3"
         app:layout_constraintTop_toBottomOf="@+id/TV_Tag2" />
-
-    <TextView
-        android:id="@+id/TV_Tag1"
-        android:layout_width="68dp"
-        android:layout_height="17dp"
-        android:layout_marginStart="2dp"
-        android:text="TextView"
-        android:visibility="visible"
-        android:textColor="@color/grey"
-        app:layout_constraintStart_toEndOf="@+id/IV_Tag1"
-        app:layout_constraintTop_toBottomOf="@+id/TV_FavouriteName" />
 
     <ImageView
         android:id="@+id/IV_Tag1"
@@ -70,31 +82,6 @@
         tools:ignore="VectorDrawableCompat" />
 
     <ImageView
-        android:id="@+id/IV_Tag3"
-        android:layout_width="24dp"
-        android:layout_height="18dp"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="8dp"
-        android:visibility="visible"
-        app:layout_constraintEnd_toStartOf="@+id/TV_Tag3"
-        app:layout_constraintStart_toEndOf="@+id/IV_FavouriteImage"
-        app:layout_constraintTop_toBottomOf="@+id/IV_Tag2"
-        app:srcCompat="@drawable/ic_tag_svgrepo_com"
-        tools:ignore="VectorDrawableCompat" />
-
-    <TextView
-        android:id="@+id/TV_Tag2"
-        android:layout_width="68dp"
-        android:layout_height="17dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="9dp"
-        android:text="TextView"
-        android:visibility="visible"
-        android:textColor="@color/grey"
-        app:layout_constraintStart_toEndOf="@+id/IV_Tag2"
-        app:layout_constraintTop_toBottomOf="@+id/TV_Tag1" />
-
-    <ImageView
         android:id="@+id/IV_Tag2"
         android:layout_width="24dp"
         android:layout_height="18dp"
@@ -104,6 +91,19 @@
         app:layout_constraintEnd_toStartOf="@+id/TV_Tag3"
         app:layout_constraintStart_toEndOf="@+id/IV_FavouriteImage"
         app:layout_constraintTop_toBottomOf="@+id/IV_Tag1"
+        app:srcCompat="@drawable/ic_tag_svgrepo_com"
+        tools:ignore="VectorDrawableCompat" />
+
+    <ImageView
+        android:id="@+id/IV_Tag3"
+        android:layout_width="24dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="8dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/TV_Tag3"
+        app:layout_constraintStart_toEndOf="@+id/IV_FavouriteImage"
+        app:layout_constraintTop_toBottomOf="@+id/IV_Tag2"
         app:srcCompat="@drawable/ic_tag_svgrepo_com"
         tools:ignore="VectorDrawableCompat" />
 

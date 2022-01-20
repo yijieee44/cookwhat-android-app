@@ -1,5 +1,6 @@
 package com.example.cookwhat.fragments;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -72,6 +74,8 @@ public class ViewProfileFragment extends Fragment {
     TextView prefer2;
     TextView prefer3;
 
+    Dialog loadingDialog;
+
     public ViewProfileFragment() {
 
     }
@@ -115,6 +119,7 @@ public class ViewProfileFragment extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
 
+        loadingDialog = new Dialog(getContext());
         getActivity().setTitle("View Profile");
         readData(new FirestoreOnCallBack() {
             UserModelDB selectedUserModel = new UserModelDB();
@@ -401,6 +406,16 @@ public class ViewProfileFragment extends Fragment {
     }
 
     public void readData(FirestoreOnCallBack firestoreOnCallBack, String userID) {
+        loadingDialog.setCancelable(false);
+        loadingDialog.setContentView(R.layout.dialog_loading);
+        loadingDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.black_transparent_background));
+
+        int width = (int)(getResources().getDisplayMetrics().widthPixels);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels);
+
+        loadingDialog.getWindow().setLayout(width, height);
+        loadingDialog.show();
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference userCollection = db.collection("user");
         CollectionReference recipeCollection = db.collection("recipe");
@@ -441,7 +456,14 @@ public class ViewProfileFragment extends Fragment {
 
                             }
 
-
+                            loadingDialog.dismiss();
+                        }
+                        else{
+                            loadingDialog.cancel();
+                            Toast.makeText(getContext(),
+                                    "Fail to load user data, please try again",
+                                    Toast.LENGTH_SHORT)
+                                    .show();
                         }
                     }
                 });

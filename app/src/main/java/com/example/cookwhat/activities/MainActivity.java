@@ -2,7 +2,7 @@ package com.example.cookwhat.activities;
 
 import static android.view.MenuItem.SHOW_AS_ACTION_IF_ROOM;
 
-import android.app.UiModeManager;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     SQLiteDatabase db;
     UserModel user = new UserModel();
     NavController navController;
+    Dialog loadingDialog;
 
     public UserModel getUser() {
         return user;
@@ -70,7 +71,9 @@ public class MainActivity extends AppCompatActivity {
                     if (result.getResultCode() == 122) {
                         Intent intent = getIntent();
                         finish();
+                        overridePendingTransition(0,0);
                         startActivity(intent);
+                        overridePendingTransition(0,0);
                     }
                 }
             });
@@ -78,6 +81,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        loadingDialog = new Dialog(this);
+
+        loadingDialog.setCancelable(false);
+        loadingDialog.setContentView(R.layout.dialog_loading);
+        loadingDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.black_transparent_background));
+
+        int width = (int)(getResources().getDisplayMetrics().widthPixels);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels);
+
+        loadingDialog.getWindow().setLayout(width, height);
+        loadingDialog.show();
+
         dbHelper = new DatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
         mAuth = FirebaseAuth.getInstance();
@@ -125,7 +140,9 @@ public class MainActivity extends AppCompatActivity {
 //                                            selectionArgs);
 
                                 }
+                                loadingDialog.dismiss();
                             } else {
+                                loadingDialog.cancel();
                                 Log.w("ERROR", "Error getting documents.", task.getException());
                             }
                         }
@@ -137,9 +154,13 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             isLoggedIn = false;
-            String selection = UserTableContract.UserTable._ID + " = ?";
-            String[] selectionArgs = { "1" };
-            int deletedRows = db.delete(UserTableContract.UserTable.TABLE_NAME, selection, selectionArgs);
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            this.finish();
+//            String selection = UserTableContract.UserTable._ID + " = ?";
+//            String[] selectionArgs = { "1" };
+//            int deletedRows = db.delete(UserTableContract.UserTable.TABLE_NAME, selection, selectionArgs);
         }
     }
 
@@ -147,62 +168,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //DB Code
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        IngredientModel model = new IngredientModel();
-//        model.setMemo("Hello im testing");
-//        model.setName("HEHEHEH");
-//        model.setUnit("kg");
-//        model.setQuantity(1);
-//        model.setIcon("wasdwasdwasd");
-//        Map<String, Object> user = new HashMap<>();
-//        user.put("first", "Alan");
-//        user.put("middle", "Mathison");
-//        user.put("last", "Turing");
-//        user.put("born", 1912);
-//        ArrayList<String> list = new ArrayList<>();
-//        list.add("wasd");
-//        list.add("asdasd");
-//        user.put("list", list);
-//
-//        mAuth = FirebaseAuth.getInstance();
-//
-//        db.collection("recipe")
-//                .add(user)
-//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//                    public void onSuccess(DocumentReference documentReference) {
-//                        Log.d("SUCCESS", "DocumentSnapshot added with ID: " + documentReference.getId());
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.w("ERROR", "Error adding document", e);
-//                    }
-//                });
-//
-//        db.collection("recipe")
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Log.d("SUCCESS", document.getId() + " => " + document.getData());
-//                                ArrayList<String> anotherList = (ArrayList<String>) document.getData().get("list");
-//                            }
-//                        } else {
-//                            Log.w("ERROR", "Error getting documents.", task.getException());
-//                        }
-//                    }
-//                });
-
-
-        // bind NavHostFragment with NavController
-
-
-
 
         NavHostFragment host = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.NHFMain);
         navController = host.getNavController();
@@ -254,11 +219,12 @@ public class MainActivity extends AppCompatActivity {
         }
         else if(id == MENU_LOGOUT){
             FirebaseAuth.getInstance().signOut();
-            String selection = UserTableContract.UserTable._ID + " = ?";
-            String[] selectionArgs = { "1" };
-            int deletedRows = db.delete(UserTableContract.UserTable.TABLE_NAME, selection, selectionArgs);
-            Intent refresh = new Intent(this, MainActivity.class);
-            startActivity(refresh);
+//            String selection = UserTableContract.UserTable._ID + " = ?";
+//            String[] selectionArgs = { "1" };
+//            int deletedRows = db.delete(UserTableContract.UserTable.TABLE_NAME, selection, selectionArgs);
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
             this.finish();
             return true;
         }
@@ -277,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void BtnSearchRecipe(View v){
         Intent intentSearchActivity = new Intent(this, SearchActivity.class);
-        startActivity(intentSearchActivity);
+        createActivityResultLauncher.launch(intentSearchActivity);
     }
 
     @Override
@@ -286,16 +252,5 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void startFragment(){
-        UserProfileFragment userProfileFragment = new UserProfileFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        //bundle.putString("action",action);
-        //userProfileFragment.setArguments(bundle);
-        fragmentTransaction.replace(R.id.NHFMain, userProfileFragment);
-        fragmentTransaction.commit();
-
-    }
 
 }

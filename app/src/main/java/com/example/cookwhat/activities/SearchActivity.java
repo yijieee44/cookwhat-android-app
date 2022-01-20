@@ -12,12 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -45,6 +47,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.adapters.IngredientAdapter;
@@ -73,7 +76,6 @@ public class SearchActivity extends AppCompatActivity {
     List<UtensilModel> utensilModelList;
     FirebaseFirestore firestoreDb;
     Button searchButton;
-    Button backButton;
 
     List<UserModelDB> userList;
     List<RecipeModelSearch> recipeSearchResult;
@@ -100,15 +102,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        backButton = findViewById(R.id.BtnSearchBack);
-        backButton.setVisibility(View.GONE);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                toIngredient();
-            }
-        });
     }
 
     private void search(){
@@ -132,38 +125,84 @@ public class SearchActivity extends AppCompatActivity {
         for(UtensilModel utensil: utensilModelToSearch){
             utensilNameToSearch.add(utensil.getName());
         }
+        if(ingredientNameToSearch.size() > 0){
+            firestoreDb.collection("recipe")
+                    .whereArrayContainsAny("ingName", ingredientNameToSearch)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("SUCCESS", document.getId() + " => " + document.getData());
+                                    final ObjectMapper mapper = new ObjectMapper();
+                                    try{
+                                        RecipeModelDB queriedRecipe = mapper.convertValue(document.getData(), RecipeModelDB.class);
+                                        queriedRecipe.setId(document.getId());
+                                        queriedRecipes.add(queriedRecipe);
 
-        firestoreDb.collection("recipe")
-                .whereArrayContainsAny("ingName", ingredientNameToSearch)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("SUCCESS", document.getId() + " => " + document.getData());
-                                final ObjectMapper mapper = new ObjectMapper();
-                                try{
-                                    RecipeModelDB queriedRecipe = mapper.convertValue(document.getData(), RecipeModelDB.class);
-                                    queriedRecipe.setId(document.getId());
-                                    queriedRecipes.add(queriedRecipe);
 
+                                    }
+                                    catch (Exception e){
 
+                                        Log.w("ERROR", e.toString());
+                                    }
                                 }
-                                catch (Exception e){
+                                organizeAndNavigateToResult(queriedRecipes, ingredientNameToSearch, utensilNameToSearch);
 
-                                    Log.w("ERROR", e.toString());
-                                }
+
+                            } else {
+                                loadingDialog.cancel();
+                                Log.w("ERROR", "Error getting documents.", task.getException());
                             }
-                            organizeAndNavigateToResult(queriedRecipes, ingredientNameToSearch, utensilNameToSearch);
-
-
-                        } else {
-                            loadingDialog.cancel();
-                            Log.w("ERROR", "Error getting documents.", task.getException());
                         }
-                    }
-                });
+                    });
+        }
+        else if(utensilNameToSearch.size() > 0){
+            firestoreDb.collection("recipe")
+                    .whereArrayContainsAny("utName", utensilNameToSearch)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("SUCCESS", document.getId() + " => " + document.getData());
+                                    final ObjectMapper mapper = new ObjectMapper();
+                                    try{
+                                        RecipeModelDB queriedRecipe = mapper.convertValue(document.getData(), RecipeModelDB.class);
+                                        queriedRecipe.setId(document.getId());
+                                        queriedRecipes.add(queriedRecipe);
+
+
+                                    }
+                                    catch (Exception e){
+
+                                        Log.w("ERROR", e.toString());
+                                    }
+                                }
+                                organizeAndNavigateToResult(queriedRecipes, ingredientNameToSearch, utensilNameToSearch);
+
+
+                            } else {
+                                loadingDialog.cancel();
+                                Log.w("ERROR", "Error getting documents.", task.getException());
+                                Toast.makeText(SearchActivity.this,
+                                        "Fail to search, please try again",
+                                        Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                        }
+                    });
+        }
+        else{
+            loadingDialog.cancel();
+            Toast.makeText(SearchActivity.this,
+                    "Please select at least 1 ingredient or utensil to search.",
+                    Toast.LENGTH_SHORT)
+                    .show();
+        }
+
     }
 
     private void organizeAndNavigateToResult(List<RecipeModelDB> queriedRecipes, List<String> ingredientNameList, List<String> utensilNameList){
@@ -274,20 +313,10 @@ public class SearchActivity extends AppCompatActivity {
     private void toResult(){
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.activity_search_fragment_container, new SearchResultFragment());
+        fragmentTransaction.addToBackStack("stack");
         fragmentTransaction.commit();
 
         searchButton.setVisibility(View.GONE);
-        backButton.setVisibility(View.VISIBLE);
-
-    }
-
-    public void toIngredient(){
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.activity_search_fragment_container, new SearchIngredientFragment());
-        fragmentTransaction.commit();
-
-        searchButton.setVisibility(View.VISIBLE);
-        backButton.setVisibility(View.GONE);
 
     }
 
@@ -323,4 +352,27 @@ public class SearchActivity extends AppCompatActivity {
         this.recipeSearchResult = recipeSearchResult;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            //Title bar back press triggers onBackPressed()
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d("FRAGMENTSTACK", ""+getSupportFragmentManager().getBackStackEntryCount());
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0 ) {
+            getSupportFragmentManager().popBackStack();
+            searchButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            Intent intent = new Intent();
+            setResult(122, intent);
+            finish();
+        }
+    }
 }

@@ -1,12 +1,16 @@
 package com.example.cookwhat.fragments;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,9 +22,15 @@ import com.example.cookwhat.activities.ViewRecipeActivity;
 import com.example.cookwhat.adapters.FavouriteAdapter;
 import com.example.cookwhat.models.RecipeModelDB;
 import com.example.cookwhat.models.UserModelDB;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +57,7 @@ public class FavouriteFragment extends Fragment implements OptionPopUp.passData 
     UserModelDB userModelDB;
     String selectedCategoryName;
     String userId;
+    Dialog loadingDialog;
 
 
     public FavouriteFragment() {
@@ -85,6 +96,7 @@ public class FavouriteFragment extends Fragment implements OptionPopUp.passData 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        loadingDialog = new Dialog(getContext());
         recipeIdList = (ArrayList<String>) userModelDB.getFavouriteCategory().get(selectedCategoryName);
         listview =(ListView) view.findViewById(R.id.LV_FavouriteList);
         System.out.println("checkrecipeId"+ userModelDB.getFavouriteCategory());
@@ -169,42 +181,51 @@ public class FavouriteFragment extends Fragment implements OptionPopUp.passData 
     }
 
     public void readData(FirestoreOnCallBack firestoreOnCallBack, ArrayList<String>recipeId){
+        TextView noFavourite = getView().findViewById(R.id.TVNoFavouriteRecipe);
+        noFavourite.setVisibility(View.GONE);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         ArrayList<String>recipeName = new ArrayList<>();
         ArrayList<String>recipeImage =  new ArrayList<>();
         ArrayList<List<String>>recipeTags = new ArrayList<>();
         ArrayList<RecipeModelDB>recipeModel = new ArrayList<>();
-        int recipeIdSize = recipeId.size();
-        String lastRecipeID = recipeId.get(recipeIdSize-1);
-        for(String id : recipeId){
-            db.collection("recipe").document(id).get()
-                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
+//        int recipeIdSize = recipeId.size();
+//        String lastRecipeID = recipeId.get(recipeIdSize-1);
+        if(recipeId.size()>0){
+            loadingDialog.setCancelable(false);
+            loadingDialog.setContentView(R.layout.dialog_loading);
+            loadingDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.black_transparent_background));
+
+            int width = (int)(getResources().getDisplayMetrics().widthPixels);
+            int height = (int)(getResources().getDisplayMetrics().heightPixels);
+
+            loadingDialog.getWindow().setLayout(width, height);
+            loadingDialog.show();
+            db.collection("recipe").whereIn(FieldPath.documentId(), recipeId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful()){
+                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                            Log.d("SUCCESS", documentSnapshot.getId() + " => " + documentSnapshot.getData());
+                            final ObjectMapper mapper = new ObjectMapper();
                             RecipeModelDB recipemodel = new RecipeModelDB();
                             recipemodel = documentSnapshot.toObject(RecipeModelDB.class);
                             recipeModel.add(recipemodel);
                             recipeName.add((String) documentSnapshot.get("title"));
                             recipeImage.add(getResources().getString(R.string.recipe_image_uri) + recipemodel.getSteps().get(0).getImage()+"?alt=media");
                             recipeTags.add(recipemodel.getTags());
-                            System.out.println("Adding here"+recipeName);
-                            System.out.println("Current adding id:"+ id);
-                            System.out.println("LastID"+ lastRecipeID);
-
-                            if(id.equals(lastRecipeID)){
-                                System.out.println("hereCallbackRecipe");
-                                firestoreOnCallBack.onCallBackRecipe(recipeModel, recipeName, recipeImage,recipeTags);
-                            }
-
                         }
-
-                    });
-
-
-
-
+                        firestoreOnCallBack.onCallBackRecipe(recipeModel, recipeName, recipeImage,recipeTags);
+                        loadingDialog.dismiss();
+                    }
+                    else{
+                        loadingDialog.cancel();
+                    }
+                }
+            });
         }
-
+        else{
+            noFavourite.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -224,6 +245,8 @@ public class FavouriteFragment extends Fragment implements OptionPopUp.passData 
     public interface FirestoreOnCallBack{
         void onCallBackRecipe(ArrayList<RecipeModelDB>recipeModel, ArrayList<String>recipeName, ArrayList<String>recipeImage, ArrayList<List<String>>tags);
     }
+
+
 
 
 }

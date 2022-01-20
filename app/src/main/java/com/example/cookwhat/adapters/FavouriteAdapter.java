@@ -51,8 +51,8 @@ public class FavouriteAdapter extends ArrayAdapter<String> {
 
         ImageView favImg = view1.findViewById(R.id.IV_FavouriteImage);
         ImageView tag1Icon = view1.findViewById(R.id.IV_Tag1);
-        ImageView tag2Icon = view1.findViewById(R.id.IV_Tag3);
-        ImageView tag3Icon = view1.findViewById(R.id.IV_Tag2);
+        ImageView tag2Icon = view1.findViewById(R.id.IV_Tag2);
+        ImageView tag3Icon = view1.findViewById(R.id.IV_Tag3);
         TextView favName = view1.findViewById(R.id.TV_FavouriteName);
         TextView tag1 = view1.findViewById(R.id.TV_Tag1);
         TextView tag2 = view1.findViewById(R.id.TV_Tag2);
@@ -72,19 +72,32 @@ public class FavouriteAdapter extends ArrayAdapter<String> {
 
             if (numTags<3){
                 switch (numTags){
+                    case 0:
+                        tag1.setVisibility(View.GONE);
+                        tag1Icon.setVisibility(View.GONE);
+                        tag2.setVisibility(View.GONE);
+                        tag2Icon.setVisibility(View.GONE);
+                        tag3.setVisibility(View.GONE);
+                        tag3Icon.setVisibility(View.GONE);
+                        break;
                     case 1:
                         tag1.setText(tags.get(i).get(0));
                         tag1.setVisibility(View.VISIBLE);
                         tag1Icon.setVisibility(View.VISIBLE);
+                        tag2.setVisibility(View.GONE);
+                        tag2Icon.setVisibility(View.GONE);
+                        tag3.setVisibility(View.GONE);
+                        tag3Icon.setVisibility(View.GONE);
                         break;
                     case 2:
                         tag1.setText(tags.get(i).get(0));
-                        tag1.setText(tags.get(i).get(1));
+                        tag2.setText(tags.get(i).get(1));
                         tag1.setVisibility(View.VISIBLE);
                         tag2.setVisibility(View.VISIBLE);
+                        tag3.setVisibility(View.GONE);
                         tag1Icon.setVisibility(View.VISIBLE);
                         tag2Icon.setVisibility(View.VISIBLE);
-
+                        tag3Icon.setVisibility(View.GONE);
                         break;
 
                 }

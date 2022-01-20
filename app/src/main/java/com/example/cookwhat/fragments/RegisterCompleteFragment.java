@@ -3,6 +3,7 @@ package com.example.cookwhat.fragments;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,6 +63,7 @@ public class RegisterCompleteFragment extends Fragment {
     int prof_pic = 0;
     boolean cond1 = false;
     boolean cond2 = false;
+    Dialog loadingDialog;
 
 
     public RegisterCompleteFragment() {
@@ -132,6 +134,7 @@ public class RegisterCompleteFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        loadingDialog = new Dialog(getContext());
         Log.d("CHECKING", "email password username" + email + password + username);
         RecyclerView profilePicRV = view.findViewById(R.id.RV_ProfilePic);
         LinearLayoutManager recycleViewLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -193,6 +196,16 @@ public class RegisterCompleteFragment extends Fragment {
 
 
                 if (cond1 && cond2){
+                    loadingDialog.setCancelable(false);
+                    loadingDialog.setContentView(R.layout.dialog_loading);
+                    loadingDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.black_transparent_background));
+
+                    int width = (int)(getResources().getDisplayMetrics().widthPixels);
+                    int height = (int)(getResources().getDisplayMetrics().heightPixels);
+
+                    loadingDialog.getWindow().setLayout(width, height);
+                    loadingDialog.show();
+
                     mAuth = FirebaseAuth.getInstance();
                     mAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -235,8 +248,10 @@ public class RegisterCompleteFragment extends Fragment {
                                                 }
                                             }
                                         });
+                                        loadingDialog.dismiss();
 
                                     } else {
+                                        loadingDialog.cancel();
                                         Log.w("ERROR", "createUserWithEmail:failure", task.getException());
                                         Toast.makeText(getActivity(), "Authentication failed.",
                                                 Toast.LENGTH_SHORT).show();
