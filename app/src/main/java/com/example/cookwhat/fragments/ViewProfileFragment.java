@@ -102,7 +102,7 @@ public class ViewProfileFragment extends Fragment {
         if (getActivity().getIntent()!= null) {
 
             this.selectedUserID = getActivity().getIntent().getStringExtra("userId");
-            this.currentUser = (UserModelDB) getActivity().getIntent().getSerializableExtra("userModel");
+            this.currentUser = (UserModelDB) getActivity().getIntent().getSerializableExtra("currentUserModel");
 
         } else {
             Log.d("USERID::", "null user id");

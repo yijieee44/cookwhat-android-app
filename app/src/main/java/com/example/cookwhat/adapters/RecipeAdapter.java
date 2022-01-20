@@ -30,12 +30,14 @@ import com.example.cookwhat.models.RecipeModelSearch;
 import com.example.cookwhat.models.UserModel;
 import com.example.cookwhat.models.UserModelDB;
 import com.example.cookwhat.utils.Constants;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -277,10 +279,16 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                     else{
                         userId = recipeModel.get(getAdapterPosition()).getUserId();
                     }
-                    Intent intent = new Intent(itemView.getContext(), UserActivity.class);
-                    intent.putExtra("fragmentname", "viewprofilefragment");
-                    intent.putExtra("userId", userId);
-                    itemView.getContext().startActivity(intent);
+                    readCurrentUser(new FirestoreCallback2() {
+                        @Override
+                        public void onCallBack(UserModelDB currentUser) {
+                            Intent intent = new Intent(itemView.getContext(), UserActivity.class);
+                            intent.putExtra("fragmentname", "viewprofilefragment");
+                            intent.putExtra("userId", userId);
+                            intent.putExtra("currentUserModel", currentUser);
+                            itemView.getContext().startActivity(intent);
+                        }
+                    });
                 }
             });
 
@@ -316,5 +324,30 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             });
         }
     }
+
+    public void readCurrentUser(FirestoreCallback2 firestoreCallback2) {
+        userdb.document(user.getUid()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    UserModelDB currentUser = new UserModelDB();
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            Log.d("SUCCESS", document.getId() + " => " + document.getData());
+                            final ObjectMapper mapper = new ObjectMapper();
+                            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                            currentUser = mapper.convertValue(document.getData(), UserModelDB.class);
+                            firestoreCallback2.onCallBack(currentUser);
+                        } else {
+                            Log.w("ERROR", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private interface FirestoreCallback2 {
+        void onCallBack(UserModelDB currentUser);
+    }
+
 }
 
