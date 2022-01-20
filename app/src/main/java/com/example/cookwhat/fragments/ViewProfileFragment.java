@@ -115,7 +115,7 @@ public class ViewProfileFragment extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
 
-        getActivity().setTitle("View User");
+        getActivity().setTitle("View Profile");
         readData(new FirestoreOnCallBack() {
             UserModelDB selectedUserModel = new UserModelDB();
 

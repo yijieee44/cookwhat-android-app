@@ -37,7 +37,6 @@ public class ViewProfileActivity extends AppCompatActivity {
             transaction.replace(R.id.FragmentContainerViewProfile,fragment);
         }
         else{
-            getSupportActionBar().setTitle("View Profile");
             Bundle bundle = new Bundle();
             bundle.putString("userId", userId);
             ViewProfileFragment fragment = new ViewProfileFragment();
