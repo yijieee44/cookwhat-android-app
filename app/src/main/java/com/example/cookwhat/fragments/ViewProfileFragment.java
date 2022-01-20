@@ -25,6 +25,7 @@ import com.example.cookwhat.activities.ViewRecipeActivity;
 import com.example.cookwhat.models.RecipeModelDB;
 import com.example.cookwhat.models.UserModelDB;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.CollectionReference;
@@ -155,15 +156,33 @@ public class ViewProfileFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         String showFollowText = showFollow.getText().toString();
+                        ArrayList<String>followerId = selectedUserModel.getFollowersId();
+                        ArrayList<String>followerName = selectedUserModel.getFollowersName();
+                        ArrayList<String>followingId = currentUserModel.getFollowingsId();
+                        ArrayList<String>followingName = currentUserModel.getFollowingsName();
 
                         if (showFollowText.equals("Unfollow")) {
                             //remove existing following
+                            int inxFollow = followerId.indexOf(currentUserModel.getUserId());
+                            followerId.remove(inxFollow);
+                            followerName.remove(inxFollow);
+
+                            int inx = followingId.indexOf(selectedUserID);
+                            followingId.remove(inx);
+                            followingName.remove(inx);
                             showFollow.setText("Follow");
                         } else {
                             //add new following
+                            followerId.add(currentUserModel.getUserId());
+                            followerName.add(currentUserModel.getUserName());
+
+
+                            followingId.add(selectedUserID);
+                            followingName.add(selectedUserModel.getUserName());
                             showFollow.setText("Unfollow");
-                            updateFollow(selectedUserID,currentUserModel.getUserId() );
                         }
+
+                        updateFollow(selectedUserModel, currentUserModel);
                     }
                 };
 
@@ -423,9 +442,17 @@ public class ViewProfileFragment extends Fragment {
 
     }
 
-    public void updateFollow(String selectedUser, String currentUser){
+    public void updateFollow(UserModelDB selectedUser, UserModelDB currentUser){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("user").document(selectedUser).get();
+        db.collection("user").document(selectedUser.getUserId()).set(selectedUser)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(@NonNull Void unused) {
+                        db.collection("user").document(currentUser.getUserId()).set(currentUser);
+                    }
+                });
+
+
 
     }
 

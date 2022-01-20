@@ -9,9 +9,4 @@
         android:name="com.example.cookwhat.fragments.ViewProfileFragment"
         android:label="fragment_view_profile"
         tools:layout="@layout/fragment_view_profile" />
-    <fragment
-        android:id="@+id/editAboutMe"
-        android:name="com.example.cookwhat.fragments.EditAboutMe"
-        android:label="fragment_edit_about_me"
-        tools:layout="@layout/fragment_edit_about_me" />
 </navigation>
