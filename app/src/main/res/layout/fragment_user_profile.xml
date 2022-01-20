@@ -140,46 +140,108 @@
                 android:layout_height="375dp"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
-                android:visibility="invisible"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/TL_ProfileTab">
+                app:layout_constraintTop_toBottomOf="@+id/TL_ProfileTab"
+               >
 
                 <Button
                     android:id="@+id/Btn_Edit"
-                    android:layout_width="45dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="31dp"
+                    android:layout_height="36dp"
                     android:layout_marginLeft="355dp"
                     android:background="@drawable/ic_baseline_edit_24"
                     tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                 <TextView
-                    android:id="@+id/TV_TabDescription"
-                    android:layout_width="match_parent"
+                    android:id="@+id/textView8"
+                    android:layout_width="144dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Description"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic__about_me_description" />
+
+                <TextView
+                    android:id="@+id/TV_TabDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="52dp"
+                    android:layout_marginBottom="15dp"
                     android:text="TextView"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Email Address"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_about_me_email_address" />
 
                 <TextView
                     android:id="@+id/TV_TabEmail"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="52dp"
+                    android:layout_marginBottom="15dp"
                     android:text="TextView"
                     android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="192dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:drawableStart="@drawable/ic_about_me_country"
+                    android:text="Country of Origin"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/TV_TabCountry"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="52dp"
+                    android:layout_marginBottom="15dp"
                     android:text="TextView"
                     android:textAlignment="center" />
 
                 <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="245dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Level of Cooking Skills"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_about_me_level" />
+
+                <TextView
                     android:id="@+id/TV_TabLevel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="52dp"
+                    android:layout_marginBottom="15dp"
+                    android:text="TextView"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/textView17"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    android:textAlignment="center" />
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/TV_TabPreferences"

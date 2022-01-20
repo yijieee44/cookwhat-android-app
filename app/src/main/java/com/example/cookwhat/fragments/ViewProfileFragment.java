@@ -102,7 +102,7 @@ public class ViewProfileFragment extends Fragment {
         if (getActivity().getIntent()!= null) {
 
             this.selectedUserID = getActivity().getIntent().getStringExtra("userId");
-            this.currentUser = (UserModelDB) getActivity().getIntent().getSerializableExtra("currentUserModel");
+            this.currentUser = (UserModelDB) getActivity().getIntent().getSerializableExtra("userModel");
 
         } else {
             Log.d("USERID::", "null user id");
@@ -320,8 +320,8 @@ public class ViewProfileFragment extends Fragment {
         public View getView(int i, View view, ViewGroup viewGroup) {
             View view1 = getLayoutInflater().inflate(R.layout.row_data,null);
 
-            ImageView img = view1.findViewById(R.id.IV_favCategory);
-            TextView text = view1.findViewById(R.id.TV_favCategory);
+            ImageView img = view1.findViewById(R.id.IV_SecretRecipe);
+            TextView text = view1.findViewById(R.id.TV_SecretRecipe);
             Uri uri = Uri.parse(recipeImg.get(i));
             Picasso.get().load(uri).fit().into(img);
             text.setText(recipeName.get(i));
