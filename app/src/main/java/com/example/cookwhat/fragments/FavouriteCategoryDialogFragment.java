@@ -39,7 +39,7 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
     public CollectionReference userdb;
     public CollectionReference recipedb;
     public FirebaseFirestore db = FirebaseFirestore.getInstance();
-    public int count = 0;
+    int count = 0;
 
     public FavouriteCategoryDialogFragment(UserModelDB userModelDB, RecipeModelDB recipeModelDB) {
         this.userModelDB = userModelDB;
@@ -120,8 +120,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        BtnArabic.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     }
+                    BtnArabic.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     count++;
                 }
                 else {
@@ -139,8 +139,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnArabic.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnArabic.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
                     }
                     else if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
@@ -154,8 +154,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnArabic.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnArabic.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
                     } else if (recipeids.contains(recipeId)) {
                         recipeids.remove(recipeId);
@@ -168,8 +168,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                            BtnArabic.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         }
+                        BtnArabic.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         count--;
                     }
                 }
@@ -193,8 +193,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        BtnChinese.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     }
+                    BtnChinese.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     count++;
                 }
                 else {
@@ -209,9 +209,10 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                         if (count==0){
                             recipeModelDB.setNumFav(recipeModelDB.getNumFav() + 1);
                             updateRecipe(recipeModelDB);
+                            BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnChinese.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnChinese.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
                     }
                     else if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
@@ -225,8 +226,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnChinese.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnChinese.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
                     } else if (recipeids.contains(recipeId)) {
                         recipeids.remove(recipeId);
@@ -239,8 +240,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                            BtnChinese.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         }
+                        BtnChinese.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         count--;
                     }
                 }
@@ -263,8 +264,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        BtnEuropean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     }
+                    BtnEuropean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     count++;
                 }
                 else {
@@ -281,8 +282,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnEuropean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnEuropean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
                     }
                     else if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
@@ -296,8 +297,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnEuropean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnEuropean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
                     } else if (recipeids.contains(recipeId)) {
                         recipeids.remove(recipeId);
@@ -310,8 +311,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                            BtnEuropean.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         }
+                        BtnEuropean.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         count--;
                     }
                 }
@@ -334,8 +335,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        BtnIndia.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     }
+                    BtnIndia.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     count++;
                 }
                 else {
@@ -352,8 +353,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnIndia.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnIndia.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
 
                     }
@@ -368,8 +369,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnIndia.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnIndia.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
                     } else if (recipeids.contains(recipeId)) {
                         recipeids.remove(recipeId);
@@ -382,8 +383,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                            BtnIndia.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         }
+                        BtnIndia.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         count--;
                     }
                 }
@@ -406,8 +407,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        BtnJapan.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     }
+                    BtnJapan.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     count++;
                 }
                 else {
@@ -424,8 +425,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnJapan.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnJapan.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
                     }
                     else if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
@@ -439,8 +440,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnJapan.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnJapan.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
                     } else if (recipeids.contains(recipeId)) {
                         recipeids.remove(recipeId);
@@ -453,8 +454,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                            BtnJapan.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         }
+                        BtnJapan.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         count--;
                     }
                 }
@@ -477,8 +478,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        BtnKorea.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     }
+                    BtnKorea.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     count++;
                 }
                 else {
@@ -495,8 +496,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnKorea.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnKorea.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
                     }
                     else if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
@@ -510,8 +511,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnKorea.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnKorea.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
                     } else if (recipeids.contains(recipeId)) {
                         recipeids.remove(recipeId);
@@ -524,8 +525,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                            BtnKorea.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         }
+                        BtnKorea.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         count--;
                     }
                 }
@@ -548,8 +549,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        BtnMediterranean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     }
+                    BtnMediterranean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     count++;
                 }
                 else {
@@ -566,8 +567,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnMediterranean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnMediterranean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
                     }
                     else if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
@@ -581,8 +582,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnMediterranean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnMediterranean.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
                     } else if (recipeids.contains(recipeId)) {
                         recipeids.remove(recipeId);
@@ -595,8 +596,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                            BtnMediterranean.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         }
+                        BtnMediterranean.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         count--;
                     }
                 }
@@ -619,8 +620,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        BtnSEA.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     }
+                    BtnSEA.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     count++;
                 }
                 else {
@@ -637,8 +638,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnSEA.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnSEA.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
                     }
                     else if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
@@ -652,8 +653,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnSEA.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnSEA.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
                     } else if (recipeids.contains(recipeId)) {
                         recipeids.remove(recipeId);
@@ -666,8 +667,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                            BtnSEA.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         }
+                        BtnSEA.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         count--;
                     }
                 }
@@ -690,8 +691,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                         updateRecipe(recipeModelDB);
                         BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                         BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                        BtnOther.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     }
+                    BtnOther.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                     count++;
                 }
                 else {
@@ -708,8 +709,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnOther.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnOther.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
                     }
                     else if (recipeids.isEmpty() || !recipeids.contains(recipeId)) {
@@ -723,8 +724,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
-                            BtnOther.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         }
+                        BtnOther.setBackgroundColor(getResources().getColor(R.color.dark_yellow));
                         count++;
                     } else if (recipeids.contains(recipeId)) {
                         recipeids.remove(recipeId);
@@ -737,8 +738,8 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
                             updateRecipe(recipeModelDB);
                             BtnAddFav.setText(String.valueOf(recipeModelDB.getNumFav()));
                             BtnAddFav.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
-                            BtnOther.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         }
+                        BtnOther.setBackgroundColor(getResources().getColor(R.color.weirdyellow));
                         count--;
                     }
                 }
