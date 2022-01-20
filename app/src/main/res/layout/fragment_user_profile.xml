@@ -25,10 +25,9 @@
                 android:id="@+id/IV_ProfilefFrame"
                 android:layout_width="111dp"
                 android:layout_height="110dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="28dp"
                 android:src="@drawable/circle"
-                app:layout_constraintEnd_toStartOf="@+id/Btn_Follower"
-                app:layout_constraintHorizontal_bias="0.525"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,13 +47,13 @@
                 android:layout_width="92dp"
                 android:layout_height="88dp"
                 android:layout_marginTop="28dp"
-                android:layout_marginEnd="24dp"
                 android:background="@drawable/whitecircle"
                 android:gravity="center"
                 android:paddingTop="20dp"
                 android:text="88"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toStartOf="@+id/Btn_Following"
+                app:layout_constraintStart_toEndOf="@+id/IV_ProfilefFrame"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -63,26 +62,22 @@
                 android:layout_height="70dp"
                 android:text="TextView"
                 android:textAlignment="center"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.092"
+                app:layout_constraintHorizontal_bias="0.08"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/IV_ProfilefFrame"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@+id/IV_ProfilefFrame" />
 
             <TextView
                 android:id="@+id/TV_Follower"
-                android:layout_width="96dp"
-                android:layout_height="38dp"
-                android:layout_marginStart="25dp"
+                android:layout_width="84dp"
+                android:layout_height="34dp"
                 android:layout_marginTop="-1dp"
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:text="Followers"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/TV_Following"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/IV_ProfilefFrame"
                 app:layout_constraintTop_toBottomOf="@+id/Btn_Follower" />
 
@@ -92,7 +87,7 @@
                 android:layout_width="92dp"
                 android:layout_height="88dp"
                 android:layout_marginTop="28dp"
-                android:layout_marginEnd="40dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/whitecircle"
                 android:gravity="center"
                 android:paddingTop="20dp"
@@ -103,15 +98,15 @@
 
             <TextView
                 android:id="@+id/TV_Following"
-                android:layout_width="112dp"
-                android:layout_height="37dp"
+                android:layout_width="84dp"
+                android:layout_height="34dp"
                 android:layout_marginTop="-1dp"
-                android:layout_marginEnd="30dp"
+                android:layout_marginEnd="20dp"
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:text="Followings"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/Btn_Following" />
 
@@ -141,11 +136,12 @@
 
             <LinearLayout
                 android:id="@+id/LL_AboutMe"
-                android:layout_width="match_parent"
+                android:layout_width="412dp"
                 android:layout_height="375dp"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
                 android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TL_ProfileTab">
 
@@ -198,10 +194,10 @@
                 android:id="@+id/CL_SecretRecipe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="300dp"
+                android:layout_marginTop="10dp"
                 android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/TL_ProfileTab">
 
                 <TextView
                     android:id="@+id/TV_Empty"

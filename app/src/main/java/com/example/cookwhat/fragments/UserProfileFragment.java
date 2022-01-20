@@ -35,6 +35,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -89,13 +90,13 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+        /*if (getArguments() != null) {
             Bundle bundle = this.getArguments();
             String action = bundle.getString("action");
             if(action.equals("updated about me")){
                 showTabAboutMe = true;
             }
-        }
+        }*/
         mAuth = FirebaseAuth.getInstance();
 
         userID = mAuth.getCurrentUser().getUid();
@@ -336,10 +337,11 @@ public class UserProfileFragment extends Fragment {
         public View getView(int i, View view, ViewGroup viewGroup) {
             View view1 = getLayoutInflater().inflate(R.layout.row_data,null);
 
-            ImageView img = view1.findViewById(R.id.IV_favCategory);
-            TextView text = view1.findViewById(R.id.TV_favCategory);
+            ImageView img = view1.findViewById(R.id.IV_SecretRecipe);
+            TextView text = view1.findViewById(R.id.TV_SecretRecipe);
             Uri uri = Uri.parse(recipeImg.get(i));
-            img.setImageURI(uri);
+            Picasso.get().load(uri).fit().into(img);
+            //img.setImageURI(uri);
             text.setText(recipeName.get(i));
 
             return view1;
@@ -365,7 +367,7 @@ public class UserProfileFragment extends Fragment {
                            for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
                                 usermodel = queryDocumentSnapshot.toObject(UserModelDB.class);
                                //System.out.println(documentSnapshot.get("userId"));
-                               System.out.println(usermodel.getUserId());
+                               System.out.println("Userprofile get favourite"+ usermodel.getFavouriteCategory());
                                firestoreOnCallBack.onCallBackUser(usermodel);
 
                                recipeCollection.whereEqualTo("userId", usermodel.getUserId()).get()

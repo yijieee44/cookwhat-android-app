@@ -42,7 +42,6 @@ public class UserActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putString("userId", userId);
-        bundle.putSerializable("userModel", userModelDB);
         ViewProfileFragment fragment = new ViewProfileFragment();
         System.out.println("putBundle here:"+userId);
         fragment.setArguments(bundle);

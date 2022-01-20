@@ -2,11 +2,13 @@ package com.example.cookwhat.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.activities.FavouriteActivity;
+import com.example.cookwhat.activities.MainActivity;
 import com.example.cookwhat.adapters.FavouriteCategoryAdapter;
 import com.example.cookwhat.models.UserModelDB;
 
@@ -66,10 +69,8 @@ public class FavouriteCategoryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-           Bundle bundle = this.getArguments();
-           userModel = (UserModelDB) bundle.getSerializable("usermodel");
-
+        if(getActivity().getIntent() != null) {
+            userModel = (UserModelDB) getActivity().getIntent().getSerializableExtra("usermodel");
         }
 
     }
@@ -90,6 +91,7 @@ public class FavouriteCategoryFragment extends Fragment {
 
         for(String c : category){
             categoryName.add(c);
+            categoryImg.add(R.drawable.addbutton);
         }
 
         GridView favCategory = (GridView)view.findViewById(R.id.GV_FavouriteCategory);
@@ -141,6 +143,17 @@ public class FavouriteCategoryFragment extends Fragment {
             }
 
 
+        });
+
+        Button onBackToUser = view.findViewById(R.id.Btn_BackToUser);
+        onBackToUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), MainActivity.class);
+                i.putExtra("isFromFavourite",true);
+                startActivity(i);
+
+            }
         });
 
 

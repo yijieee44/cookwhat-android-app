@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.cookwhat.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,9 @@ public class FavouriteAdapter extends ArrayAdapter<String> {
         }
 
         ImageView favImg = view1.findViewById(R.id.IV_FavouriteImage);
+        ImageView tag1Icon = view1.findViewById(R.id.IV_Tag1);
+        ImageView tag2Icon = view1.findViewById(R.id.IV_Tag3);
+        ImageView tag3Icon = view1.findViewById(R.id.IV_Tag2);
         TextView favName = view1.findViewById(R.id.TV_FavouriteName);
         TextView tag1 = view1.findViewById(R.id.TV_Tag1);
         TextView tag2 = view1.findViewById(R.id.TV_Tag2);
@@ -61,10 +65,47 @@ public class FavouriteAdapter extends ArrayAdapter<String> {
         tag3.setText(favouriteList.get(i).getTags().get(2));*/
         favName.setText(recipeName.get(i));
         Uri uri = Uri.parse(recipeImg.get(i));
-        favImg.setImageURI(uri);
-        tag1.setText(tags.get(i).get(0));
-        tag2.setText(tags.get(i).get(1));
-        tag3.setText(tags.get(i).get(2));
+        Picasso.get().load(uri).fit().into(favImg);
+
+        if(tags.get(i)!= null){
+            int numTags =  tags.get(i).size();
+
+            if (numTags<3){
+                switch (numTags){
+                    case 1:
+                        tag1.setText(tags.get(i).get(0));
+                        tag1.setVisibility(View.VISIBLE);
+                        tag1Icon.setVisibility(View.VISIBLE);
+                        break;
+                    case 2:
+                        tag1.setText(tags.get(i).get(0));
+                        tag1.setText(tags.get(i).get(1));
+                        tag1.setVisibility(View.VISIBLE);
+                        tag2.setVisibility(View.VISIBLE);
+                        tag1Icon.setVisibility(View.VISIBLE);
+                        tag2Icon.setVisibility(View.VISIBLE);
+
+                        break;
+
+                }
+            }
+
+            else{
+                tag1.setText(tags.get(i).get(0));
+                tag2.setText(tags.get(i).get(1));
+                tag3.setText(tags.get(i).get(2));
+                tag1.setVisibility(View.VISIBLE);
+                tag2.setVisibility(View.VISIBLE);
+                tag3.setVisibility(View.VISIBLE);
+                tag1Icon.setVisibility(View.VISIBLE);
+                tag2Icon.setVisibility(View.VISIBLE);
+                tag3Icon.setVisibility(View.VISIBLE);
+
+
+            }
+
+
+        }
 
         return view1;
 

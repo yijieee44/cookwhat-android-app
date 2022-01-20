@@ -31,6 +31,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -322,7 +323,7 @@ public class ViewProfileFragment extends Fragment {
             ImageView img = view1.findViewById(R.id.IV_favCategory);
             TextView text = view1.findViewById(R.id.TV_favCategory);
             Uri uri = Uri.parse(recipeImg.get(i));
-            img.setImageURI(uri);
+            Picasso.get().load(uri).fit().into(img);
             text.setText(recipeName.get(i));
 
             return view1;

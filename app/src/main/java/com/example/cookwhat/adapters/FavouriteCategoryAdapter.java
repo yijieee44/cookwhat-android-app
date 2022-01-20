@@ -39,7 +39,7 @@ public class FavouriteCategoryAdapter extends BaseAdapter  {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
 
-        View view1 = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_data,null);
+        View view1 = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.favourite_category_item,null);
 
         ImageView img = view1.findViewById(R.id.IV_favCategory);
         TextView text = view1.findViewById(R.id.TV_favCategory);

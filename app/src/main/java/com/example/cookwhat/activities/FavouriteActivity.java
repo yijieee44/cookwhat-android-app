@@ -25,6 +25,7 @@ public class FavouriteActivity extends AppCompatActivity {
         bundle.putString("selectedCategoryName", selectedCategoryName);
         favouriteFragment.setArguments(bundle);
         transaction.replace(R.id.NHFFavourite, favouriteFragment,"FavouriteFragment");
+        System.out.println("favouriteActivity"+selectedCategoryName);
         transaction.commit();
     }
 }

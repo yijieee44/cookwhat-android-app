@@ -8,12 +8,14 @@
 
     <GridView
         android:id="@+id/GV_FavouriteCategory"
-        android:layout_width="383dp"
-        android:layout_height="433dp"
-        android:layout_marginStart="13dp"
+        android:layout_width="351dp"
+        android:layout_height="439dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="44dp"
+        android:layout_marginEnd="15dp"
         android:background="@drawable/roundrec_board"
         android:numColumns="3"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></GridView>
 
@@ -21,11 +23,12 @@
         android:id="@+id/Btn_BackToUser"
         android:layout_width="87dp"
         android:layout_height="87dp"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="60dp"
         android:background="@drawable/backbutton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/GV_FavouriteCategory"
+        app:layout_constraintVertical_bias="0.25"
         tools:ignore="SpeakableTextPresentCheck,UnknownId" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

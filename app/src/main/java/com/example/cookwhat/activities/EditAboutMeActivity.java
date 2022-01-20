@@ -11,11 +11,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.models.UserModelDB;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
@@ -139,7 +142,12 @@ public class EditAboutMeActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String userId = userModel.getUserId();
         db.collection("user").document(userId)
-                .set(userModel);
+                .set(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(@NonNull Void unused) {
+                Toast.makeText(getApplicationContext(), "You have successfully updated your information!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

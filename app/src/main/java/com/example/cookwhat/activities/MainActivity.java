@@ -145,13 +145,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String action = getIntent().getStringExtra("action");
+        Boolean isFromFavourite = getIntent().getBooleanExtra("isFromFavourite",false);
+        if(isFromFavourite){
+            startFragment();
+        }
+
 
         if(action != null){
             if(action.equals("updated about me")){
                 UserModelDB userModelDB = (UserModelDB) getIntent().getSerializableExtra("usermodel");
-                startFragment(action, userModelDB);
+                startFragment();
             }
         }
+
 
 
         //DB Code
@@ -286,13 +292,13 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void startFragment(String action, UserModelDB userModelDB){
+    public void startFragment(){
         UserProfileFragment userProfileFragment = new UserProfileFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Bundle bundle = new Bundle();
-        bundle.putString("action",action);
-        userProfileFragment.setArguments(bundle);
+
+        //bundle.putString("action",action);
+        //userProfileFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.NHFMain, userProfileFragment);
         fragmentTransaction.commit();
 
