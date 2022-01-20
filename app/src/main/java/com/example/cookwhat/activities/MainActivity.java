@@ -116,11 +116,11 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                     values.put(UserTableContract.UserTable.COLUMN_NAME_FOLLOWER, follower);
                                     values.put(UserTableContract.UserTable.COLUMN_NAME_FOLLOWING, following);
-                                    int count = db.update(
-                                            UserTableContract.UserTable.TABLE_NAME,
-                                            values,
-                                            selection,
-                                            selectionArgs);
+//                                    int count = db.update(
+//                                            UserTableContract.UserTable.TABLE_NAME,
+//                                            values,
+//                                            selection,
+//                                            selectionArgs);
 
                                 }
                             } else {

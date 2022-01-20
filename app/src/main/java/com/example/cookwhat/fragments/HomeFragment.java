@@ -4,6 +4,10 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
@@ -22,6 +27,8 @@ import android.widget.Toast;
 import com.example.cookwhat.R;
 import com.example.cookwhat.activities.CreateActivity;
 import com.example.cookwhat.activities.SearchKeywordResultActivity;
+import com.example.cookwhat.activities.UserActivity;
+import com.example.cookwhat.activities.ViewRecipeActivity;
 import com.example.cookwhat.adapters.RecipeAdapter;
 import com.example.cookwhat.models.RecipeModelDB;
 import com.example.cookwhat.models.RecipeModelSearch;
@@ -64,6 +71,32 @@ public class HomeFragment extends Fragment {
     SearchView searchView;
 
     Dialog loadingDialog;
+
+    ActivityResultLauncher<Intent> viewRecipeActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == 122) {
+                        Intent intent = getActivity().getIntent();
+                        getActivity().finish();
+                        startActivity(intent);
+                    }
+                }
+            });
+
+    ActivityResultLauncher<Intent> viewUserActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == 122) {
+                        Intent intent = getActivity().getIntent();
+                        getActivity().finish();
+                        startActivity(intent);
+                    }
+                }
+            });
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -154,6 +187,41 @@ public class HomeFragment extends Fragment {
             @Override
             public void onCallBack(ArrayList<RecipeModelDB> recipeModelArrayList, ArrayList<UserModelDB> userModelArrayList) {
                 RecipeAdapter adapter = new RecipeAdapter(recipeModelArrayList, userModelArrayList, getContext());
+                // set user on click listener
+                // set recipe item on click listener
+                adapter.setListener(new RecipeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(view.getContext(), ViewRecipeActivity.class);
+                        UserModelDB userModelDB = new UserModelDB();
+                        intent.putExtra("recipeModel", recipeModelArrayList.get(position));
+                        for (int i = 0; i < userModelArrayList.size(); i++) {
+                            if (recipeModelArrayList.get(position).getUserId().equals(userModelArrayList.get(i).getUserId())) {
+                                userModelDB = userModelArrayList.get(i);
+                                break;
+                            }
+                        }
+
+                        intent.putExtra("userModel", userModelDB);
+                        viewRecipeActivityResultLauncher.launch(intent);
+                    }
+
+                    @Override
+                    public void onUserClick(View view, int position) {
+//                        String userId = recipeModelArrayList.get(position).getUserId();
+//                        adapter.readCurrentUser(new RecipeAdapter.FirestoreCallback2() {
+//                            @Override
+//                            public void onCallBack(UserModelDB currentUser) {
+//                                Intent intent = new Intent(view.getContext(), UserActivity.class);
+//                                intent.putExtra("fragmentname", "viewprofilefragment");
+//                                intent.putExtra("userId", userId);
+//                                intent.putExtra("userModel", currentUser);
+//                                viewUserActivityResultLauncher.launch(intent);
+//                            }
+//                        });
+                    }
+                });
+
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
                 recipeList.setLayoutManager(gridLayoutManager);
                 recipeList.setAdapter(adapter);

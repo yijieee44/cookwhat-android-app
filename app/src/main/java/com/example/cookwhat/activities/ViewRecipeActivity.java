@@ -410,8 +410,9 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
+        Intent intent = new Intent();
+        setResult(122, intent);
+        finish();
     }
 
 
@@ -533,7 +534,9 @@ public class ViewRecipeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.finish();
+                Intent intent = new Intent();
+                setResult(122, intent);
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
