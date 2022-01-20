@@ -28,18 +28,17 @@
                 android:text="TextView"
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.097"
+                app:layout_constraintHorizontal_bias="0.09"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/IV_FollowProfileFrame" />
 
             <ImageView
                 android:id="@+id/IV_FollowProfileFrame"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
+                android:layout_width="111dp"
+                android:layout_height="110dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="28dp"
                 android:src="@drawable/circle"
-                app:layout_constraintEnd_toStartOf="@+id/Btn_FollowFollower"
-                app:layout_constraintHorizontal_bias="0.461"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,37 +55,39 @@
             <androidx.appcompat.widget.AppCompatButton
 
                 android:id="@+id/Btn_FollowFollower"
-                android:layout_width="78dp"
-                android:layout_height="74dp"
-                android:layout_marginTop="36dp"
-                android:layout_marginEnd="44dp"
+                android:layout_width="92dp"
+                android:layout_height="88dp"
+                android:layout_marginTop="28dp"
                 android:background="@drawable/whitecircle"
                 android:gravity="center"
                 android:paddingTop="20dp"
                 android:text="88"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toStartOf="@+id/Btn_FollowFollowing"
+                app:layout_constraintStart_toEndOf="@+id/IV_FollowProfileFrame"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/TV_FollowFollower"
                 android:layout_width="82dp"
                 android:layout_height="30dp"
+                android:layout_marginStart="44dp"
                 android:layout_marginEnd="32dp"
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:text="Followers"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/TV_FollowFollowing"
+                app:layout_constraintStart_toEndOf="@+id/IV_FollowProfileFrame"
                 app:layout_constraintTop_toBottomOf="@+id/Btn_FollowFollower" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/Btn_FollowFollowing"
-                android:layout_width="78dp"
-                android:layout_height="74dp"
-                android:layout_marginTop="36dp"
-                android:layout_marginEnd="52dp"
+                android:layout_width="92dp"
+                android:layout_height="88dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/whitecircle"
                 android:gravity="center"
                 android:paddingTop="20dp"
@@ -99,12 +100,12 @@
                 android:id="@+id/TV_FollowFollowing"
                 android:layout_width="98dp"
                 android:layout_height="30dp"
-                android:layout_marginEnd="40dp"
+                android:layout_marginEnd="20dp"
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:text="Followings"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/Btn_FollowFollowing" />
 
@@ -112,34 +113,138 @@
                 android:id="@+id/Btn_ShowFollow"
                 android:layout_width="234dp"
                 android:layout_height="54dp"
-                android:layout_marginBottom="16dp"
                 android:text="Follow"
                 app:layout_constraintBottom_toTopOf="@+id/TL_FollowProfileTab"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.81"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TV_FollowFollower" />
 
             <LinearLayout
                 android:id="@+id/LL_FollowAboutMe"
                 android:layout_width="match_parent"
                 android:layout_height="375dp"
                 android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:visibility="invisible"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TL_FollowProfileTab">
 
                 <TextView
-                    android:id="@+id/TV_FollowPreferences"
-                    android:layout_width="150dp"
-                    android:layout_height="37dp"
-                    android:text="Preference" />
+                    android:id="@+id/textView8"
+                    android:layout_width="144dp"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic__about_me_description" />
 
                 <TextView
-                    android:id="@+id/TV_FollowEmailAddr"
-                    android:layout_width="156dp"
-                    android:layout_height="57dp"
-                    android:text="email_addr" />
+                    android:id="@+id/TV_FollowTabDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:text="Email Address"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_about_me_email_address" />
+
+                <TextView
+                    android:id="@+id/TV_FollowTabEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="192dp"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_about_me_country"
+                    android:text="Country of Origin"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/TV_FollowTabCountry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="245dp"
+                    android:layout_height="wrap_content"
+                    android:text="Level of Cooking Skills"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_about_me_level" />
+
+                <TextView
+                    android:id="@+id/TV_FollowTabLevel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Preferences"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_about_me_preferences" />
+
+                <TextView
+                    android:id="@+id/TV_FollowTabPreferences1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/TV_FollowTabPreferences2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/TV_FollowTabPreferences3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:visibility="invisible" />
 
             </LinearLayout>
 
@@ -184,7 +289,7 @@
                 android:layout_width="376dp"
                 android:layout_height="55dp"
 
-                android:layout_marginTop="220dp"
+                android:layout_marginTop="236dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

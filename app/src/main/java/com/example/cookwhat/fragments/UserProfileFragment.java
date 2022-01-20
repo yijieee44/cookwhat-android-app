@@ -73,7 +73,9 @@ public class UserProfileFragment extends Fragment {
     TextView email;
     TextView country ;
     TextView level ;
-    TextView prefer;
+    TextView prefer1;
+    TextView prefer2;
+    TextView prefer3;
 
 
 
@@ -239,7 +241,9 @@ public class UserProfileFragment extends Fragment {
                                 email = view.findViewById(R.id.TV_TabEmail);
                                 country = view.findViewById(R.id.TV_TabCountry);
                                 level = view.findViewById(R.id.TV_TabLevel);
-                                prefer = view.findViewById(R.id.TV_TabPreferences);
+                                prefer1 = view.findViewById(R.id.TV_TabPreferences1);
+                                prefer2 = view.findViewById(R.id.TV_TabPreferences2);
+                                prefer3 = view.findViewById(R.id.TV_TabPreferences3);
 
                                 description.setText(usermodel.getDescription());
 
@@ -253,10 +257,20 @@ public class UserProfileFragment extends Fragment {
                                 country.setText(usermodel.getCountry());
                                 level.setText(usermodel.getLevel());
                                 if(usermodel.isShowPreference()){
-                                    prefer.setText(usermodel.getPreference().get(0));
+                                    prefer1.setText(usermodel.getPreference().get(0));
+
+                                    if(usermodel.getPreference().size()>1){
+                                        prefer2.setText(usermodel.getPreference().get(1));
+                                        prefer2.setVisibility(View.VISIBLE);
+                                    }
+
+                                    if(usermodel.getPreference().size()>2){
+                                        prefer3.setText(usermodel.getPreference().get(2));
+                                        prefer3.setVisibility(View.VISIBLE);
+                                    }
                                 }
                                 else{
-                                    prefer.setText("Preferences is not allowed to be shown");
+                                    prefer1.setText("Preferences is not allowed to be shown");
                                 }
 
                                 View.OnClickListener editOCL = new View.OnClickListener() {
@@ -415,10 +429,10 @@ public class UserProfileFragment extends Fragment {
        country.setText(editedUserModel.getCountry());
        level.setText(editedUserModel.getLevel());
        if(editedUserModel.isShowPreference()){
-           prefer.setText(editedUserModel.getPreference().get(0));
+           prefer1.setText(editedUserModel.getPreference().get(0));
        }
        else{
-           prefer.setText("Preferences is not allowed to be shown");
+           prefer1.setText("Preferences is not allowed to be shown");
        }
    }
 

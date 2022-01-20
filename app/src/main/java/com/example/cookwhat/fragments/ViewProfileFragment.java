@@ -51,7 +51,7 @@ public class ViewProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     String selectedUserID;
-    UserModelDB currentUser;
+    UserModelDB currentUserModel;
 
     Boolean haveFollowed = false;
     Boolean isFollowing = false;
@@ -63,18 +63,15 @@ public class ViewProfileFragment extends Fragment {
     ArrayList<String> followingIDList = new ArrayList<>();
     int numFollowers = 0;
     int numFollowings = 0;
+    TextView description ;
+    TextView email;
+    TextView country ;
+    TextView level ;
+    TextView prefer1;
+    TextView prefer2;
+    TextView prefer3;
 
     public ViewProfileFragment() {
-        //Fetch selectedUserID info
-        //Fetch follower of selectedUserID
-        //Fetch following of selectedID
-        //If else to set havefollowed
-        //If else to set isfollowing
-
-        //Fetch selectedUserID created recipe
-        //set recipeName
-        //set Image
-        //set recipe model list
 
     }
 
@@ -102,7 +99,7 @@ public class ViewProfileFragment extends Fragment {
         if (getActivity().getIntent()!= null) {
 
             this.selectedUserID = getActivity().getIntent().getStringExtra("userId");
-            this.currentUser = (UserModelDB) getActivity().getIntent().getSerializableExtra("userModel");
+            this.currentUserModel = (UserModelDB) getActivity().getIntent().getSerializableExtra("userModel");
 
         } else {
             Log.d("USERID::", "null user id");
@@ -117,12 +114,12 @@ public class ViewProfileFragment extends Fragment {
 
         super.onViewCreated(view, savedInstanceState);
         readData(new FirestoreOnCallBack() {
-            UserModelDB selectedUser = new UserModelDB();
+            UserModelDB selectedUserModel = new UserModelDB();
 
             @Override
             public void onCallBackUser(UserModelDB usermodel) {
                 System.out.println("In oncallback"+selectedUserID);
-                selectedUser = usermodel;
+                selectedUserModel = usermodel;
 
             }
 
@@ -133,19 +130,20 @@ public class ViewProfileFragment extends Fragment {
             @Override
             public void onCallBack(ArrayList<RecipeModelDB> createdRecipe, ArrayList<String> recipeImage) {
 
-                profileName.setText(selectedUser.getUserName());
-                followerNameList = selectedUser.getFollowersName();
-                followerIDList = selectedUser.getFollowersId();
-                followingIDList = selectedUser.getFollowingsId();
-                followingNameList = selectedUser.getFollowingsName();
+                profileName.setText(selectedUserModel.getUserName());
+                followerNameList = selectedUserModel.getFollowersName();
+                followerIDList = selectedUserModel.getFollowersId();
+                followingIDList = selectedUserModel.getFollowingsId();
+                followingNameList = selectedUserModel.getFollowingsName();
                 numFollowers = followerNameList.size();
                 numFollowings = followingNameList.size();
                 btnFollower.setText(Integer.toString(numFollowers));
                 btnFollowing.setText(Integer.toString(numFollowings));
-                profilepic.setImageResource(selectedUser.getProfilePic());
+                profilepic.setImageResource(selectedUserModel.getProfilePic());
                 Button showFollow = view.findViewById(R.id.Btn_ShowFollow);
 
-                if(selectedUser.getFollowersId().contains(currentUser.getUserId())){
+
+                if(selectedUserModel.getFollowersId().contains(currentUserModel.getUserId())){
                     showFollow.setText("Unfollow");
                 }
 
@@ -164,6 +162,7 @@ public class ViewProfileFragment extends Fragment {
                         } else {
                             //add new following
                             showFollow.setText("Unfollow");
+                            updateFollow(selectedUserID,currentUserModel.getUserId() );
                         }
                     }
                 };
@@ -221,7 +220,7 @@ public class ViewProfileFragment extends Fragment {
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             RecipeModelDB recipeModelDB = (RecipeModelDB) recipeAdapter.getItem(i);
                             Intent intent = new Intent(getContext(), ViewRecipeActivity.class);
-                            intent.putExtra("userModel", selectedUser);
+                            intent.putExtra("userModel", currentUserModel);
                             intent.putExtra("recipeModel",recipeModelDB);
                             startActivity(intent);
 
@@ -255,6 +254,42 @@ public class ViewProfileFragment extends Fragment {
                                 removeChild(cl);
                                 addChild(ll, clmain);
                                 ll.setVisibility(View.VISIBLE);
+                                description = view.findViewById(R.id.TV_FollowTabDescription);
+                                email = view.findViewById(R.id.TV_FollowTabEmail);
+                                country = view.findViewById(R.id.TV_FollowTabCountry);
+                                level = view.findViewById(R.id.TV_FollowTabLevel);
+                                prefer1 = view.findViewById(R.id.TV_FollowTabPreferences1);
+                                prefer2 = view.findViewById(R.id.TV_FollowTabPreferences2);
+                                prefer3 = view.findViewById(R.id.TV_FollowTabPreferences3);
+
+                                description.setText(selectedUserModel.getDescription());
+
+                                if(selectedUserModel.isShowEmail()){
+                                    email.setText(selectedUserModel.getEmailAddr());
+                                }
+                                else{
+                                    email.setText("Email Address is not allowed to be shown");
+                                }
+
+                                country.setText(selectedUserModel.getCountry());
+                                level.setText(selectedUserModel.getLevel());
+                                if(selectedUserModel.isShowPreference()){
+                                    prefer1.setText(selectedUserModel.getPreference().get(0));
+
+                                    if(selectedUserModel.getPreference().size()>1){
+                                        prefer2.setText(selectedUserModel.getPreference().get(1));
+                                        prefer2.setVisibility(View.VISIBLE);
+                                    }
+
+                                    if(selectedUserModel.getPreference().size()>2){
+                                        prefer3.setText(selectedUserModel.getPreference().get(2));
+                                        prefer3.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                                else{
+                                    prefer1.setText("Preferences is not allowed to be shown");
+                                }
+
                                 break;
                             }
                         }
@@ -385,6 +420,12 @@ public class ViewProfileFragment extends Fragment {
                         }
                     }
                 });
+
+    }
+
+    public void updateFollow(String selectedUser, String currentUser){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("user").document(selectedUser).get();
 
     }
 
