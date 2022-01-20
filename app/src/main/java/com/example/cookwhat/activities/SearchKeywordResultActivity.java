@@ -77,17 +77,17 @@ public class SearchKeywordResultActivity extends AppCompatActivity {
         recipeRecyclerView.setAdapter(recipeAdapter);
 
 
-        for(UserModelDB userModelDB: userList){
-            Log.d("USERLIST::", userModelDB.getUserName());
-        }
-
-        for(RecipeModelDB recipeModelDB: recipeList){
-            Log.d("RECIPELISTTITLE::", recipeModelDB.getTitle());
-            for(String tag: recipeModelDB.getTags()){
-                Log.d("RECIPELISTTAG::", tag);
-            }
-
-        }
+//        for(UserModelDB userModelDB: userList){
+//            Log.d("USERLIST::", userModelDB.getUserName());
+//        }
+//
+//        for(RecipeModelDB recipeModelDB: recipeList){
+//            Log.d("RECIPELISTTITLE::", recipeModelDB.getTitle());
+//            for(String tag: recipeModelDB.getTags()){
+//                Log.d("RECIPELISTTAG::", tag);
+//            }
+//
+//        }
 
     }
 }
