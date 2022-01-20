@@ -59,7 +59,7 @@ public class SearchResultFragment extends Fragment {
             }
         }
         else{
-            ((SearchActivity)getActivity()).toIngredient();
+            ((SearchActivity)getActivity()).onBackPressed();
         }
 
 

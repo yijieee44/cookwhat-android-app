@@ -49,7 +49,6 @@ public class FavouriteActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //Both navigation bar back press and title bar back press will trigger this method
     @Override
     public void onBackPressed() {
         Log.d("FRAGMENTSTACK", ""+getSupportFragmentManager().getBackStackEntryCount());

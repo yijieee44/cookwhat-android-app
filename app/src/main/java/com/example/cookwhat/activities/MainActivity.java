@@ -70,7 +70,9 @@ public class MainActivity extends AppCompatActivity {
                     if (result.getResultCode() == 122) {
                         Intent intent = getIntent();
                         finish();
+                        overridePendingTransition(0,0);
                         startActivity(intent);
+                        overridePendingTransition(0,0);
                     }
                 }
             });
@@ -233,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void BtnSearchRecipe(View v){
         Intent intentSearchActivity = new Intent(this, SearchActivity.class);
-        startActivity(intentSearchActivity);
+        createActivityResultLauncher.launch(intentSearchActivity);
     }
 
     @Override
