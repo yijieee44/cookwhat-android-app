@@ -24,6 +24,7 @@ import com.example.cookwhat.activities.CreateActivity;
 import com.example.cookwhat.activities.SearchKeywordResultActivity;
 import com.example.cookwhat.adapters.RecipeAdapter;
 import com.example.cookwhat.models.RecipeModelDB;
+import com.example.cookwhat.models.RecipeModelSearch;
 import com.example.cookwhat.models.UserModelDB;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -199,7 +200,7 @@ public class HomeFragment extends Fragment {
                                     RecipeModelDB recipeModelDB;
                                     recipeModelDB = mapper.convertValue(document.getData(), RecipeModelDB.class);
                                     recipeModelDB.setId(document.getId());
-                                    resultFromRecipeTitle.add(recipeModelDB);
+                                    resultFromRecipeTag.add(recipeModelDB);
                                 }
 
                                 userdb.orderBy("userName").startAt(query).endAt(query+'\uf8ff').get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
