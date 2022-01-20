@@ -76,7 +76,7 @@ public class EditAboutMeActivity extends AppCompatActivity {
         TextView email = findViewById(R.id.TV_AbtMeEmail);
         CheckBox isShowEmail = findViewById(R.id.CB_ShowEmail);
         ChipGroup preferences = findViewById(R.id.CG_Preferences);
-        CheckBox isShowPreferences =findViewById(R.id.CB_ShowPreferences);
+        CheckBox isShowPreferences = findViewById(R.id.CB_ShowPreferences);
         Button done =findViewById(R.id.Btn_DoneEdit);
 
         description.setText(userModel.getDescription());

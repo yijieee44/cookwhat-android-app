@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -85,6 +86,7 @@ public class UserProfileFragment extends Fragment {
     TextView prefer1;
     TextView prefer2;
     TextView prefer3;
+    ArrayList<Integer> profilepics;
 
     Dialog loadingDialog;
 
@@ -134,6 +136,14 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        profilepics =  new ArrayList<>();
+        for(int i =0 ; i<33; i++){
+            String name = "ic_profile_pic_" + String.valueOf(i+1);
+            int resourceId = getResources().getIdentifier(name, "drawable", getActivity().getPackageName());
+            profilepics.add(resourceId);
+        }
+
 //        if (getArguments() != null) {
 //            Bundle bundle = this.getArguments();
 //            String action = bundle.getString("action");
@@ -211,6 +221,15 @@ public class UserProfileFragment extends Fragment {
 
                 }
 
+                View.OnClickListener profilepicOCL = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showEditPicDialog(v, usermodel, profilepics);
+                    }
+                };
+
+                profilepic.setOnClickListener(profilepicOCL);
+
                 View.OnClickListener followerOCL = new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -218,6 +237,7 @@ public class UserProfileFragment extends Fragment {
                         showFollowList.show(getActivity().getSupportFragmentManager(), "ProfilePicDialog");
                     }
                 };
+
                 View.OnClickListener followingOCL = new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -512,9 +532,12 @@ public class UserProfileFragment extends Fragment {
    }
 
     private interface FirestoreOnCallBack{
-
         void onCallBack(ArrayList<RecipeModelDB>createdRecipe, ArrayList<String> recipeImage);
         void onCallBackUser(UserModelDB usermodel);
+    }
 
+    private void showEditPicDialog(View view, UserModelDB currentUser, ArrayList<Integer> profilepics) {
+        EditProfilePicDialogFragment dialog = new EditProfilePicDialogFragment(profilepics, currentUser);
+        dialog.show(((FragmentActivity)getContext()).getSupportFragmentManager(), "dialog");
     }
 }
