@@ -174,17 +174,19 @@ public class ViewProfileFragment extends Fragment {
                             followingId.remove(inx);
                             followingName.remove(inx);
                             showFollow.setText("Follow");
+                            numFollowers -= 1;
+                            btnFollower.setText(Integer.toString(numFollowers));
                         } else {
                             //add new following
                             followerId.add(currentUserModel.getUserId());
                             followerName.add(currentUserModel.getUserName());
 
-
                             followingId.add(selectedUserID);
                             followingName.add(selectedUserModel.getUserName());
                             showFollow.setText("Unfollow");
+                            numFollowers += 1;
+                            btnFollower.setText(Integer.toString(numFollowers));
                         }
-
                         updateFollow(selectedUserModel, currentUserModel);
                     }
                 };
@@ -194,9 +196,9 @@ public class ViewProfileFragment extends Fragment {
                 View.OnClickListener followerOCL = new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //pass followerArraylist and followernamelist
-                        //followPopUp followList = new followPopUp(view, "follower",followerList, followerIDList,selectedUserID,followingIDList);
-                        // followList.show(getActivity().getSupportFragmentManager(), "followerDialog");
+//                        pass followerArraylist and followernamelist
+//                        followPopUp followList = new followPopUp(view, "follower",followerList, followerIDList,selectedUserID,followingIDList);
+//                        followList.show(getActivity().getSupportFragmentManager(), "followerDialog");
                     }
                 };
 
