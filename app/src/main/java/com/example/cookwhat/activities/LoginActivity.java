@@ -8,6 +8,8 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.fragments.LoginFragment;
@@ -37,23 +39,26 @@ public class LoginActivity extends AppCompatActivity {
     public void setRegisterDetails(String[]details){
 
         System.out.println(details);
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
+//        FragmentManager fm = getSupportFragmentManager();
+//        FragmentTransaction ft = fm.beginTransaction();
 
-        RegisterCompleteFragment registerCompleteFragment = new RegisterCompleteFragment();
+//        RegisterCompleteFragment registerCompleteFragment = new RegisterCompleteFragment();
         Bundle bundle = new Bundle();
         bundle.putString("name", details[0]);
         bundle.putString("email",details[1]);
         bundle.putString("password",details[2]);
-        registerCompleteFragment.setArguments(bundle);
-        ft.setReorderingAllowed(true);
-        //ft.add(R.id.NHFLogin,)
 
-        ft.replace(R.id.NHFLogin,registerCompleteFragment);
-        ft.addToBackStack(null);
-        ft.commit();
+        NavHostFragment host = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.NHFLogin);
+        NavController navController = host.getNavController();
+        navController.navigate(R.id.DestRegisterComplete, bundle);
 
-
+//        registerCompleteFragment.setArguments(bundle);
+//        ft.setReorderingAllowed(true);
+//        //ft.add(R.id.NHFLogin,)
+//
+//        ft.replace(R.id.NHFLogin,registerCompleteFragment);
+//        ft.addToBackStack(null);
+//        ft.commit();
 
     }
 

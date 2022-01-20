@@ -114,6 +114,9 @@ public class RegisterFragment extends Fragment {
                 if (username.isEmpty() || username.equals("")){
                     editTextUsername.setError("This field can not be blank");
                 }
+                else if(username.length() > 20){
+                    editTextUsername.setError("Username can only contain less than 20 characters");
+                }
                 else{
                     cond1 = true;
                 }
