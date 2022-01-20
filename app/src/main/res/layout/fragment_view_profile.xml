@@ -125,105 +125,117 @@
                 android:layout_width="match_parent"
                 android:layout_height="375dp"
                 android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
                 android:orientation="vertical"
+<<<<<<< Updated upstream
                 android:visibility="invisible"
+=======
+                android:paddingLeft="15dp"
+                android:paddingTop="20dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="20dp"
+                android:visibility="visible"
+>>>>>>> Stashed changes
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TL_FollowProfileTab">
 
                 <TextView
                     android:id="@+id/textView8"
-                    android:layout_width="144dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
                     android:text="Description"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/ic__about_me_description" />
 
                 <TextView
                     android:id="@+id/TV_FollowTabDescription"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
                     android:text="TextView"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView12"
-                    android:layout_width="170dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
                     android:text="Email Address"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/ic_about_me_email_address" />
 
                 <TextView
                     android:id="@+id/TV_FollowTabEmail"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
                     android:text="TextView"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView15"
-                    android:layout_width="192dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_about_me_country"
+                    android:drawablePadding="5dp"
                     android:text="Country of Origin"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/TV_FollowTabCountry"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
                     android:text="TextView"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView16"
-                    android:layout_width="245dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
                     android:text="Level of Cooking Skills"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/ic_about_me_level" />
 
                 <TextView
                     android:id="@+id/TV_FollowTabLevel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
                     android:text="TextView"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView17"
-                    android:layout_width="150dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
                     android:text="Preferences"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/ic_about_me_preferences" />
 
                 <TextView
                     android:id="@+id/TV_FollowTabPreferences1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="16sp" />
 
                 <TextView
