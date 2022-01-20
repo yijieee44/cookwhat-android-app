@@ -101,6 +101,21 @@ public class UserProfileFragment extends Fragment {
                 }
             });
 
+    ActivityResultLauncher<Intent> favouriteActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == 122) {
+                        NavHostFragment host = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.NHFMain);
+                        Bundle bundle = new Bundle();
+                        host.getNavController().popBackStack();
+                        host.getNavController().navigate(R.id.DestUserProfile, bundle);
+
+                    }
+                }
+            });
+
 
     // TODO: Rename and change types and number of parameters
     public static UserProfileFragment newInstance(String param1, String param2) {
@@ -216,7 +231,7 @@ public class UserProfileFragment extends Fragment {
                         //ArrayList<ArrayList<String>> favourite = new ArrayList<ArrayList<String>>(favMap.values());
                         Intent intent = new Intent(getActivity(),FavouriteActivity.class);
                         intent.putExtra("usermodel", usermodel);
-                        startActivity(intent);
+                        favouriteActivityResultLauncher.launch(intent);
                     }
                 };
 

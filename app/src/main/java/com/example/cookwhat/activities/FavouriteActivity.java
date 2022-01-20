@@ -1,6 +1,8 @@
 package com.example.cookwhat.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -27,5 +29,18 @@ public class FavouriteActivity extends AppCompatActivity {
         transaction.replace(R.id.NHFFavourite, favouriteFragment,"FavouriteFragment");
         System.out.println("favouriteActivity"+selectedCategoryName);
         transaction.commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent();
+                this.setResult(122, intent);
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
