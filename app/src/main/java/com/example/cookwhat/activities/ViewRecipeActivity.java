@@ -219,8 +219,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
                 readCurrentUser(new FirestoreCallback2() {
                     @Override
                     public void onCallBack(UserModelDB currentUser) {
-                        Intent intent = new Intent(getApplicationContext(), UserActivity.class);
-                        intent.putExtra("fragmentname", "viewprofilefragment");
+                        Intent intent = new Intent(getApplicationContext(), ViewProfileActivity.class);
                         intent.putExtra("userId", recipeModelDB.getUserId());
                         intent.putExtra("userModel", currentUser);
                         startActivity(intent);
@@ -248,8 +247,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
                                 @Override
                                 public void onCallBack(UserModelDB currentUser) {
                                     String userId = recipeModelDB.getComments().get(position).getUserId();
-                                    Intent intent = new Intent(ViewRecipeActivity.this, UserActivity.class);
-                                    intent.putExtra("fragmentname", "viewprofilefragment");
+                                    Intent intent = new Intent(ViewRecipeActivity.this, ViewProfileActivity.class);
                                     intent.putExtra("userId", userId);
                                     intent.putExtra("userModel", currentUser);
                                     startActivity(intent);
@@ -294,8 +292,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
                                         @Override
                                         public void onCallBack(UserModelDB currentUser) {
                                             String userId = recipeModelDB.getComments().get(position).getUserId();
-                                            Intent intent = new Intent(ViewRecipeActivity.this, UserActivity.class);
-                                            intent.putExtra("fragmentname", "viewprofilefragment");
+                                            Intent intent = new Intent(ViewRecipeActivity.this, ViewProfileActivity.class);
                                             intent.putExtra("userId", userId);
                                             intent.putExtra("userModel", currentUser);
                                             startActivity(intent);

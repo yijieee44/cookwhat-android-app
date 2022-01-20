@@ -22,6 +22,7 @@ import androidx.transition.TransitionManager;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.activities.UserActivity;
+import com.example.cookwhat.activities.ViewProfileActivity;
 import com.example.cookwhat.activities.ViewRecipeActivity;
 import com.example.cookwhat.models.RecipeCommentModel;
 import com.example.cookwhat.models.RecipeModel;
@@ -282,8 +283,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                     readCurrentUser(new FirestoreCallback2() {
                         @Override
                         public void onCallBack(UserModelDB currentUser) {
-                            Intent intent = new Intent(itemView.getContext(), UserActivity.class);
-                            intent.putExtra("fragmentname", "viewprofilefragment");
+                            Intent intent = new Intent(itemView.getContext(), ViewProfileActivity.class);
                             intent.putExtra("userId", userId);
                             intent.putExtra("userModel", currentUser);
                             itemView.getContext().startActivity(intent);
