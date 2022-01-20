@@ -1,5 +1,6 @@
 package com.example.cookwhat.fragments;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +44,8 @@ public class LoginFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    Dialog loadingDialog;
+
     public LoginFragment() {
         mAuth = FirebaseAuth.getInstance();
         // Required empty public constructor
@@ -78,6 +81,7 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        loadingDialog = new Dialog(getContext());
         // Inflate the layout for this fragment
         container.removeAllViews();
         return inflater.inflate(R.layout.fragment_login, container, false);
@@ -93,6 +97,7 @@ public class LoginFragment extends Fragment {
         View.OnClickListener OCLLogin = new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+
                 String email = editTextEmail.getText().toString();
                 if (email.trim().equalsIgnoreCase("")) {
                     editTextEmail.setError("This field can not be blank");
@@ -116,11 +121,22 @@ public class LoginFragment extends Fragment {
                 }
 
                 if(cond1 && cond2){
+                    loadingDialog.setCancelable(false);
+                    loadingDialog.setContentView(R.layout.dialog_loading);
+                    loadingDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.black_transparent_background));
+
+                    int width = (int)(getResources().getDisplayMetrics().widthPixels);
+                    int height = (int)(getResources().getDisplayMetrics().heightPixels);
+
+                    loadingDialog.getWindow().setLayout(width, height);
+                    loadingDialog.show();
+
                     mAuth.signInWithEmailAndPassword(email, password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
+
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d("SUCCESS", "signInWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
@@ -128,12 +144,14 @@ public class LoginFragment extends Fragment {
 
                                         Intent intentMainActivity = new Intent(getActivity(), MainActivity.class);
                                         intentMainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        loadingDialog.dismiss();
                                         startActivity(intentMainActivity);
 
 
 
                                     } else {
                                         // If sign in fails, display a message to the user.
+                                        loadingDialog.cancel();
                                         Log.w("ERROR", "signInWithEmail:failure", task.getException());
                                         Toast.makeText(getContext(), "Failed to log in. Incorrect email address or password.", Toast.LENGTH_SHORT).show();
                                     }

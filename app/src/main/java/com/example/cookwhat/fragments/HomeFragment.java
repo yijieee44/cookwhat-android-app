@@ -81,7 +81,9 @@ public class HomeFragment extends Fragment {
                     if (result.getResultCode() == 122) {
                         Intent intent = getActivity().getIntent();
                         getActivity().finish();
+                        getActivity().overridePendingTransition(0,0);
                         startActivity(intent);
+                        getActivity().overridePendingTransition(0,0);
                     }
                 }
             });
@@ -94,7 +96,9 @@ public class HomeFragment extends Fragment {
                     if (result.getResultCode() == 122) {
                         Intent intent = getActivity().getIntent();
                         getActivity().finish();
+                        getActivity().overridePendingTransition(0,0);
                         startActivity(intent);
+                        getActivity().overridePendingTransition(0,0);
                     }
                 }
             });
@@ -141,9 +145,19 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         getActivity().setTitle("CookWhat");
+        loadingDialog = new Dialog(getContext());
+        loadingDialog.setCancelable(false);
+        loadingDialog.setContentView(R.layout.dialog_loading);
+        loadingDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.black_transparent_background));
+
+        int width = (int)(getResources().getDisplayMetrics().widthPixels);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels);
+
+        loadingDialog.getWindow().setLayout(width, height);
+        loadingDialog.show();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        loadingDialog = new Dialog(getContext());
+
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -168,7 +182,7 @@ public class HomeFragment extends Fragment {
                             intent.putExtra("recipeList", recipeModelArrayList);
                             intent.putExtra("userList", userModelArrayList);
                             intent.putExtra("recipeUserList", recipeUserModelArrayList);
-                            startActivity(intent);
+                            viewRecipeActivityResultLauncher.launch(intent);
                         }
                     });
                 }
@@ -184,6 +198,7 @@ public class HomeFragment extends Fragment {
 
 
         recipeList = view.findViewById(R.id.recipeList);
+
 
         readData(new FirestoreCallback() {
             @Override
@@ -435,6 +450,7 @@ public class HomeFragment extends Fragment {
 
     public void readData(FirestoreCallback firestoreCallback){
 
+
         recipedb.orderBy("createdTime", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     ArrayList<UserModelDB> tempUserModelArrayList = new ArrayList<>();
@@ -478,13 +494,16 @@ public class HomeFragment extends Fragment {
                                                         }
                                                     }
                                                 }
+                                                loadingDialog.dismiss();
                                                 firestoreCallback.onCallBack(recipeModelsArray, userModelsArray );
                                             } else {
+                                                loadingDialog.cancel();
                                                 Log.w("ERROR", "Error getting documents.", task.getException());
                                             }
                                         }
                                     });
                       } else {
+                            loadingDialog.cancel();
                             Log.w("ERROR", "Error getting documents.", task.getException());
                         }
                     }
