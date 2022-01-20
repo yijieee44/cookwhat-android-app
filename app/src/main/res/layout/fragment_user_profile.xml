@@ -137,108 +137,135 @@
 
             <LinearLayout
                 android:id="@+id/LL_AboutMe"
-                android:layout_width="412dp"
-                android:layout_height="430dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
                 android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingTop="20dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="20dp"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/TL_ProfileTab">
 
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="144dp"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Description"
-                    android:textAlignment="center"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:drawableStartCompat="@drawable/ic__about_me_description" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="50dp"
+                        android:drawablePadding="5dp"
+                        android:text="Description"
+                        android:textAlignment="textStart"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/ic__about_me_description" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/Btn_Edit"
+                        android:layout_width="39dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/ic_baseline_edit_24"
+                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/TV_TabDescription"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
                     android:text="TextView"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView12"
-                    android:layout_width="170dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
                     android:text="Email Address"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/ic_about_me_email_address" />
 
                 <TextView
                     android:id="@+id/TV_TabEmail"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
                     android:text="TextView"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView15"
-                    android:layout_width="192dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_about_me_country"
+                    android:drawablePadding="5dp"
                     android:text="Country of Origin"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/TV_TabCountry"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
                     android:text="TextView"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView16"
-                    android:layout_width="245dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
                     android:text="Level of Cooking Skills"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/ic_about_me_level" />
 
                 <TextView
                     android:id="@+id/TV_TabLevel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
                     android:text="TextView"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/textView17"
-                    android:layout_width="150dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
                     android:text="Preferences"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/ic_about_me_preferences" />
 
                 <TextView
                     android:id="@+id/TV_TabPreferences1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="16sp" />
 
                 <TextView
@@ -260,13 +287,6 @@
                     android:textAllCaps="false"
                     android:textSize="16sp"
                     android:visibility="invisible" />
-
-                <Button
-                    android:id="@+id/Btn_Edit"
-                    android:layout_width="39dp"
-                    android:layout_height="36dp"
-                    android:background="@drawable/ic_baseline_edit_24"
-                    tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
             </LinearLayout>
 
