@@ -245,11 +245,12 @@ public class MainActivity extends AppCompatActivity {
         }
         else if(id == MENU_LOGOUT){
             FirebaseAuth.getInstance().signOut();
-            String selection = UserTableContract.UserTable._ID + " = ?";
-            String[] selectionArgs = { "1" };
-            int deletedRows = db.delete(UserTableContract.UserTable.TABLE_NAME, selection, selectionArgs);
-            Intent refresh = new Intent(this, MainActivity.class);
-            startActivity(refresh);
+//            String selection = UserTableContract.UserTable._ID + " = ?";
+//            String[] selectionArgs = { "1" };
+//            int deletedRows = db.delete(UserTableContract.UserTable.TABLE_NAME, selection, selectionArgs);
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
             this.finish();
             return true;
         }
