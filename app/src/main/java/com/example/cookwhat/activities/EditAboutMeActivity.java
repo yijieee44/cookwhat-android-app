@@ -3,6 +3,7 @@ package com.example.cookwhat.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -45,6 +46,10 @@ public class EditAboutMeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_about_me);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Edit About Me");
+
         Intent intent = getIntent();
         userModel = (UserModelDB) intent.getSerializableExtra("usermodel");
 
@@ -139,6 +144,16 @@ public class EditAboutMeActivity extends AppCompatActivity {
         };
         done.setOnClickListener(doneOCL);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void updateAboutMe( UserModelDB userModel){
