@@ -145,22 +145,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String action = getIntent().getStringExtra("action");
-        Boolean isFromFavourite = getIntent().getBooleanExtra("isFromFavourite",false);
-        if(isFromFavourite){
-            startFragment();
-        }
-
-
-        if(action != null){
-            if(action.equals("updated about me")){
-                UserModelDB userModelDB = (UserModelDB) getIntent().getSerializableExtra("usermodel");
-                startFragment();
-            }
-        }
-
-
-
         //DB Code
 //        FirebaseFirestore db = FirebaseFirestore.getInstance();
 //        IngredientModel model = new IngredientModel();
