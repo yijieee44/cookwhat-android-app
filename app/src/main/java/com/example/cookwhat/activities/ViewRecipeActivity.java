@@ -108,6 +108,8 @@ public class ViewRecipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_recipe);
 
+        setTitle("View Recipe");
+
         // calling the action bar
         ActionBar actionBar = getSupportActionBar();
 
@@ -171,6 +173,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
             }
         });
 
+        setTitle(recipeModelDB.getTitle());
         recipeName.setText(recipeModelDB.getTitle());
         userName.setText(userModelDB.getUserName());
 

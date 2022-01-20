@@ -3,6 +3,7 @@ package com.example.cookwhat.fragments;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cookwhat.ExpandableHeightGridView;
 import com.example.cookwhat.R;
@@ -78,6 +85,22 @@ public class UserProfileFragment extends Fragment {
     TextView prefer3;
 
 
+    ActivityResultLauncher<Intent> editActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == 122) {
+                        NavHostFragment host = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.NHFMain);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("toAboutMe", "True");
+                        host.getNavController().popBackStack();
+                        host.getNavController().navigate(R.id.DestUserProfile, bundle);
+
+                    }
+                }
+            });
+
 
     // TODO: Rename and change types and number of parameters
     public static UserProfileFragment newInstance(String param1, String param2) {
@@ -92,13 +115,20 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*if (getArguments() != null) {
+//        if (getArguments() != null) {
+//            Bundle bundle = this.getArguments();
+//            String action = bundle.getString("action");
+//            if(action.equals("updated about me")){
+//                showTabAboutMe = true;
+//            }
+//        }
+        if (getArguments() != null) {
             Bundle bundle = this.getArguments();
-            String action = bundle.getString("action");
-            if(action.equals("updated about me")){
+            if(bundle.getString("toAboutMe") != null){
                 showTabAboutMe = true;
             }
-        }*/
+
+        }
         mAuth = FirebaseAuth.getInstance();
 
         userID = mAuth.getCurrentUser().getUid();
@@ -119,6 +149,12 @@ public class UserProfileFragment extends Fragment {
         getActivity().setTitle("My Profile");
         System.out.println("getUserIdin on view created:"+userID);
 
+        readDataAndBind(view);
+
+
+    }
+
+    public void readDataAndBind(View view){
         readData(new FirestoreOnCallBack() {
             UserModelDB usermodel = new UserModelDB();
             @Override
@@ -281,7 +317,8 @@ public class UserProfileFragment extends Fragment {
                                         intent.putExtra("usermodel", usermodel);
                                         System.out.println("Model in up fragment"+ usermodel.getUserName());
                                         System.out.println("Preferences in up"+usermodel.getPreference());
-                                        startActivity(intent);
+                                        editActivityResultLauncher.launch(intent);
+//                                        startActivity(intent);
                                     }
                                 };
                                 edit.setOnClickListener(editOCL);
@@ -301,14 +338,16 @@ public class UserProfileFragment extends Fragment {
 
                     }
                 });
+                if(showTabAboutMe){
+                    TabLayout.Tab aboutMeTab = tabLayout.getTabAt(1);
+                    aboutMeTab.select();
+                }
 
 
             }
 
 
         }, userID);
-
-
     }
 
 

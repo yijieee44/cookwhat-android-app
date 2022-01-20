@@ -113,6 +113,8 @@ public class ViewProfileFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
         super.onViewCreated(view, savedInstanceState);
+
+        getActivity().setTitle("View User");
         readData(new FirestoreOnCallBack() {
             UserModelDB selectedUserModel = new UserModelDB();
 
@@ -130,6 +132,7 @@ public class ViewProfileFragment extends Fragment {
             @Override
             public void onCallBack(ArrayList<RecipeModelDB> createdRecipe, ArrayList<String> recipeImage) {
 
+                getActivity().setTitle(selectedUserModel.getUserName());
                 profileName.setText(selectedUserModel.getUserName());
                 followerNameList = selectedUserModel.getFollowersName();
                 followerIDList = selectedUserModel.getFollowersId();
@@ -213,6 +216,7 @@ public class ViewProfileFragment extends Fragment {
                     view.findViewById(R.id.TV_Empty).setVisibility(View.INVISIBLE);
                     ExpandableHeightGridView tabcontent = view.findViewById(R.id.FollowTabContent);
                     CustomAdapter recipeAdapter = new CustomAdapter(recipeName, recipeImage, createdRecipe);
+                    tabcontent.setNumColumns(2);
                     tabcontent.setExpanded(true);
                     tabcontent.setAdapter(recipeAdapter);
                     tabcontent.setOnItemClickListener(new AdapterView.OnItemClickListener() {
