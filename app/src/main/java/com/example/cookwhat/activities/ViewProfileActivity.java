@@ -51,6 +51,8 @@ public class ViewProfileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Intent intent = new Intent();
+                setResult(122, intent);
                 this.finish();
                 return true;
         }

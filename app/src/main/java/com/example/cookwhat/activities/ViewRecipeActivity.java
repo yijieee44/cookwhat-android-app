@@ -110,7 +110,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
         // calling the action bar
         ActionBar actionBar = getSupportActionBar();
-
+        actionBar.setTitle("View Recipe");
 
         DateTimeFormatter formatter =
                 DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)

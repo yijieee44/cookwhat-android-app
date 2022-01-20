@@ -28,6 +28,7 @@ import com.example.cookwhat.R;
 import com.example.cookwhat.activities.CreateActivity;
 import com.example.cookwhat.activities.SearchKeywordResultActivity;
 import com.example.cookwhat.activities.UserActivity;
+import com.example.cookwhat.activities.ViewProfileActivity;
 import com.example.cookwhat.activities.ViewRecipeActivity;
 import com.example.cookwhat.adapters.RecipeAdapter;
 import com.example.cookwhat.models.RecipeModelDB;
@@ -208,17 +209,16 @@ public class HomeFragment extends Fragment {
 
                     @Override
                     public void onUserClick(View view, int position) {
-//                        String userId = recipeModelArrayList.get(position).getUserId();
-//                        adapter.readCurrentUser(new RecipeAdapter.FirestoreCallback2() {
-//                            @Override
-//                            public void onCallBack(UserModelDB currentUser) {
-//                                Intent intent = new Intent(view.getContext(), UserActivity.class);
-//                                intent.putExtra("fragmentname", "viewprofilefragment");
-//                                intent.putExtra("userId", userId);
-//                                intent.putExtra("userModel", currentUser);
-//                                viewUserActivityResultLauncher.launch(intent);
-//                            }
-//                        });
+                        String userId = recipeModelArrayList.get(position).getUserId();
+                        adapter.readCurrentUser(new RecipeAdapter.FirestoreCallback2() {
+                            @Override
+                            public void onCallBack(UserModelDB currentUser) {
+                                Intent intent = new Intent(view.getContext(), ViewProfileActivity.class);
+                                intent.putExtra("userId", userId);
+                                intent.putExtra("userModel", currentUser);
+                                viewUserActivityResultLauncher.launch(intent);
+                            }
+                        });
                     }
                 });
 
