@@ -49,9 +49,9 @@ public class followAdapter extends BaseAdapter implements Filterable {
         View row = inflater.inflate(R.layout.follow_list_item, null);
 
         TextView name = row.findViewById(R.id.TV_FollowName);
-        ImageView img = row.findViewById(R.id.IV_ProfileFollow);
+//        ImageView img = row.findViewById(R.id.IV_ProfileFollow);
 
-        img.setImageResource(R.drawable.ic_profile_pic_2);
+//        img.setImageResource(R.drawable.ic_profile_pic_2);
 
         name.setText(origFollowList.get(i).getFollowName());
 
