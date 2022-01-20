@@ -63,6 +63,9 @@
             android:exported="false"
             android:label="Favourite Result"
             android:parentActivityName=".activities.MainActivity" />
+        <activity
+            android:name=".activities.ViewProfileActivity"
+            android:exported="false" />
 
     </application>
 

@@ -125,10 +125,13 @@ public class EditAboutMeActivity extends AppCompatActivity {
 
                 userModel.setPreference(prefer);
                 updateAboutMe(userModel);
-                Intent intent = new Intent(EditAboutMeActivity.this, MainActivity.class);
-                intent.putExtra("usermodel",userModel);
-                intent.putExtra("action", "updated about me");
-                startActivity(intent);
+                Intent intent = new Intent();
+                setResult(122, intent);
+                finish();
+//                Intent intent = new Intent(EditAboutMeActivity.this, MainActivity.class);
+//                intent.putExtra("usermodel",userModel);
+//                intent.putExtra("action", "updated about me");
+//                startActivity(intent);
 
 
             }

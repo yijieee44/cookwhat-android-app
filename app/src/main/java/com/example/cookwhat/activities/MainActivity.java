@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseHelper dbHelper;
     SQLiteDatabase db;
     UserModel user = new UserModel();
+    NavController navController;
 
     public UserModel getUser() {
         return user;
@@ -218,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         NavHostFragment host = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.NHFMain);
-        NavController navController = host.getNavController();
+        navController = host.getNavController();
 
         setupBottomNavMenu(navController);
     }
