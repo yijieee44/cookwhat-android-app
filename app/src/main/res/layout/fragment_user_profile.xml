@@ -52,6 +52,7 @@
                 android:paddingTop="20dp"
                 android:text="88"
                 android:textSize="30sp"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toStartOf="@+id/Btn_Following"
                 app:layout_constraintStart_toEndOf="@+id/IV_ProfilefFrame"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -75,7 +76,7 @@
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:text="Followers"
-                android:textColor="@color/black"
+                android:textColor="?android:textColorPrimary"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/TV_Following"
                 app:layout_constraintStart_toEndOf="@+id/IV_ProfilefFrame"
@@ -92,6 +93,7 @@
                 android:gravity="center"
                 android:paddingTop="20dp"
                 android:text="88"
+                android:textColor="@color/black"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -105,7 +107,7 @@
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:text="Followings"
-                android:textColor="@color/black"
+                android:textColor="?android:textColorPrimary"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/Btn_Following" />

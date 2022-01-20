@@ -29,6 +29,7 @@
         android:layout_marginTop="8dp"
         android:text="TextView"
         android:textSize="20sp"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/IV_FavouriteImage"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,6 +41,7 @@
         android:layout_marginTop="9dp"
         android:text="TextView"
         android:visibility="visible"
+        android:textColor="@color/grey"
         app:layout_constraintStart_toEndOf="@+id/IV_Tag3"
         app:layout_constraintTop_toBottomOf="@+id/TV_Tag2" />
 
@@ -50,6 +52,7 @@
         android:layout_marginStart="2dp"
         android:text="TextView"
         android:visibility="visible"
+        android:textColor="@color/grey"
         app:layout_constraintStart_toEndOf="@+id/IV_Tag1"
         app:layout_constraintTop_toBottomOf="@+id/TV_FavouriteName" />
 
@@ -87,6 +90,7 @@
         android:layout_marginTop="9dp"
         android:text="TextView"
         android:visibility="visible"
+        android:textColor="@color/grey"
         app:layout_constraintStart_toEndOf="@+id/IV_Tag2"
         app:layout_constraintTop_toBottomOf="@+id/TV_Tag1" />
 

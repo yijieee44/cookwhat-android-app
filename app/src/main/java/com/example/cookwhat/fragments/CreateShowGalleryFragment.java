@@ -394,7 +394,7 @@ public class CreateShowGalleryFragment extends Fragment {
 
         editDialog.setCancelable(true);
         editDialog.setContentView(R.layout.dialog_edit_photos);
-        editDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.outline_white_background));
+        editDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.outline_background));
 
         if(recipeStepModels.size()>0) {
             RecyclerView photosRecyclerView = (RecyclerView) editDialog.findViewById(R.id.RVPhotos);
@@ -606,6 +606,7 @@ public class CreateShowGalleryFragment extends Fragment {
             chip.setText(chipItem);
             chip.setChipBackgroundColorResource(R.color.light_yellow);
             chip.setCloseIconVisible(true);
+            chip.setCloseIconTintResource(R.color.black);
             chip.setOnCloseIconClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -790,6 +791,7 @@ public class CreateShowGalleryFragment extends Fragment {
             chip.setText(chipItem);
             chip.setChipBackgroundColorResource(R.color.light_yellow);
             chip.setCloseIconVisible(true);
+            chip.setCloseIconTintResource(R.color.black);
             chip.setOnCloseIconClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -825,6 +827,7 @@ public class CreateShowGalleryFragment extends Fragment {
             chip.setText(newItem);
             chip.setChipBackgroundColorResource(R.color.light_yellow);
             chip.setCloseIconVisible(true);
+            chip.setCloseIconTintResource(R.color.black);
             chip.setOnCloseIconClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -856,6 +859,7 @@ public class CreateShowGalleryFragment extends Fragment {
             chip.setText(newItem);
             chip.setChipBackgroundColorResource(R.color.light_yellow);
             chip.setCloseIconVisible(true);
+            chip.setCloseIconTintResource(R.color.black);
             chip.setOnCloseIconClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

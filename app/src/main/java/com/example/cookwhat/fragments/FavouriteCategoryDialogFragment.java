@@ -54,7 +54,7 @@ public class FavouriteCategoryDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.outline_white_background));
+        getDialog().getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.outline_background));
         setCancelable(true);
 
         return inflater.inflate(R.layout.fragment_favourite_category_dialog, null);

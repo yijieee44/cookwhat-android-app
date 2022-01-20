@@ -35,6 +35,7 @@
         android:layout_marginStart="16dp"
         android:fontFamily="@font/lemondrink"
         android:text="Our Recipes"
+        android:textColor="?android:textColorPrimary"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SearchView" />

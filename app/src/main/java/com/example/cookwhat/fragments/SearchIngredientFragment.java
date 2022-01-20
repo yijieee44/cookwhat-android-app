@@ -395,6 +395,7 @@ public class SearchIngredientFragment extends Fragment {
             chip.setText(chipItem);
             chip.setChipBackgroundColorResource(R.color.light_yellow);
             chip.setCloseIconVisible(true);
+            chip.setCloseIconTintResource(R.color.black);
             chip.setOnCloseIconClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -594,6 +595,7 @@ public class SearchIngredientFragment extends Fragment {
             chip.setText(chipItem);
             chip.setChipBackgroundColorResource(R.color.light_yellow);
             chip.setCloseIconVisible(true);
+            chip.setCloseIconTintResource(R.color.black);
             chip.setOnCloseIconClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -630,6 +632,7 @@ public class SearchIngredientFragment extends Fragment {
             chip.setText(newItem);
             chip.setChipBackgroundColorResource(R.color.light_yellow);
             chip.setCloseIconVisible(true);
+            chip.setCloseIconTintResource(R.color.black);
             chip.setOnCloseIconClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -675,6 +678,7 @@ public class SearchIngredientFragment extends Fragment {
             chip.setText(newItem);
             chip.setChipBackgroundColorResource(R.color.light_yellow);
             chip.setCloseIconVisible(true);
+            chip.setCloseIconTintResource(R.color.black);
             chip.setOnCloseIconClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

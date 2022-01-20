@@ -2,6 +2,7 @@ package com.example.cookwhat.activities;
 
 import static android.view.MenuItem.SHOW_AS_ACTION_IF_ROOM;
 
+import android.app.UiModeManager;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -57,8 +58,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private boolean isLoggedIn;
     private static final int MENU_ADD = Menu.FIRST;
-    private static final int MENU_LOGIN = Menu.FIRST + 1;
-    private static final int MENU_LOGOUT = Menu.FIRST + 2;
+    private static final int MENU_SETTING = Menu.FIRST + 1;
+    private static final int MENU_LOGIN = Menu.FIRST + 2;
+    private static final int MENU_LOGOUT = Menu.FIRST + 3;
 
     ActivityResultLauncher<Intent> createActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -213,6 +215,8 @@ public class MainActivity extends AppCompatActivity {
         menu.clear();
         menu.add(0,MENU_ADD, Menu.NONE,"Create Recipe").setIcon(R.drawable.ic_baseline_add_circle_outline_24).setShowAsAction(SHOW_AS_ACTION_IF_ROOM);
 
+        menu.add(0,MENU_SETTING, Menu.NONE,"Setting").setIcon(R.drawable.ic_baseline_settings_24).setShowAsAction(SHOW_AS_ACTION_IF_ROOM);
+
         if(!isLoggedIn) {
             menu.add(0, MENU_LOGIN, Menu.NONE, "Login").setIcon(R.drawable.ic_baseline_login_24).setShowAsAction(SHOW_AS_ACTION_IF_ROOM);
         }
@@ -236,6 +240,11 @@ public class MainActivity extends AppCompatActivity {
             // direct to create activity
             Intent intentCreateActivity = new Intent(this, CreateActivity.class);
             createActivityResultLauncher.launch(intentCreateActivity);
+            return true;
+        }
+        else if(id == MENU_SETTING) {
+            Intent intentSettingActivity = new Intent(this, SettingActivity.class);
+            startActivity(intentSettingActivity);
             return true;
         }
         else if(id == MENU_LOGIN){

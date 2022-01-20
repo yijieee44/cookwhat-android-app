@@ -8,6 +8,11 @@
         app:showAsAction="ifRoom"
         android:title="@string/create_recipe" />
     <item
+        android:id="@+id/action_setting"
+        android:title="Setting"
+        android:icon="@drawable/ic_baseline_settings_24"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_login"
         android:title="Login"
         android:icon="@drawable/ic_baseline_login_24"

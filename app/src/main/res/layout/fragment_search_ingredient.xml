@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="What's in your kitchen?"
-            android:textColor="@color/black"
+            android:textColor="?android:textColorPrimary"
             android:textSize="20sp" />
 
         <Button

@@ -145,6 +145,7 @@ public class CreateCaptionFragment extends Fragment {
         for (String tag : recipeActivity.getTags()) {
             Chip chip = new Chip(getActivity());
             chip.setText(tag);
+            chip.setCloseIconTintResource(R.color.black);
             chip.setChipBackgroundColorResource(R.color.light_yellow);
             chip.setCloseIconVisible(true);
             chip.setOnCloseIconClickListener(new View.OnClickListener() {
@@ -172,6 +173,7 @@ public class CreateCaptionFragment extends Fragment {
                         if (!recipeActivity.getTags().contains(newTag)) {
                             Chip chip = new Chip(getActivity());
                             chip.setText("#" + newTag);
+                            chip.setCloseIconTintResource(R.color.black);
                             chip.setChipBackgroundColorResource(R.color.light_yellow);
                             chip.setCloseIconVisible(true);
                             chip.setOnCloseIconClickListener(new View.OnClickListener() {

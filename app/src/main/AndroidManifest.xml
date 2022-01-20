@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CookWhat">
         <activity
+            android:name=".activities.SettingActivity"
+            android:label="Setting"
+            android:exported="true"
+            android:parentActivityName=".activities.MainActivity"></activity>
+        <activity
             android:name=".activities.EditAboutMeActivity"
             android:exported="false" />
         <activity
@@ -67,8 +72,6 @@
         <activity
             android:name=".activities.ViewProfileActivity"
             android:exported="false" />
-
-
     </application>
 
 </manifest>

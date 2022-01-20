@@ -2,6 +2,7 @@ package com.example.cookwhat.fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,7 +65,7 @@ public class IngredientDetailDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
 
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.outline_white_background));
+        getDialog().getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.outline_background));
 
 
         return inflater.inflate(R.layout.fragment_ingredient_detail_dialog, null);
