@@ -243,7 +243,7 @@ public class ViewProfileFragment extends Fragment {
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             RecipeModelDB recipeModelDB = (RecipeModelDB) recipeAdapter.getItem(i);
                             Intent intent = new Intent(getContext(), ViewRecipeActivity.class);
-                            intent.putExtra("userModel", currentUserModel);
+                            intent.putExtra("userModel", selectedUserModel);
                             intent.putExtra("recipeModel",recipeModelDB);
                             startActivity(intent);
 
