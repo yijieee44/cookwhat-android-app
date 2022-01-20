@@ -14,6 +14,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +25,7 @@ import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 
 import com.example.cookwhat.R;
+import com.example.cookwhat.activities.MainActivity;
 import com.example.cookwhat.activities.UserActivity;
 import com.example.cookwhat.activities.ViewRecipeActivity;
 import com.example.cookwhat.models.RecipeCommentModel;
@@ -30,6 +35,7 @@ import com.example.cookwhat.models.RecipeModelSearch;
 import com.example.cookwhat.models.UserModel;
 import com.example.cookwhat.models.UserModelDB;
 import com.example.cookwhat.utils.Constants;
+import com.example.cookwhat.utils.RecyclerItemClickListener;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -59,6 +65,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     public CollectionReference userdb =  db.collection("user");
     public FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+    private OnItemClickListener listener;
+
     public RecipeAdapter(ArrayList<RecipeModelDB> recipeModel, ArrayList<UserModelDB> userModel, Context ctx){
         this.recipeModel = recipeModel;
         this.userModel = userModel;
@@ -72,6 +80,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         this.ctx = ctx;
         this.inflater = LayoutInflater.from(ctx);
         this.type = 1;
+    }
+
+    public void setListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -269,14 +281,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                 }
             });
 
+            if (listener == null) {
             userName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String userId;
-                    if(type == 1){
+                    if (type == 1) {
                         userId = recipeModelSearch.get(getAdapterPosition()).getUserId();
-                    }
-                    else{
+                    } else {
                         userId = recipeModel.get(getAdapterPosition()).getUserId();
                     }
                     readCurrentUser(new FirestoreCallback2() {
@@ -292,36 +304,51 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                 }
             });
 
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(itemView.getContext(), ViewRecipeActivity.class);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(itemView.getContext(), ViewRecipeActivity.class);
-
-                    UserModelDB userModelDB = new UserModelDB();
-                    if(type == 1){
-                        intent.putExtra("recipeModel", new RecipeModelDB(recipeModelSearch.get(getAdapterPosition())));
-                        for (int i=0;i<userModel.size();i++){
-                            if(recipeModelSearch.get(getAdapterPosition()).getUserId().equals(userModel.get(i).getUserId())){
-                                userModelDB = userModel.get(i);
-                                break;
+                        UserModelDB userModelDB = new UserModelDB();
+                        if (type == 1) {
+                            intent.putExtra("recipeModel", new RecipeModelDB(recipeModelSearch.get(getAdapterPosition())));
+                            for (int i = 0; i < userModel.size(); i++) {
+                                if (recipeModelSearch.get(getAdapterPosition()).getUserId().equals(userModel.get(i).getUserId())) {
+                                    userModelDB = userModel.get(i);
+                                    break;
+                                }
+                            }
+                        } else {
+                            intent.putExtra("recipeModel", recipeModel.get(getAdapterPosition()));
+                            for (int i = 0; i < userModel.size(); i++) {
+                                if (recipeModel.get(getAdapterPosition()).getUserId().equals(userModel.get(i).getUserId())) {
+                                    userModelDB = userModel.get(i);
+                                    break;
+                                }
                             }
                         }
-                    }
-                    else{
-                        intent.putExtra("recipeModel", recipeModel.get(getAdapterPosition()));
-                        for (int i=0;i<userModel.size();i++){
-                            if(recipeModel.get(getAdapterPosition()).getUserId().equals(userModel.get(i).getUserId())){
-                                userModelDB = userModel.get(i);
-                                break;
-                            }
-                        }
-                    }
 
-                    intent.putExtra("userModel", userModelDB);
-                    itemView.getContext().startActivity(intent);
-                }
-            });
+                        intent.putExtra("userModel", userModelDB);
+                        itemView.getContext().startActivity(intent);
+                    }
+                });
+            } else {
+                // for case where need to refresh after view recipe
+                userName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onUserClick(itemView, getAdapterPosition());
+                    }
+                });
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClick(itemView, getAdapterPosition());
+                    }
+                });
+
+            }
         }
     }
 
@@ -345,8 +372,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                 });
     }
 
-    private interface FirestoreCallback2 {
+    public interface FirestoreCallback2 {
         void onCallBack(UserModelDB currentUser);
+    }
+
+    public interface OnItemClickListener {
+        public void onItemClick(View view, int position);
+        public void onUserClick(View view, int position);
     }
 
 }
