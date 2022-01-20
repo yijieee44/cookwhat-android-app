@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -88,7 +89,8 @@ public class FavouriteCategoryFragment extends Fragment {
         getActivity().setTitle("My Favourite Category");
 
         String[]category= getResources().getStringArray(R.array.favourite_categories);
-
+        categoryName = new ArrayList<>();
+        categoryImg = new ArrayList<>();
         for(String c : category){
             categoryName.add(c);
             categoryImg.add(R.drawable.addbutton);
@@ -157,4 +159,6 @@ public class FavouriteCategoryFragment extends Fragment {
 
 
     }
+
+
 }

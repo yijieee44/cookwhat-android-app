@@ -2,10 +2,13 @@ package com.example.cookwhat.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.fragments.FavouriteFragment;
@@ -21,26 +24,44 @@ public class FavouriteActivity extends AppCompatActivity {
 
     public void startFavourite(UserModelDB userModelDB, String selectedCategoryName){
         FavouriteFragment favouriteFragment = new FavouriteFragment();
+//        NavHostFragment host = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.NHFFavourite);
+//        NavController navController = host.getNavController();
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putSerializable("usermodel", userModelDB);
         bundle.putString("selectedCategoryName", selectedCategoryName);
+//        navController.navigate(R.id.DestFav, bundle);
         favouriteFragment.setArguments(bundle);
         transaction.replace(R.id.NHFFavourite, favouriteFragment,"FavouriteFragment");
         System.out.println("favouriteActivity"+selectedCategoryName);
+        transaction.addToBackStack("stack");
         transaction.commit();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent intent = new Intent();
-                this.setResult(122, intent);
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            //Title bar back press triggers onBackPressed()
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //Both navigation bar back press and title bar back press will trigger this method
+    @Override
+    public void onBackPressed() {
+        Log.d("FRAGMENTSTACK", ""+getSupportFragmentManager().getBackStackEntryCount());
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0 ) {
+            getSupportFragmentManager().popBackStack();
+        }
+        else {
+            Intent intent = new Intent();
+            setResult(122, intent);
+            finish();
         }
     }
+
+
 }

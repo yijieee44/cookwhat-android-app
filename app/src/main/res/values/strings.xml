@@ -55,6 +55,7 @@
     <string name="recipe">Recipe</string>
     <string name="user">User</string>
     <string name="no_result_found">No result found :(</string>
+    <string name="no_favourite">No favourite recipe in this category.</string>
 
     <string name="i0000_acorn">Acorn</string>
     <string name="i0001_ajinomoto">Ajinomoto</string>
@@ -187,7 +188,6 @@
         <item>Advanced Beginner</item>
         <item>Competent</item>
         <item>Proficient</item>
-        <item>Expert</item>
         <item>Expert</item>
     </string-array>
     <string-array name="favourite_categories">
