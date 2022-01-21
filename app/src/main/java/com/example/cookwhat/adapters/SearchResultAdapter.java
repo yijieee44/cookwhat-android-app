@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -155,6 +156,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
                         Intent intent = new Intent(itemView.getContext(), UserActivity.class);
                         intent.putExtra("fragmentname", "viewprofilefragment");
                         intent.putExtra("userId", userId);
+                        intent.putExtra("userModel", userModel.get(getAdapterPosition()));
                         itemView.getContext().startActivity(intent);
                     }
                 });
@@ -170,8 +172,9 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
                         UserModelDB userModelDB = new UserModelDB();
                         intent.putExtra("recipeModel", recipeModel.get(getAdapterPosition()));
                         for (int i=0;i<userModel.size();i++){
-                            if(recipeModel.get(getAdapterPosition()).equals(userModel.get(i).getUserId())){
+                            if(recipeModel.get(getAdapterPosition()).getUserId().equals(userModel.get(i).getUserId())){
                                 userModelDB = userModel.get(i);
+                                Log.d("GOT USER", "wasd");
                                 break;
                             }
                         }
