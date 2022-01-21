@@ -3,32 +3,23 @@ package com.example.cookwhat.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.transition.AutoTransition;
-import androidx.transition.TransitionManager;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.activities.UserActivity;
 import com.example.cookwhat.activities.ViewRecipeActivity;
-import com.example.cookwhat.models.RecipeModel;
 import com.example.cookwhat.models.RecipeModelDB;
 import com.example.cookwhat.models.UserModelDB;
 import com.google.android.material.chip.Chip;
@@ -45,12 +36,14 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     ArrayList<UserModelDB> userModel;
     ArrayList<RecipeModelDB> recipeModel;
     Context ctx;
+    UserModelDB currentUserModel;
 
-    public SearchResultAdapter(ArrayList<UserModelDB> userList, Context ctx){
+    public SearchResultAdapter(ArrayList<UserModelDB> userList, Context ctx, UserModelDB currentUserModel){
         type = 0;
         this.userModel = userList;
         this.ctx = ctx;
         this.inflater = LayoutInflater.from(ctx);
+        this.currentUserModel = currentUserModel;
     }
 
     public SearchResultAdapter(ArrayList<RecipeModelDB> recipeList, ArrayList<UserModelDB> userList, Context ctx){
@@ -156,7 +149,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
                         Intent intent = new Intent(itemView.getContext(), UserActivity.class);
                         intent.putExtra("fragmentname", "viewprofilefragment");
                         intent.putExtra("userId", userId);
-                        intent.putExtra("userModel", userModel.get(getAdapterPosition()));
+                        intent.putExtra("userModel",currentUserModel );
                         itemView.getContext().startActivity(intent);
                     }
                 });

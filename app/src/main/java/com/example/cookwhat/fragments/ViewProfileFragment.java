@@ -110,6 +110,7 @@ public class ViewProfileFragment extends Fragment {
             Log.d("USERID::", "null user id");
         }
         System.out.println("selectedUserId" + selectedUserID);
+        System.out.println("CurrentUserModel"+ currentUserModel.getUserId());
 
 
 
@@ -150,16 +151,6 @@ public class ViewProfileFragment extends Fragment {
                 btnFollowing.setText(Integer.toString(numFollowings));
                 profilepic.setImageResource(selectedUserModel.getProfilePic());
                 Button showFollow = view.findViewById(R.id.Btn_ShowFollow);
-
-
-                if(selectedUserModel.getFollowersId().contains(currentUserModel.getUserId())){
-                    showFollow.setText("Unfollow");
-                }
-
-                else{
-                    showFollow.setText("Follow");
-                }
-
                 View.OnClickListener showFollowOCL = new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -185,7 +176,7 @@ public class ViewProfileFragment extends Fragment {
                             //add new following
                             followerId.add(currentUserModel.getUserId());
                             followerName.add(currentUserModel.getUserName());
-
+                            System.out.println("on follow click");
                             followingId.add(selectedUserID);
                             followingName.add(selectedUserModel.getUserName());
                             showFollow.setText("Unfollow");
@@ -195,28 +186,30 @@ public class ViewProfileFragment extends Fragment {
                         updateFollow(selectedUserModel, currentUserModel);
                     }
                 };
-
-                showFollow.setOnClickListener(showFollowOCL);
-
-                View.OnClickListener followerOCL = new View.OnClickListener() {
+                View.OnClickListener showFollowWarning = new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-//                        pass followerArraylist and followernamelist
-//                        followPopUp followList = new followPopUp(view, "follower",followerList, followerIDList,selectedUserID,followingIDList);
-//                        followList.show(getActivity().getSupportFragmentManager(), "followerDialog");
+                        Toast.makeText(getContext(),"Follow yourself is not allowed.",Toast.LENGTH_SHORT).show();
+
                     }
                 };
 
-                View.OnClickListener followingOCL = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        // followPopUp followList = new followPopUp(view, "following", followingList,followingIDList,selectedUserID,followingIDList);
-                        //followList.show(getActivity().getSupportFragmentManager(), "followingDialog");
+                if (selectedUserModel.getUserId().equals(currentUserModel.getUserId())){
+                    showFollow.setText("Follow");
+                    showFollow.setOnClickListener(showFollowWarning);
+                }
+                else{
+                    if(selectedUserModel.getFollowersId().contains(currentUserModel.getUserId())){
+                        showFollow.setText("Unfollow");
                     }
-                };
 
-                btnFollower.setOnClickListener(followerOCL);
-                btnFollowing.setOnClickListener(followingOCL);
+                    else{
+                        showFollow.setText("Follow");
+                    }
+
+                    showFollow.setOnClickListener(showFollowOCL);
+                }
+
 
                 if (isFollowing == true) {
                     btnFollower.setEnabled(true);
