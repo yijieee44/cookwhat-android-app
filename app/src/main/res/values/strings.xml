@@ -196,9 +196,9 @@
         <item>Chinese</item>
         <item>European</item>
         <item>Indian</item>
-        <item>Mediterranean</item>
-        <item>Korean</item>
         <item>Japanese</item>
+        <item>Korean</item>
+        <item>Mediterranean</item>
         <item>South-East Asia</item>
         <item>Others</item>
     </string-array>

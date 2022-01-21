@@ -14,18 +14,18 @@
 
         android:layout_alignParentEnd="true"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="10dp"
-        android:src="@drawable/addbutton"
+        android:src="@drawable/ic_food_category_0"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/TV_favCategory"
-        android:layout_width="71dp"
+        android:layout_width="wrap_content"
         android:layout_height="21dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="3dp"
         android:layout_marginBottom="15dp"
         android:text="add"
         android:textAlignment="center"

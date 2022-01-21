@@ -7,7 +7,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/roundedrec_nude"
     tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="0dp">
+    tools:layout_editor_absoluteY="0dp"
+    android:descendantFocusability="blocksDescendants">
 
     <ImageView
         android:id="@+id/IV_FavouriteImage"
@@ -106,5 +107,29 @@
         app:layout_constraintTop_toBottomOf="@+id/IV_Tag2"
         app:srcCompat="@drawable/ic_tag_svgrepo_com"
         tools:ignore="VectorDrawableCompat" />
+
+    <Button
+        android:id="@+id/Btn_Unfavourite"
+        android:layout_width="41dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/ic_unfavourite"
+        app:layout_constraintBottom_toTopOf="@+id/Btn_Move"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.923"
+        app:layout_constraintStart_toEndOf="@+id/IV_FavouriteImage"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/Btn_Move"
+        android:layout_width="41dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/ic_move_to"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.92"
+        app:layout_constraintStart_toEndOf="@+id/IV_FavouriteImage"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,11 +1,11 @@
 package com.example.cookwhat.fragments;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,8 +15,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
-import com.example.cookwhat.OptionPopUp;
 import com.example.cookwhat.R;
 import com.example.cookwhat.activities.ViewRecipeActivity;
 import com.example.cookwhat.adapters.FavouriteAdapter;
@@ -24,9 +24,7 @@ import com.example.cookwhat.models.RecipeModelDB;
 import com.example.cookwhat.models.UserModelDB;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -41,7 +39,7 @@ import java.util.Map;
  * Use the {@link FavouriteFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FavouriteFragment extends Fragment implements OptionPopUp.passData  {
+public class FavouriteFragment extends Fragment   {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,13 +49,18 @@ public class FavouriteFragment extends Fragment implements OptionPopUp.passData 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    ArrayList<String> recipeIdList = new ArrayList<>();
-    FavouriteAdapter favouriteAdapter;
-    ListView listview;
-    UserModelDB userModelDB;
-    String selectedCategoryName;
+    static ArrayList<String> recipeIdList = new ArrayList<>();
+    static FavouriteAdapter favouriteAdapter;
+    static ListView listview;
+    static UserModelDB userModelDB;
+    static String selectedCategoryName;
     String userId;
     Dialog loadingDialog;
+    static ArrayList<String> recipeName = new ArrayList<>();
+    static ArrayList<String> recipeImage = new ArrayList<>();
+    static ArrayList<List<String>> tags = new ArrayList<>();
+
+
 
 
     public FavouriteFragment() {
@@ -103,10 +106,12 @@ public class FavouriteFragment extends Fragment implements OptionPopUp.passData 
         userId = userModelDB.getUserId();
         readData(new FirestoreOnCallBack(){
             @Override
-            public void onCallBackRecipe(ArrayList<RecipeModelDB> recipeModel, ArrayList<String> recipeName, ArrayList<String> recipeImage, ArrayList<List<String>> tags) {
-
+            public void onCallBackRecipe(ArrayList<RecipeModelDB> recipeModel, ArrayList<String> recipeNames, ArrayList<String> recipeImages, ArrayList<List<String>> tag) {
+                recipeName = recipeNames;
+                recipeImage = recipeImages;
+                tags = tag;
                 System.out.println("recipeSize"+recipeName.size());
-                favouriteAdapter = new FavouriteAdapter(getContext(),recipeIdList, recipeName, recipeImage, tags);
+                favouriteAdapter = new FavouriteAdapter(getContext(),recipeIdList, recipeName, recipeImage, tags, userModelDB, recipeModel);
                 listview.setAdapter(favouriteAdapter);
                 System.out.println("In onviewcreated:"+favouriteAdapter.getCount());
 
@@ -114,26 +119,17 @@ public class FavouriteFragment extends Fragment implements OptionPopUp.passData 
                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Intent intent = new Intent(getActivity(), ViewRecipeActivity.class);
-                        intent.putExtra("recipeModel", recipeModel.get(i));
-                        intent.putExtra("userModel", userModelDB);
-                        startActivity(intent);
 
-                    }
+
+                            Intent intent = new Intent(getActivity(), ViewRecipeActivity.class);
+                            intent.putExtra("recipeModel", recipeModel.get(i));
+                            intent.putExtra("userModel", userModelDB);
+                            startActivity(intent);}
+
+
                 });
 
 
-                listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()  {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                        OptionPopUp optionPopUp = new OptionPopUp(i);
-                        optionPopUp.setTargetFragment(FavouriteFragment.this,1);
-                        optionPopUp.show(getFragmentManager(),"deleteOrMoveTo");
-
-                        return true;
-                    }
-                });
             }
 
         }, recipeIdList);
@@ -154,31 +150,29 @@ public class FavouriteFragment extends Fragment implements OptionPopUp.passData 
     }
 
 
-    @Override
-    public void getOption(String option, Integer i) {
-        Boolean isRemove = false;
-        if(option.equals("delete")){
-            System.out.println("yes, i m entering delete processss");
-            //favouriteList.remove(i);
-            //favouriteAdapter.notifyDataSetChanged();
-            favouriteAdapter.removeItem(i);
-            System.out.println(i);
-            System.out.println(favouriteAdapter.getCount());
-            isRemove = true;
-
-            //System.out.println(favouriteAdapter.getCount());
-            //listview.setAdapter(favouriteAdapter);
-
-        }
-        else if(option.equals("moveTo")){
-            favouriteAdapter.removeItem(i);
-            isRemove = false;
 
 
-        }
-
-        updateData(isRemove, userModelDB,selectedCategoryName, i, userModelDB.getUserId());
+    public static void removeItem(int pos){
+        String id = recipeIdList.get(pos);
+        recipeIdList.remove(pos);
+        recipeName.remove(pos);
+        recipeImage.remove(pos);
+        tags.remove(pos);
+        listview.setAdapter(favouriteAdapter);
+        System.out.println("RecipeNames:"+recipeName);
+        updateData(id);
     }
+
+    public static void moveItem(Context context, UserModelDB usermodelDB, RecipeModelDB recipeModelDB){
+        System.out.println("here");
+        FragmentActivity activity = (FragmentActivity)context;
+        MoveFavouriteDialogFragment favouriteCategoryDialogFragment = new MoveFavouriteDialogFragment(usermodelDB, recipeModelDB, selectedCategoryName);
+        favouriteCategoryDialogFragment.show(activity.getSupportFragmentManager(), "FavCatDialog");
+
+    }
+
+
+
 
     public void readData(FirestoreOnCallBack firestoreOnCallBack, ArrayList<String>recipeId){
         TextView noFavourite = getView().findViewById(R.id.TVNoFavouriteRecipe);
@@ -229,15 +223,14 @@ public class FavouriteFragment extends Fragment implements OptionPopUp.passData 
 
     }
 
-    public void updateData(Boolean isRemove,UserModelDB userModelDB, String selectedCategoryName, int recipeInx, String userId){
+    public static void updateData(String id){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String,ArrayList<String>> favouriteFood = userModelDB.getFavouriteCategory() ;
-        String recipeIdToBeMoved = favouriteFood.get(selectedCategoryName).get(recipeInx);
+        favouriteFood.get(selectedCategoryName).remove(id);
         System.out.println("Update DB:"+favouriteFood.get(selectedCategoryName));
         System.out.println("Size:"+favouriteFood.get(selectedCategoryName).size());
-        favouriteFood.get(selectedCategoryName).remove(recipeInx);
         userModelDB.setFavouriteCategory(favouriteFood);
-        db.collection("user").document(userId).update("favouriteCategory", favouriteFood);
+        db.collection("user").document(userModelDB.getUserId()).update("favouriteCategory", favouriteFood);
 
 
     }

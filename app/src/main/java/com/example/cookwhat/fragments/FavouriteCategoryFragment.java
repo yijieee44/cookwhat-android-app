@@ -1,11 +1,8 @@
 package com.example.cookwhat.fragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,7 +15,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.activities.FavouriteActivity;
-import com.example.cookwhat.activities.MainActivity;
 import com.example.cookwhat.adapters.FavouriteCategoryAdapter;
 import com.example.cookwhat.models.UserModelDB;
 
@@ -42,6 +38,7 @@ public class FavouriteCategoryFragment extends Fragment {
     UserModelDB userModel = new UserModelDB();
     ArrayList<String> categoryName = new ArrayList<>();
     ArrayList<Integer> categoryImg = new ArrayList<>();
+
 
     public FavouriteCategoryFragment() {
         //getUserFavouriteCategory
@@ -80,6 +77,7 @@ public class FavouriteCategoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        container.removeAllViews();
         return inflater.inflate(R.layout.fragment_favourite_category, container, false);
     }
 
@@ -91,9 +89,14 @@ public class FavouriteCategoryFragment extends Fragment {
         String[]category= getResources().getStringArray(R.array.favourite_categories);
         categoryName = new ArrayList<>();
         categoryImg = new ArrayList<>();
+
+        int count = 0;
         for(String c : category){
             categoryName.add(c);
-            categoryImg.add(R.drawable.addbutton);
+            String img = "ic_food_category_"+count;
+            int resourceId = getResources().getIdentifier(img, "drawable",getActivity().getPackageName());
+            categoryImg.add(resourceId);
+            count++;
         }
 
         GridView favCategory = (GridView)view.findViewById(R.id.GV_FavouriteCategory);
@@ -113,39 +116,7 @@ public class FavouriteCategoryFragment extends Fragment {
 
         });
 
-        favCategory.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-                alert.setMessage("Are you sure you want to delete this?");
-                alert.setCancelable(false);
-                System.out.println("here");
-                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        adapter.remove(i);
-                        adapter.notifyDataSetChanged();
-
-                    }
-                } );
-
-                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-
-                    }
-                });
-                alert.create();
-                alert.show();
-
-                return true;
-            }
-
-
-        });
 
         Button onBackToUser = view.findViewById(R.id.Btn_BackToUser);
         onBackToUser.setOnClickListener(new View.OnClickListener() {

@@ -7,8 +7,6 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.fragments.FavouriteFragment;
@@ -54,6 +52,9 @@ public class FavouriteActivity extends AppCompatActivity {
         Log.d("FRAGMENTSTACK", ""+getSupportFragmentManager().getBackStackEntryCount());
         if (getSupportFragmentManager().getBackStackEntryCount() > 0 ) {
             getSupportFragmentManager().popBackStack();
+            if(getSupportFragmentManager().getBackStackEntryCount()>0){
+                getSupportFragmentManager().popBackStack();
+            }
         }
         else {
             Intent intent = new Intent();
