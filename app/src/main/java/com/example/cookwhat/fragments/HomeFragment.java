@@ -264,7 +264,9 @@ public class HomeFragment extends Fragment {
         loadingDialog.getWindow().setLayout(width, height);
         loadingDialog.show();
         final ObjectMapper mapper = new ObjectMapper();
-        recipedb.orderBy("title").startAt(query).endAt(query+'\uf8ff').get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//        recipedb.whereGreaterThanOrEqualTo("title", query).whereLessThanOrEqualTo("title",query+'\uf8ff').get()
+        recipedb.orderBy("title").startAt(query).endAt(query+'\uf8ff').get()
+        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
