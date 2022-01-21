@@ -80,6 +80,7 @@ public class EditProfilePicDialogFragment extends DialogFragment {
                 pfp.setImageResource(profilepics.get(pos));
                 currentUser.setProfilePic(profilepics.get(pos));
                 updateUser(currentUser);
+                dismiss();
             }
         });
 
