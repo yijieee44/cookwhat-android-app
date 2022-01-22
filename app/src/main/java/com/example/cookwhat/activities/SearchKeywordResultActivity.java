@@ -57,6 +57,17 @@ public class SearchKeywordResultActivity extends AppCompatActivity {
                 View recipeDivider = findViewById(R.id.RecipeDivider);
                 View userDivider = findViewById(R.id.UserDivider);
 
+                int index = -1;
+                for(UserModelDB user: userList){
+                    if(user.getUserId().equals(userModelDB.getUserId())){
+                        index = userList.indexOf(user);
+                        break;
+                    }
+                }
+                if(index >-1){
+                    userList.remove(index);
+                }
+
 
 
                 System.out.println("InsearchKeyword, getcurrentUser"+ userModelDB.getUserId());

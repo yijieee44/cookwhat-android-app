@@ -367,6 +367,10 @@ public class SearchActivity extends AppCompatActivity {
         Log.d("FRAGMENTSTACK", ""+getSupportFragmentManager().getBackStackEntryCount());
         if (getSupportFragmentManager().getBackStackEntryCount() > 0 ) {
             getSupportFragmentManager().popBackStack();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.activity_search_fragment_container, new SearchIngredientFragment());
+            fragmentTransaction.commit();
+
             searchButton.setVisibility(View.VISIBLE);
         }
         else {
