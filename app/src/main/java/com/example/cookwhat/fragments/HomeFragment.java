@@ -247,6 +247,7 @@ public class HomeFragment extends Fragment {
         readData(new FirestoreCallback() {
             @Override
             public void onCallBack(ArrayList<RecipeModelDB> recipeModelArrayList, ArrayList<UserModelDB> userModelArrayList) {
+
                 recipeModelsArray = recipeModelArrayList;
                 userModelsArray = userModelArrayList;
                 adapter.updateAdapter(recipeModelArrayList, userModelArrayList);
@@ -282,8 +283,6 @@ public class HomeFragment extends Fragment {
                     }
                 });
             }
-
-
         });
     }
 

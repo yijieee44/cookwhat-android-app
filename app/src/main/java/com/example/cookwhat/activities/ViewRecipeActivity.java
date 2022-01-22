@@ -34,6 +34,7 @@ import com.example.cookwhat.fragments.FavouriteCategoryDialogFragment;
 import com.example.cookwhat.fragments.IngredientAndUtensilDialogFragment;
 import com.example.cookwhat.models.IngredientModel;
 import com.example.cookwhat.models.RecipeCommentModel;
+import com.example.cookwhat.models.RecipeModel;
 import com.example.cookwhat.models.RecipeModelDB;
 import com.example.cookwhat.models.RecipeStepModel;
 import com.example.cookwhat.models.UserModelDB;
@@ -502,9 +503,21 @@ public class ViewRecipeActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.edit_post:
                         Intent intent = new Intent(ViewRecipeActivity.this, CreateActivity.class);
-                        intent.putExtra("recipeModel", recipeModelDB.toRecipeModel());
+
+                        RecipeModel selRecipeModel = recipeModelDB.toRecipeModel();
+
+                        if (selRecipeModel.getSteps().get(0).getImage().startsWith("http")) {
+                            for (RecipeStepModel recipeStepModel : selRecipeModel.getSteps()) {
+                                String storageCode = getStorageCode(recipeStepModel.getImage());
+                                recipeStepModel.setImage(storageCode);
+                            }
+                        }
+
+                        intent.putExtra("recipeModel", selRecipeModel);
                         intent.putExtra("userModel", userModelDB);
 
+
+                        Log.d("haha", selRecipeModel.getSteps().get(0).getImage());
                         createActivityResultLauncher.launch(intent);
 //                        Toast.makeText(getApplicationContext(), String.valueOf(item.getTitle()), Toast.LENGTH_SHORT).show();
                         break;
@@ -514,7 +527,8 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
                             @Override
                             public void onFinishEditDialog() {
-                                Log.d("delet", "hehe");
+                                Intent intent = new Intent();
+                                setResult(122, intent);
                                 finish();
                             }
                         });
@@ -540,5 +554,13 @@ public class ViewRecipeActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private String getStorageCode(String link) {
+        try{
+            return link.substring(76, link.length()-10);
+        } catch (Exception e) {
+            return link;
+        }
     }
 }
