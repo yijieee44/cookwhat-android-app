@@ -47,14 +47,17 @@ public class CommentAdapter extends ArrayAdapter<RecipeCommentModel> {
         TextView time = convertView.findViewById(R.id.TVTimeCommented);
 
         String username = "";
+        int profpic = 0;
 
         for(int i=0;i<userModelDBS.size();i++){
             if (user.getUserId().equals(userModelDBS.get(i).getUserId())){
                 username = userModelDBS.get(i).getUserName();
+                profpic = userModelDBS.get(i).getProfilePic();
             }
         }
 
         userName.setText(username);
+        imageView.setImageResource(profpic);
         comment.setText(user.getComment());
         time.setText(user.getCreatedTime());
 
