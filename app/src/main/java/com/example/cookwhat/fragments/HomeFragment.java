@@ -175,21 +175,9 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if(query.length()>0){
-                    search(query, new FirestoreCallback() {
-                        @Override
-                        public void onCallBack(ArrayList<RecipeModelDB> recipeModelArrayList, ArrayList<UserModelDB> userModelArrayList) {
-
-                        }
-
-                        @Override
-                        public void onCallBack(ArrayList<RecipeModelDB> recipeModelArrayList, ArrayList<UserModelDB> userModelArrayList, ArrayList<UserModelDB> recipeUserModelArrayList) {
-                            Intent intent = new Intent(getContext(), SearchKeywordResultActivity.class);
-                            intent.putExtra("recipeList", recipeModelArrayList);
-                            intent.putExtra("userList", userModelArrayList);
-                            intent.putExtra("recipeUserList", recipeUserModelArrayList);
-                            viewRecipeActivityResultLauncher.launch(intent);
-                        }
-                    });
+                    Intent intent = new Intent(getContext(), SearchKeywordResultActivity.class);
+                    intent.putExtra("query", query);
+                    viewRecipeActivityResultLauncher.launch(intent);
                 }
 
                 return false;
@@ -249,10 +237,7 @@ public class HomeFragment extends Fragment {
 
             }
 
-            @Override
-            public void onCallBack(ArrayList<RecipeModelDB> recipeModelArrayList, ArrayList<UserModelDB> userModelArrayList, ArrayList<UserModelDB> recipeUserModelArrayList) {
 
-            }
         });
 
         return view;
@@ -298,209 +283,11 @@ public class HomeFragment extends Fragment {
                 });
             }
 
-            @Override
-            public void onCallBack(ArrayList<RecipeModelDB> recipeModelArrayList, ArrayList<UserModelDB> userModelArrayList, ArrayList<UserModelDB> recipeUserModelArrayList) {
 
-            }
         });
     }
 
-    private void search(String query, FirestoreCallback firestoreCallback){
-        loadingDialog.setCancelable(false);
-        loadingDialog.setContentView(R.layout.dialog_loading);
-        loadingDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.black_transparent_background));
 
-        int width = (int)(getResources().getDisplayMetrics().widthPixels);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels);
-
-        loadingDialog.getWindow().setLayout(width, height);
-        loadingDialog.show();
-        final ObjectMapper mapper = new ObjectMapper();
-//        recipedb.whereGreaterThanOrEqualTo("title", query).whereLessThanOrEqualTo("title",query+'\uf8ff').get()
-        recipedb.orderBy("title").startAt(query).endAt(query+'\uf8ff').get()
-        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    List<RecipeModelDB> resultFromRecipeTitle = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : task.getResult()){
-                        RecipeModelDB recipeModelDB;
-                        recipeModelDB = mapper.convertValue(document.getData(), RecipeModelDB.class);
-                        recipeModelDB.setId(document.getId());
-                        resultFromRecipeTitle.add(recipeModelDB);
-                    }
-                    recipedb.whereArrayContainsAny("tags", Arrays.asList(query)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if(task.isSuccessful()){
-                                List<RecipeModelDB> resultFromRecipeTag = new ArrayList<>();
-                                for (QueryDocumentSnapshot document : task.getResult()){
-                                    RecipeModelDB recipeModelDB;
-                                    recipeModelDB = mapper.convertValue(document.getData(), RecipeModelDB.class);
-                                    recipeModelDB.setId(document.getId());
-                                    resultFromRecipeTag.add(recipeModelDB);
-                                }
-
-                                userdb.orderBy("userName").startAt(query).endAt(query+'\uf8ff').get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if(task.isSuccessful()){
-                                            List<UserModelDB> resultFromUserName = new ArrayList<>();
-                                            for (QueryDocumentSnapshot document : task.getResult()){
-                                                UserModelDB userModelDB;
-                                                userModelDB = mapper.convertValue(document.getData(), UserModelDB.class);
-                                                resultFromUserName.add(userModelDB);
-                                            }
-                                            userdb.orderBy("emailAddr").startAt(query).endAt(query+'\uf8ff').get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                    if(task.isSuccessful()){
-                                                        List<UserModelDB> resultFromUserEmail = new ArrayList<>();
-                                                        for (QueryDocumentSnapshot document : task.getResult()){
-                                                            UserModelDB userModelDB;
-                                                            userModelDB = mapper.convertValue(document.getData(), UserModelDB.class);
-                                                            resultFromUserEmail.add(userModelDB);
-                                                        }
-
-                                                        List<RecipeModelDB> finalRecipeModelDB;
-                                                        if(resultFromRecipeTag.size() <=0){
-                                                            finalRecipeModelDB = resultFromRecipeTitle;
-                                                        }
-                                                        else if(resultFromRecipeTitle.size() <=0){
-                                                            finalRecipeModelDB = resultFromRecipeTag;
-                                                        }
-                                                        else{
-                                                            List<RecipeModelDB> allRecipeModelDB = new ArrayList<>();
-                                                            allRecipeModelDB.addAll(resultFromRecipeTitle);
-                                                            allRecipeModelDB.addAll(resultFromRecipeTag);
-
-                                                            Map<String, RecipeModelDB> map = new HashMap<String, RecipeModelDB>();
-                                                            for (RecipeModelDB recipe : allRecipeModelDB) {
-                                                                if (!map.containsKey(recipe.getId())) {
-                                                                    map.put(recipe.getId(), recipe);
-                                                                }
-                                                            }
-                                                            finalRecipeModelDB = new ArrayList<RecipeModelDB>(map.values());
-                                                        }
-
-                                                        List<UserModelDB> finalUserModelDB;
-
-                                                        if(resultFromUserEmail.size() <=0){
-                                                            finalUserModelDB = resultFromUserName;
-                                                        }
-                                                        else if(resultFromUserName.size() <=0){
-                                                            finalUserModelDB = resultFromUserEmail;
-                                                        }
-                                                        else{
-                                                            List<UserModelDB> allUserModelDB = new ArrayList<>();
-                                                            allUserModelDB.addAll(resultFromUserEmail);
-                                                            allUserModelDB.addAll(resultFromUserName);
-
-                                                            Map<String, UserModelDB> mapUser = new HashMap<String, UserModelDB>();
-                                                            for (UserModelDB user : allUserModelDB) {
-                                                                if (!mapUser.containsKey(user.getUserId())) {
-                                                                    mapUser.put(user.getUserId(), user);
-                                                                }
-                                                            }
-                                                            finalUserModelDB = new ArrayList<UserModelDB>(mapUser.values());
-                                                        }
-
-                                                        if(finalRecipeModelDB.size()<=0){
-                                                            List<UserModelDB> emptyList = new ArrayList<>();
-                                                            firestoreCallback.onCallBack(new ArrayList<>(finalRecipeModelDB), new ArrayList<>(finalUserModelDB), new ArrayList<>(emptyList));
-                                                            loadingDialog.dismiss();
-                                                        }
-                                                        else{
-                                                            List<String> userids = new ArrayList<>();
-
-                                                            for (RecipeModelDB recipe: finalRecipeModelDB){
-                                                                String tempuserid = recipe.getUserId();
-                                                                if(!userids.contains(tempuserid)){
-                                                                    userids.add(tempuserid);
-                                                                }
-                                                            }
-
-                                                            userdb.whereIn("userId", userids)
-                                                                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                                @Override
-                                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                                    if(task.isSuccessful()){
-                                                                        List<UserModelDB> recipeUserArray = new ArrayList<>();
-                                                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                            Log.d("SUCCESS", document.getId() + " => " + document.getData());
-                                                                            final ObjectMapper mapper = new ObjectMapper();
-                                                                            recipeUserArray.add(mapper.convertValue(document.getData(), UserModelDB.class));
-                                                                        }
-                                                                        List<UserModelDB> recipeUserModelList = new ArrayList<>();
-                                                                        for (String userId: userids){
-                                                                            for (UserModelDB user: recipeUserArray){
-                                                                                if (userId.equals(user.getUserId())){
-                                                                                    recipeUserModelList.add(user);
-                                                                                    break;
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        firestoreCallback.onCallBack(new ArrayList<>(finalRecipeModelDB), new ArrayList<>(finalUserModelDB), new ArrayList<>(recipeUserModelList));
-                                                                        loadingDialog.dismiss();
-                                                                    }
-                                                                    else{
-                                                                        loadingDialog.cancel();
-                                                                        Toast.makeText(getContext(),
-                                                                                "Fail to search, please try again",
-                                                                                Toast.LENGTH_SHORT)
-                                                                                .show();
-
-                                                                    }
-                                                                }
-                                                            });
-                                                        }
-
-                                                    }
-                                                    else{
-                                                        loadingDialog.cancel();
-                                                        Toast.makeText(getContext(),
-                                                                "Fail to search, please try again",
-                                                                Toast.LENGTH_SHORT)
-                                                                .show();
-
-                                                    }
-                                                }
-                                            });
-                                        }
-                                        else{
-                                            loadingDialog.cancel();
-                                            Toast.makeText(getContext(),
-                                                    "Fail to search, please try again",
-                                                    Toast.LENGTH_SHORT)
-                                                    .show();
-
-                                        }
-                                    }
-                                });
-                            }
-                            else{
-                                loadingDialog.cancel();
-                                Toast.makeText(getContext(),
-                                        "Fail to search, please try again",
-                                        Toast.LENGTH_SHORT)
-                                        .show();
-
-                            }
-                        }
-                    });
-                }
-                else{
-                    loadingDialog.cancel();
-                    Toast.makeText(getContext(),
-                            "Fail to search, please try again",
-                            Toast.LENGTH_SHORT)
-                            .show();
-
-                }
-            }
-        });
-
-    }
 
     public void readData(FirestoreCallback firestoreCallback){
         recipeModelsArray = new ArrayList<>();
@@ -568,6 +355,5 @@ public class HomeFragment extends Fragment {
     private interface FirestoreCallback {
         void onCallBack(ArrayList<RecipeModelDB> recipeModelArrayList, ArrayList<UserModelDB> userModelArrayList);
 
-        void onCallBack(ArrayList<RecipeModelDB> recipeModelArrayList, ArrayList<UserModelDB> userModelArrayList, ArrayList<UserModelDB> recipeUserModelArrayList);
     }
 }

@@ -98,13 +98,20 @@ public class SearchActivity extends AppCompatActivity {
                 for(IngredientModel ingredient: ingredientModelList){
                     Log.d("INGREDIENT::", ingredient.getName());
                 }
-                search();
+                search(new SearchFirestoreCallback() {
+                    @Override
+                    public void onCallBack(List<RecipeModelSearch> recipeModelArrayList, List<UserModelDB> userModelArrayList) {
+                        recipeSearchResult = recipeModelArrayList;
+                        userList = userModelArrayList;
+                        toResult();
+                    }
+                });
             }
         });
 
     }
 
-    private void search(){
+    public void search(SearchFirestoreCallback firestoreCallback){
         loadingDialog.setCancelable(false);
         loadingDialog.setContentView(R.layout.dialog_loading);
         loadingDialog.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.black_transparent_background));
@@ -148,7 +155,12 @@ public class SearchActivity extends AppCompatActivity {
                                         Log.w("ERROR", e.toString());
                                     }
                                 }
-                                organizeAndNavigateToResult(queriedRecipes, ingredientNameToSearch, utensilNameToSearch);
+                                organizeAndNavigateToResult(queriedRecipes, ingredientNameToSearch, utensilNameToSearch, new SearchFirestoreCallback() {
+                                    @Override
+                                    public void onCallBack(List<RecipeModelSearch> recipeModelArrayList, List<UserModelDB> userModelArrayList) {
+                                        firestoreCallback.onCallBack(recipeModelArrayList, userModelArrayList );
+                                    }
+                                });
 
 
                             } else {
@@ -181,7 +193,12 @@ public class SearchActivity extends AppCompatActivity {
                                         Log.w("ERROR", e.toString());
                                     }
                                 }
-                                organizeAndNavigateToResult(queriedRecipes, ingredientNameToSearch, utensilNameToSearch);
+                                organizeAndNavigateToResult(queriedRecipes, ingredientNameToSearch, utensilNameToSearch, new SearchFirestoreCallback() {
+                                    @Override
+                                    public void onCallBack(List<RecipeModelSearch> recipeModelArrayList, List<UserModelDB> userModelArrayList) {
+                                        firestoreCallback.onCallBack(recipeModelArrayList, userModelArrayList );
+                                    }
+                                });
 
 
                             } else {
@@ -205,7 +222,7 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-    private void organizeAndNavigateToResult(List<RecipeModelDB> queriedRecipes, List<String> ingredientNameList, List<String> utensilNameList){
+    private void organizeAndNavigateToResult(List<RecipeModelDB> queriedRecipes, List<String> ingredientNameList, List<String> utensilNameList, SearchFirestoreCallback firestoreCallback){
         List<RecipeModelSearch> recipeModelSearchList = new ArrayList<>();
         for(RecipeModelDB recipe: queriedRecipes){
             List<Integer> nonMatchingUtensilIndex = new ArrayList<>();
@@ -261,11 +278,9 @@ public class SearchActivity extends AppCompatActivity {
 
         List<String> userIds = new ArrayList<>();
         if(recipeModelSearchList.size() <=0){
-            userList = new ArrayList<>();
-            recipeSearchResult = new ArrayList<>();
 
             loadingDialog.dismiss();
-            toResult();
+            firestoreCallback.onCallBack(recipeModelSearchList, new ArrayList<UserModelDB>());
         }
         else{
             for(RecipeModelSearch searchModel: recipeModelSearchList){
@@ -295,10 +310,8 @@ public class SearchActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
-                                userList = userModelList;
-                                recipeSearchResult = recipeModelSearchList;
                                 loadingDialog.dismiss();
-                                toResult();
+                                firestoreCallback.onCallBack(recipeModelSearchList, userModelList);
 
                             } else {
                                 loadingDialog.cancel();
@@ -378,5 +391,10 @@ public class SearchActivity extends AppCompatActivity {
             setResult(122, intent);
             finish();
         }
+    }
+
+    public interface SearchFirestoreCallback {
+        void onCallBack(List<RecipeModelSearch> recipeModelArrayList, List<UserModelDB> userModelArrayList);
+
     }
 }

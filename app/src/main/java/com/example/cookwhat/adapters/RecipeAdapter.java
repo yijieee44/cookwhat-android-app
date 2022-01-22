@@ -93,6 +93,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         notifyDataSetChanged();
     }
 
+    public void updateAdapter(ArrayList<RecipeModelSearch> recipeModel, ArrayList<UserModelDB> userModel, int type) {
+        this.recipeModelSearch = recipeModel;
+        this.userModel = userModel;
+        this.type = 1;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -116,7 +123,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                     break;
                 }
             }
-
+            holder.expandButton.setImageResource(R.drawable.ic_baseline_expand_more_24);
             holder.recipeName.setText(recipeModelSearch.get(position).getTitle());
             if(recipeModelSearch.get(position).getTags().size() > 0) {
                 holder.tag.setVisibility(View.VISIBLE);
@@ -383,6 +390,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                     }
                 });
     }
+
 
     public interface FirestoreCallback2 {
         void onCallBack(UserModelDB currentUser);
