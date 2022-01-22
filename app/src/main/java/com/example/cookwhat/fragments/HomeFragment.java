@@ -70,6 +70,7 @@ public class HomeFragment extends Fragment {
     public ArrayList<RecipeModelDB> recipeModelsArray = new ArrayList<>();
     public ArrayList<UserModelDB> userModelsArray = new ArrayList<>();
     SearchView searchView;
+    RecipeAdapter adapter;
 
     Dialog loadingDialog;
 
@@ -79,11 +80,13 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == 122) {
-                        Intent intent = getActivity().getIntent();
-                        getActivity().finish();
-                        getActivity().overridePendingTransition(0,0);
-                        startActivity(intent);
-                        getActivity().overridePendingTransition(0,0);
+//                        Intent intent = getActivity().getIntent();
+//                        getActivity().finish();
+//                        getActivity().overridePendingTransition(0,0);
+//                        startActivity(intent);
+//                        getActivity().overridePendingTransition(0,0);
+
+                        updateRecipeAdapter();
                     }
                 }
             });
@@ -94,11 +97,13 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == 122) {
-                        Intent intent = getActivity().getIntent();
-                        getActivity().finish();
-                        getActivity().overridePendingTransition(0,0);
-                        startActivity(intent);
-                        getActivity().overridePendingTransition(0,0);
+//                        Intent intent = getActivity().getIntent();
+//                        getActivity().finish();
+//                        getActivity().overridePendingTransition(0,0);
+//                        startActivity(intent);
+//                        getActivity().overridePendingTransition(0,0);
+
+                        updateRecipeAdapter();
                     }
                 }
             });
@@ -203,7 +208,7 @@ public class HomeFragment extends Fragment {
         readData(new FirestoreCallback() {
             @Override
             public void onCallBack(ArrayList<RecipeModelDB> recipeModelArrayList, ArrayList<UserModelDB> userModelArrayList) {
-                RecipeAdapter adapter = new RecipeAdapter(recipeModelArrayList, userModelArrayList, getContext());
+                adapter = new RecipeAdapter(recipeModelArrayList, userModelArrayList, getContext());
                 // set user on click listener
                 // set recipe item on click listener
                 adapter.setListener(new RecipeAdapter.OnItemClickListener() {
@@ -251,6 +256,53 @@ public class HomeFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void updateRecipeAdapter() {
+        readData(new FirestoreCallback() {
+            @Override
+            public void onCallBack(ArrayList<RecipeModelDB> recipeModelArrayList, ArrayList<UserModelDB> userModelArrayList) {
+                recipeModelsArray = recipeModelArrayList;
+                userModelsArray = userModelArrayList;
+                adapter.updateAdapter(recipeModelArrayList, userModelArrayList);
+                adapter.setListener(new RecipeAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(view.getContext(), ViewRecipeActivity.class);
+                        UserModelDB userModelDB = new UserModelDB();
+                        intent.putExtra("recipeModel", recipeModelArrayList.get(position));
+                        for (int i = 0; i < userModelArrayList.size(); i++) {
+                            if (recipeModelArrayList.get(position).getUserId().equals(userModelArrayList.get(i).getUserId())) {
+                                userModelDB = userModelArrayList.get(i);
+                                break;
+                            }
+                        }
+
+                        intent.putExtra("userModel", userModelDB);
+                        viewRecipeActivityResultLauncher.launch(intent);
+                    }
+
+                    @Override
+                    public void onUserClick(View view, int position) {
+                        String userId = recipeModelArrayList.get(position).getUserId();
+                        adapter.readCurrentUser(new RecipeAdapter.FirestoreCallback2() {
+                            @Override
+                            public void onCallBack(UserModelDB currentUser) {
+                                Intent intent = new Intent(view.getContext(), ViewProfileActivity.class);
+                                intent.putExtra("userId", userId);
+                                intent.putExtra("userModel", currentUser);
+                                viewUserActivityResultLauncher.launch(intent);
+                            }
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void onCallBack(ArrayList<RecipeModelDB> recipeModelArrayList, ArrayList<UserModelDB> userModelArrayList, ArrayList<UserModelDB> recipeUserModelArrayList) {
+
+            }
+        });
     }
 
     private void search(String query, FirestoreCallback firestoreCallback){
@@ -451,7 +503,8 @@ public class HomeFragment extends Fragment {
     }
 
     public void readData(FirestoreCallback firestoreCallback){
-
+        recipeModelsArray = new ArrayList<>();
+        userModelsArray = new ArrayList<>();
 
         recipedb.orderBy("createdTime", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
