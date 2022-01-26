@@ -328,18 +328,32 @@ public class UserProfileFragment extends Fragment {
                                     email.setText("Email Address is not allowed to be shown");
                                 }
 
-                                if(usermodel.getCountry().equals("--Please select a country of your origin--")){
-                                    country.setText("-");
+                                if (usermodel.getCountry() == null){
+                                    country.setText("");
+                                }
+
+                                else{
+                                    if(usermodel.getCountry().equals("--Please select a country of your origin--"))
+                                    {
+                                        country.setText("");
+                                    }
+                                    else{
+                                        country.setText(usermodel.getCountry());
+                                    }
+                                }
+
+                                if(usermodel.getLevel() == null){
+                                    level.setText("");
                                 }
                                 else{
-                                    country.setText(usermodel.getCountry());
+                                    if(usermodel.getLevel().equals("--Please select your cooking skill level--")|| usermodel.getLevel().isEmpty()){
+                                        level.setText("");
+                                    }
+                                    else{
+                                        level.setText(usermodel.getLevel());
+                                    }
                                 }
-                                if(usermodel.getLevel().equals("--Please select your cooking skill level--")){
-                                    level.setText("-");
-                                }
-                                else{
-                                    level.setText(usermodel.getLevel());
-                                }
+
 
                                 if(usermodel.isShowPreference()){
                                     prefer1.setText(usermodel.getPreference().get(0));

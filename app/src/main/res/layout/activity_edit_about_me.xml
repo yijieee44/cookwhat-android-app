@@ -110,9 +110,10 @@
             <Spinner
                 android:id="@+id/SPN_Country"
                 android:layout_width="226dp"
-                android:layout_height="44dp"
+                android:layout_height="38dp"
                 android:layout_marginBottom="24dp"
-                android:textSize="20dp"
+                android:textSize="18dp"
+                android:paddingBottom="3dp"
                 app:layout_constraintBottom_toTopOf="@+id/textView10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.25"
@@ -135,13 +136,14 @@
             <Spinner
                 android:id="@+id/SPN_Level"
                 android:layout_width="226dp"
-                android:layout_height="41dp"
+                android:layout_height="38dp"
                 android:layout_marginBottom="24dp"
                 app:layout_constraintBottom_toTopOf="@+id/textView13"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.24"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"
+                android:paddingBottom="3dp"/>
 
             <TextView
                 android:id="@+id/textView13"

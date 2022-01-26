@@ -62,16 +62,15 @@ public class EditAboutMeActivity extends AppCompatActivity {
             countries.add(locale.getDisplayCountry());
         }
         Spinner countryList = findViewById(R.id.SPN_Country);
-        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,countries);
-        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(this,R.layout.spinner_item,countries);
+        countryAdapter.setDropDownViewResource(R.layout.spinner_item);
         countryList.setAdapter(countryAdapter);
 
         String[] levelOfExpertArr = getResources().getStringArray(R.array.level);
         List<String> levelOfExpert =  Arrays.asList(levelOfExpertArr);
-        levelOfExpert.add(0,"--Please select your cooking skill level--");
         Spinner levelList = findViewById(R.id.SPN_Level);
-        ArrayAdapter<String> levelAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, levelOfExpert);
-        levelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        ArrayAdapter<String> levelAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, levelOfExpert);
+        levelAdapter.setDropDownViewResource(R.layout.spinner_item);
         levelList.setAdapter(levelAdapter);
 
         EditText description = findViewById(R.id.ET_Description);

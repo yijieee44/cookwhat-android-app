@@ -1,8 +1,6 @@
 package com.example.cookwhat.fragments;
 
 
-import static android.content.ContentValues.TAG;
-
 import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,11 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cookwhat.R;
 import com.example.cookwhat.activities.LoginActivity;
 import com.example.cookwhat.adapters.ProfilePicAdapter;
-import com.example.cookwhat.models.UserModel;
 import com.example.cookwhat.models.UserModelDB;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -33,7 +28,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -217,6 +211,7 @@ public class RegisterCompleteFragment extends Fragment {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         String userId = user.getUid();
                                         usermodel.setUserId(userId);
+
 
                                         firestoreDb.collection("user").document(userId)
                                                 .set(usermodel);

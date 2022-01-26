@@ -185,6 +185,7 @@
     <string name="register_warning">You are already a user of CookWhat.\nPlease proceed to log in.</string>
     <string name="recipe_image_uri">https://firebasestorage.googleapis.com/v0/b/cookwhat.appspot.com/o/images%2F</string>
     <string-array name="level">
+        <item>--Please select your cooking skill level--</item>
         <item>Beginner</item>
         <item>Advanced Beginner</item>
         <item>Competent</item>

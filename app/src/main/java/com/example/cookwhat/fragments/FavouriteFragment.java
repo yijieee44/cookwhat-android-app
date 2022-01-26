@@ -24,7 +24,9 @@ import com.example.cookwhat.models.RecipeModelDB;
 import com.example.cookwhat.models.UserModelDB;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -230,7 +232,32 @@ public class FavouriteFragment extends Fragment   {
         System.out.println("Update DB:"+favouriteFood.get(selectedCategoryName));
         System.out.println("Size:"+favouriteFood.get(selectedCategoryName).size());
         userModelDB.setFavouriteCategory(favouriteFood);
-        db.collection("user").document(userModelDB.getUserId()).update("favouriteCategory", favouriteFood);
+        db.collection("user").document(userModelDB.getUserId()).update("favouriteCategory", favouriteFood)
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(@NonNull Void unused) {
+                Log.d("Update User",userModelDB.getUserId()+" is succesfully updated." );
+                db.collection("recipe").document(id).get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
+                            RecipeModelDB recipeModelDB = new RecipeModelDB();
+                            recipeModelDB = documentSnapshot.toObject(RecipeModelDB.class);
+                            int numFav = recipeModelDB.getNumFav()-1;
+                            System.out.println("Update user!!!");
+
+                            db.collection("recipe").document(id).update("numFav", numFav)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(@NonNull Void unused) {
+                                            Log.d("Update Recipe", id + " is successfully updated." );
+                                            System.out.println("Update recipe!!");
+                                        }
+                                    });
+                        }
+                    });
+            }
+        });
 
 
     }

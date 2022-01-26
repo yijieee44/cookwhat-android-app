@@ -1,6 +1,7 @@
 package com.example.cookwhat;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +52,11 @@ public class ProfilePicPopUp extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getDialog().getWindow().setLayout(900,1000);
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int width = (int)(metrics.widthPixels*0.80);
+        int height = (int)(metrics.heightPixels*0.50);
+
+        getDialog().getWindow().setLayout(width, height);
     }
 
     public interface profilePicPopUpListener {
