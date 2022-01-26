@@ -72,6 +72,7 @@
         <activity
             android:name=".activities.ViewProfileActivity"
             android:exported="false" />
+
     </application>
 
 </manifest>
