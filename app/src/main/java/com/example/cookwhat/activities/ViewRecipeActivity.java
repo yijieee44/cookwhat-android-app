@@ -115,10 +115,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("View Recipe");
 
-        DateTimeFormatter formatter =
-                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-                        .withLocale(Locale.getDefault())
-                        .withZone(ZoneId.systemDefault());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").withZone( ZoneId.systemDefault());
 
         db = FirebaseFirestore.getInstance();
         recipedb = db.collection("recipe");

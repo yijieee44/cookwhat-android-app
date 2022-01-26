@@ -96,9 +96,7 @@ public class CreateActivity extends AppCompatActivity {
             newRecipe.setUserId(user.getUid());
         }
 
-        formatter = DateTimeFormatter.ofLocalizedDateTime( FormatStyle.SHORT )
-                        .withLocale( Locale.getDefault() )
-                        .withZone( ZoneId.systemDefault() );
+        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss").withZone( ZoneId.systemDefault());
 
 
         storage = FirebaseStorage.getInstance();
