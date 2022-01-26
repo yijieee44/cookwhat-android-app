@@ -56,6 +56,7 @@ public class EditAboutMeActivity extends AppCompatActivity {
 
         String[] ISOcountriesCodes = Locale.getISOCountries();
         ArrayList<String> countries = new ArrayList<>();
+        countries.add("--Please select a country of your origin--");
         for(String countrycode : ISOcountriesCodes){
             Locale locale = new Locale("",countrycode);
             countries.add(locale.getDisplayCountry());
@@ -67,6 +68,7 @@ public class EditAboutMeActivity extends AppCompatActivity {
 
         String[] levelOfExpertArr = getResources().getStringArray(R.array.level);
         List<String> levelOfExpert =  Arrays.asList(levelOfExpertArr);
+        levelOfExpert.add(0,"--Please select your cooking skill level--");
         Spinner levelList = findViewById(R.id.SPN_Level);
         ArrayAdapter<String> levelAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, levelOfExpert);
         levelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);

@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.cookwhat.ExpandableHeightGridView;
@@ -330,8 +328,19 @@ public class UserProfileFragment extends Fragment {
                                     email.setText("Email Address is not allowed to be shown");
                                 }
 
-                                country.setText(usermodel.getCountry());
-                                level.setText(usermodel.getLevel());
+                                if(usermodel.getCountry().equals("--Please select a country of your origin--")){
+                                    country.setText("-");
+                                }
+                                else{
+                                    country.setText(usermodel.getCountry());
+                                }
+                                if(usermodel.getLevel().equals("--Please select your cooking skill level--")){
+                                    level.setText("-");
+                                }
+                                else{
+                                    level.setText(usermodel.getLevel());
+                                }
+
                                 if(usermodel.isShowPreference()){
                                     prefer1.setText(usermodel.getPreference().get(0));
 
