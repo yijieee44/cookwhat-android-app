@@ -87,6 +87,19 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         this.listener = listener;
     }
 
+    public void updateAdapter(ArrayList<RecipeModelDB> recipeModel, ArrayList<UserModelDB> userModel) {
+        this.recipeModel = recipeModel;
+        this.userModel = userModel;
+        notifyDataSetChanged();
+    }
+
+    public void updateAdapter(ArrayList<RecipeModelSearch> recipeModel, ArrayList<UserModelDB> userModel, int type) {
+        this.recipeModelSearch = recipeModel;
+        this.userModel = userModel;
+        this.type = 1;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -110,9 +123,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                     break;
                 }
             }
-
+            holder.expandButton.setImageResource(R.drawable.ic_baseline_expand_more_24);
             holder.recipeName.setText(recipeModelSearch.get(position).getTitle());
-            holder.tag.setText(recipeModelSearch.get(position).getTags().get(0));
+            if(recipeModelSearch.get(position).getTags().size() > 0) {
+                holder.tag.setVisibility(View.VISIBLE);
+                holder.tag.setText(recipeModelSearch.get(position).getTags().get(0));
+            } else{
+                holder.tag.setVisibility(View.INVISIBLE);
+            }
             holder.numFav.setText(Integer.toString(recipeModelSearch.get(position).getNumFav()));
             holder.userName.setText(username);
             holder.userName.setCompoundDrawablesWithIntrinsicBounds(profilePic, 0, 0, 0);
@@ -196,9 +214,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
             holder.recipeName.setText(recipeModel.get(position).getTitle());
             if(recipeModel.get(position).getTags().size() > 0) {
+                holder.tag.setVisibility(View.VISIBLE);
                 holder.tag.setText(recipeModel.get(position).getTags().get(0));
             } else{
-                holder.tag.setVisibility(View.GONE);
+                holder.tag.setVisibility(View.INVISIBLE);
             }
             holder.numFav.setText(Integer.toString(recipeModel.get(position).getNumFav()));
             holder.userName.setText(username);
@@ -371,6 +390,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                     }
                 });
     }
+
 
     public interface FirestoreCallback2 {
         void onCallBack(UserModelDB currentUser);

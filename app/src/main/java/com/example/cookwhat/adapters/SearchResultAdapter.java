@@ -37,6 +37,11 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     ArrayList<RecipeModelDB> recipeModel;
     Context ctx;
     UserModelDB currentUserModel;
+    private OnItemClickListener listener;
+
+    public void setListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public SearchResultAdapter(ArrayList<UserModelDB> userList, Context ctx, UserModelDB currentUserModel){
         type = 0;
@@ -52,6 +57,20 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         this.userModel = userList;
         this.ctx = ctx;
         this.inflater = LayoutInflater.from(ctx);
+    }
+
+    public void updateAdapter(ArrayList<UserModelDB> userList, UserModelDB currentUserModel){
+        type = 0;
+        this.userModel = userList;
+        this.currentUserModel = currentUserModel;
+        notifyDataSetChanged();
+    }
+
+    public void updateAdapter(ArrayList<RecipeModelDB> recipeList, ArrayList<UserModelDB> userList){
+        type = 1;
+        this.recipeModel = recipeList;
+        this.userModel = userList;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -97,6 +116,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
                         }
                     });
             int index = 0;
+            holder.chipGroup.removeAllViews();
             for(String tag: recipe.getTags()){
                 if(index<3){
                     Chip chip = new Chip(holder.chipGroup.getContext());
@@ -140,43 +160,60 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             chipGroup = itemView.findViewById(R.id.CGTags);
             favourite = itemView.findViewById(R.id.TVFavourite);
 
-            //View User
-            if(type == 0){
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String userId = userModel.get(getAdapterPosition()).getUserId();
-                        Intent intent = new Intent(itemView.getContext(), UserActivity.class);
-                        intent.putExtra("fragmentname", "viewprofilefragment");
-                        intent.putExtra("userId", userId);
-                        intent.putExtra("userModel",currentUserModel );
-                        itemView.getContext().startActivity(intent);
-                    }
-                });
-            }
-
-            //View Recipe
-            if(type == 1){
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(itemView.getContext(), ViewRecipeActivity.class);
-
-                        UserModelDB userModelDB = new UserModelDB();
-                        intent.putExtra("recipeModel", recipeModel.get(getAdapterPosition()));
-                        for (int i=0;i<userModel.size();i++){
-                            if(recipeModel.get(getAdapterPosition()).getUserId().equals(userModel.get(i).getUserId())){
-                                userModelDB = userModel.get(i);
-                                Log.d("GOT USER", "wasd");
-                                break;
-                            }
+            if(listener == null){
+                //View User
+                if(type == 0){
+                    itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String userId = userModel.get(getAdapterPosition()).getUserId();
+                            Intent intent = new Intent(itemView.getContext(), UserActivity.class);
+                            intent.putExtra("fragmentname", "viewprofilefragment");
+                            intent.putExtra("userId", userId);
+                            intent.putExtra("userModel",currentUserModel );
+                            itemView.getContext().startActivity(intent);
                         }
-                        intent.putExtra("userModel", userModelDB);
-                        itemView.getContext().startActivity(intent);
+                    });
+                }
+
+                //View Recipe
+                if(type == 1){
+                    itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(itemView.getContext(), ViewRecipeActivity.class);
+
+                            UserModelDB userModelDB = new UserModelDB();
+                            intent.putExtra("recipeModel", recipeModel.get(getAdapterPosition()));
+                            for (int i=0;i<userModel.size();i++){
+                                if(recipeModel.get(getAdapterPosition()).getUserId().equals(userModel.get(i).getUserId())){
+                                    userModelDB = userModel.get(i);
+                                    Log.d("GOT USER", "wasd");
+                                    break;
+                                }
+                            }
+                            intent.putExtra("userModel", userModelDB);
+                            itemView.getContext().startActivity(intent);
+                        }
+                    });
+                }
+            }
+            else{
+                if(type == 0){
+                    Log.d("SETTING LISTENER", "wahahahahhahahaha");
+                }
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClick(itemView, getAdapterPosition());
                     }
                 });
             }
 
         }
+    }
+
+    public interface OnItemClickListener {
+        public void onItemClick(View view, int position);
     }
 }
