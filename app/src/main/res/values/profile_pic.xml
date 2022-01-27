@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="profile_pic">
-        <item>profile_pic_01</item>
-        <item>profile_pic_02</item>
-        <item>profile_pic_03</item>
-        <item>profile_pic_04</item>
-    </string-array>
-</resources>

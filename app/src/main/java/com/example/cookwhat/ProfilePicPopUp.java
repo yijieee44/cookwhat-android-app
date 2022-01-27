@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.cookwhat.utils.Constants;
+
 public class ProfilePicPopUp extends DialogFragment {
 
     int position;
@@ -29,9 +31,7 @@ public class ProfilePicPopUp extends DialogFragment {
 
         View profilePicPopUp = inflater.inflate(R.layout.pop_up_profile_pic,null);
         ImageView img = (ImageView) profilePicPopUp.findViewById(R.id.IV_ProfilePicEnlarge);
-        String mDrawableName = "ic_profile_pic_"+ position;
-        int resId = getResources().getIdentifier(mDrawableName , "drawable", getActivity().getPackageName());
-        img.setImageResource(resId);
+        img.setImageResource(Constants.PROFILE_PIC[position]);
         img.setVisibility(View.VISIBLE);
 
 

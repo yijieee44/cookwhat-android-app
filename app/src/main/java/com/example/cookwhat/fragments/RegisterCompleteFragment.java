@@ -20,6 +20,7 @@ import com.example.cookwhat.R;
 import com.example.cookwhat.activities.LoginActivity;
 import com.example.cookwhat.adapters.ProfilePicAdapter;
 import com.example.cookwhat.models.UserModelDB;
+import com.example.cookwhat.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
@@ -53,8 +54,7 @@ public class RegisterCompleteFragment extends Fragment {
     String username;
     String password;
     String email;
-    ArrayList<Integer> profilepic ;
-    int prof_pic = 0;
+    int prof_pic = -1;
     boolean cond1 = false;
     boolean cond2 = false;
     Dialog loadingDialog;
@@ -99,15 +99,6 @@ public class RegisterCompleteFragment extends Fragment {
         else{
             Log.d("ErrorType","null details on first page of register");
         }
-
-        profilepic =  new ArrayList<>();
-        for(int i =0 ; i<33; i++){
-            String name = "ic_profile_pic_" + String.valueOf(i+1);
-            int resourceId = getResources().getIdentifier(name, "drawable", getActivity().getPackageName());
-            profilepic.add(resourceId);
-        }
-
-
     }
 
     @Override
@@ -134,10 +125,10 @@ public class RegisterCompleteFragment extends Fragment {
         LinearLayoutManager recycleViewLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         profilePicRV.setLayoutManager(recycleViewLayoutManager);
 
-        ProfilePicAdapter adapter = new ProfilePicAdapter(profilepic, new ProfilePicAdapter.ProfileClickListener2() {
+        ProfilePicAdapter adapter = new ProfilePicAdapter(new ProfilePicAdapter.ProfileClickListener2() {
             @Override
             public void onItemClicked(int position) {
-                prof_pic = profilepic.get(position);
+                prof_pic = position;
             }
         });
 
@@ -163,10 +154,10 @@ public class RegisterCompleteFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                if (prof_pic == 0){
+                if (prof_pic == -1){
                     Toast.makeText(getContext(), "Please select a profile picture", Toast.LENGTH_SHORT).show();
                 }
-                else if (profilepic.contains(prof_pic)){
+                else if (prof_pic< Constants.PROFILE_PIC.length){
                     cond1 = true;
                     usermodel.setProfilePic(prof_pic);
                 }

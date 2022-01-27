@@ -16,6 +16,7 @@ import com.example.cookwhat.R;
 import com.example.cookwhat.models.RecipeCommentModel;
 import com.example.cookwhat.models.RecipeModel;
 import com.example.cookwhat.models.UserModelDB;
+import com.example.cookwhat.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class CommentAdapter extends ArrayAdapter<RecipeCommentModel> {
         TextView time = convertView.findViewById(R.id.TVTimeCommented);
 
         String username = "";
-        int profpic = 0;
+        int profpic = -1;
 
         for(int i=0;i<userModelDBS.size();i++){
             if (user.getUserId().equals(userModelDBS.get(i).getUserId())){
@@ -57,7 +58,7 @@ public class CommentAdapter extends ArrayAdapter<RecipeCommentModel> {
         }
 
         userName.setText(username);
-        imageView.setImageResource(profpic);
+        imageView.setImageResource(Constants.PROFILE_PIC[profpic]);
         comment.setText(user.getComment());
         time.setText(user.getCreatedTime());
 

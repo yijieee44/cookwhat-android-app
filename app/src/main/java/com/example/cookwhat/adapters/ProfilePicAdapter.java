@@ -15,12 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cookwhat.ProfilePicPopUp;
 import com.example.cookwhat.R;
+import com.example.cookwhat.utils.Constants;
 
 import java.util.ArrayList;
 
 public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.ViewHolder> {
 
-        private ArrayList <Integer> profilepic;
         boolean isTick = false;
         Integer tempSelected = -1;
         Integer selectedProfilePic = -1;
@@ -61,8 +61,7 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
 
         }
 
-        public ProfilePicAdapter(ArrayList<Integer> profilepic, ProfileClickListener2 profileClickListener) {
-               this.profilepic = profilepic;
+        public ProfilePicAdapter(ProfileClickListener2 profileClickListener) {
                this.clickListener = profileClickListener;
         }
 
@@ -105,7 +104,7 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
 
                 // Get element from your dataset at this position and replace the
                 // contents of the view with that element
-                viewHolder.getImgView().setImageResource(profilepic.get(position));
+                viewHolder.getImgView().setImageResource(Constants.PROFILE_PIC[position]);
                 if (selectedProfilePic == position && isTick){
                         viewHolder.getImgView().setBackgroundColor(ContextCompat.getColor(viewHolder.context, R.color.dark_yellow));
                         tempSelected = position;
@@ -119,12 +118,11 @@ public class ProfilePicAdapter extends RecyclerView.Adapter<ProfilePicAdapter.Vi
         // Return the size of your dataset (invoked by the layout manager)
         @Override
         public int getItemCount() {
-                return profilepic.size();
+                return Constants.PROFILE_PIC.length;
         }
 
         public interface ProfileClickListener{
                 void onClick(int p, Context context, View view);
-
         }
 
         public interface ProfileClickListener2 {

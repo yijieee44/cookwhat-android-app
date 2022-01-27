@@ -26,6 +26,7 @@ import com.example.cookwhat.R;
 import com.example.cookwhat.activities.ViewRecipeActivity;
 import com.example.cookwhat.models.RecipeModelDB;
 import com.example.cookwhat.models.UserModelDB;
+import com.example.cookwhat.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -149,7 +150,7 @@ public class ViewProfileFragment extends Fragment {
                 numFollowings = followingNameList.size();
                 btnFollower.setText(Integer.toString(numFollowers));
                 btnFollowing.setText(Integer.toString(numFollowings));
-                profilepic.setImageResource(selectedUserModel.getProfilePic());
+                profilepic.setImageResource(Constants.PROFILE_PIC[selectedUserModel.getProfilePic()]);
                 Button showFollow = view.findViewById(R.id.Btn_ShowFollow);
                 View.OnClickListener showFollowOCL = new View.OnClickListener() {
                     @Override

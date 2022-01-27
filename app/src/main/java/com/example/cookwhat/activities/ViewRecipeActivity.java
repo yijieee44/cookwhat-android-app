@@ -39,6 +39,7 @@ import com.example.cookwhat.models.RecipeModelDB;
 import com.example.cookwhat.models.RecipeStepModel;
 import com.example.cookwhat.models.UserModelDB;
 import com.example.cookwhat.models.UtensilModel;
+import com.example.cookwhat.utils.Constants;
 import com.example.cookwhat.utils.Utility;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,10 +58,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class ViewRecipeActivity extends AppCompatActivity {
@@ -212,7 +211,7 @@ public class ViewRecipeActivity extends AppCompatActivity {
             }
         });
 
-        userPic.setImageResource(userModelDB.getProfilePic());
+        userPic.setImageResource(Constants.PROFILE_PIC[userModelDB.getProfilePic()]);
 
         userPic.setOnClickListener(new View.OnClickListener() {
             @Override

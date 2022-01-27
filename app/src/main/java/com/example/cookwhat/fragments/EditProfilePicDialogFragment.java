@@ -23,6 +23,7 @@ import com.example.cookwhat.adapters.CommentAdapter;
 import com.example.cookwhat.adapters.EditProfilePicAdapter;
 import com.example.cookwhat.models.RecipeModelDB;
 import com.example.cookwhat.models.UserModelDB;
+import com.example.cookwhat.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -35,7 +36,6 @@ import java.util.ArrayList;
 public class EditProfilePicDialogFragment extends DialogFragment {
 
     UserModelDB currentUser;
-    ArrayList<Integer> profilepics;
     RecyclerView rv;
     ImageView pfp;
     Button btn;
@@ -44,9 +44,8 @@ public class EditProfilePicDialogFragment extends DialogFragment {
     CollectionReference userdb;
 
 
-    public EditProfilePicDialogFragment(ArrayList<Integer> profilepics, UserModelDB currentUser) {
+    public EditProfilePicDialogFragment(UserModelDB currentUser) {
         this.currentUser = currentUser;
-        this.profilepics = profilepics;
     }
 
     @Nullable
@@ -60,13 +59,13 @@ public class EditProfilePicDialogFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         db = FirebaseFirestore.getInstance();
         userdb = db.collection("user");
-        pos = profilepics.indexOf(currentUser.getProfilePic());
+        pos = currentUser.getProfilePic();
         Button btn = (Button) view.findViewById(R.id.BtnConnfirmm);
         pfp = (ImageView) getActivity().findViewById(R.id.IV_Profile);
         rv = (RecyclerView) view.findViewById(R.id.RVfavcat);
         LinearLayoutManager horizontalScroll = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         rv.setLayoutManager(horizontalScroll);
-        EditProfilePicAdapter editProfilePicAdapter = new EditProfilePicAdapter(profilepics, currentUser, getContext(), new EditProfilePicAdapter.ConfirmListener() {
+        EditProfilePicAdapter editProfilePicAdapter = new EditProfilePicAdapter(currentUser, getContext(), new EditProfilePicAdapter.ConfirmListener() {
             @Override
             public void onItemClicked(int position) {
                 pos = position;
@@ -77,8 +76,8 @@ public class EditProfilePicDialogFragment extends DialogFragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pfp.setImageResource(profilepics.get(pos));
-                currentUser.setProfilePic(profilepics.get(pos));
+                pfp.setImageResource(Constants.PROFILE_PIC[pos]);
+                currentUser.setProfilePic(pos);
                 updateUser(currentUser);
                 dismiss();
             }

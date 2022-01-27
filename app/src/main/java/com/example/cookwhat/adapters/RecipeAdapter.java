@@ -112,7 +112,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         String username = "";
-        int profilePic = 0;
+        int profilePic = -1;
 
 
         if(type == 1){
@@ -133,7 +133,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             }
             holder.numFav.setText(Integer.toString(recipeModelSearch.get(position).getNumFav()));
             holder.userName.setText(username);
-            holder.userName.setCompoundDrawablesWithIntrinsicBounds(profilePic, 0, 0, 0);
+            holder.userName.setCompoundDrawablesWithIntrinsicBounds(Constants.PROFILE_PIC[profilePic], 0, 0, 0);
             Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/cookwhat.appspot.com/o/images%2F" + recipeModelSearch.get(position).getSteps().get(0).getImage() + "?alt=media").into(holder.recipeImage);
 
             RecipeModelSearch recipe = recipeModelSearch.get(position);
@@ -221,7 +221,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             }
             holder.numFav.setText(Integer.toString(recipeModel.get(position).getNumFav()));
             holder.userName.setText(username);
-            holder.userName.setCompoundDrawablesWithIntrinsicBounds(profilePic, 0, 0, 0);
+            holder.userName.setCompoundDrawablesWithIntrinsicBounds(Constants.PROFILE_PIC[profilePic], 0, 0, 0);
             Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/cookwhat.appspot.com/o/images%2F" + recipeModel.get(position).getSteps().get(0).getImage() + "?alt=media").into(holder.recipeImage);
             holder.expandButton.setVisibility(View.GONE);
             holder.expandableLayout.setVisibility(View.GONE);

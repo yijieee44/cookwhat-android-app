@@ -22,6 +22,7 @@ import com.example.cookwhat.activities.UserActivity;
 import com.example.cookwhat.activities.ViewRecipeActivity;
 import com.example.cookwhat.models.RecipeModelDB;
 import com.example.cookwhat.models.UserModelDB;
+import com.example.cookwhat.utils.Constants;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.squareup.picasso.Callback;
@@ -84,7 +85,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if(type == 0){
             holder.searchResultTitle.setText(userModel.get(position).getUserName());
-            holder.image.setImageResource(userModel.get(position).getProfilePic());
+            holder.image.setImageResource(Constants.PROFILE_PIC[userModel.get(position).getProfilePic()]);
             holder.chipGroup.setVisibility(View.GONE);
             holder.favourite.setVisibility(View.GONE);
         }

@@ -14,18 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cookwhat.R;
 import com.example.cookwhat.models.UserModelDB;
+import com.example.cookwhat.utils.Constants;
 
 import java.util.ArrayList;
 
 public class EditProfilePicAdapter extends RecyclerView.Adapter<EditProfilePicAdapter.ViewHolder>{
 
-    ArrayList<Integer> profilepics;
     UserModelDB currentUser;
     LayoutInflater inflater;
     ConfirmListener confirmListener;
 
-    public EditProfilePicAdapter(ArrayList<Integer> profilepics, UserModelDB currentUser, Context ctx, ConfirmListener confirmListener){
-        this.profilepics = profilepics;
+    public EditProfilePicAdapter(UserModelDB currentUser, Context ctx, ConfirmListener confirmListener){
         this.currentUser = currentUser;
         this.inflater = LayoutInflater.from(ctx);
         this.confirmListener = confirmListener;
@@ -43,7 +42,7 @@ public class EditProfilePicAdapter extends RecyclerView.Adapter<EditProfilePicAd
                 @Override
                 public void onClick(View v) {
                     pic.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), R.color.dark_yellow));
-                    currentUser.setProfilePic(profilepics.get(getAdapterPosition()));
+                    currentUser.setProfilePic(getAdapterPosition());
                     confirmListener.onItemClicked(getAdapterPosition());
                     notifyDataSetChanged();
                 }
@@ -62,8 +61,8 @@ public class EditProfilePicAdapter extends RecyclerView.Adapter<EditProfilePicAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.pic.setImageResource(profilepics.get(position));
-        if (profilepics.get(position) == currentUser.getProfilePic()){
+        holder.pic.setImageResource(Constants.PROFILE_PIC[position]);
+        if (position == currentUser.getProfilePic()){
             holder.pic.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.dark_yellow));
         }
         else{
@@ -73,7 +72,7 @@ public class EditProfilePicAdapter extends RecyclerView.Adapter<EditProfilePicAd
 
     @Override
     public int getItemCount() {
-        return profilepics.size();
+        return Constants.PROFILE_PIC.length;
     }
 
     public interface ConfirmListener{

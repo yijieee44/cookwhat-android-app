@@ -35,6 +35,7 @@ import com.example.cookwhat.followPopUp;
 import com.example.cookwhat.models.RecipeModelDB;
 import com.example.cookwhat.models.UserModelDB;
 import com.example.cookwhat.models.followData;
+import com.example.cookwhat.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
@@ -84,7 +85,6 @@ public class UserProfileFragment extends Fragment {
     TextView prefer1;
     TextView prefer2;
     TextView prefer3;
-    ArrayList<Integer> profilepics;
 
     Dialog loadingDialog;
 
@@ -134,13 +134,6 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        profilepics =  new ArrayList<>();
-        for(int i =0 ; i<33; i++){
-            String name = "ic_profile_pic_" + String.valueOf(i+1);
-            int resourceId = getResources().getIdentifier(name, "drawable", getActivity().getPackageName());
-            profilepics.add(resourceId);
-        }
 
 //        if (getArguments() != null) {
 //            Bundle bundle = this.getArguments();
@@ -212,7 +205,7 @@ public class UserProfileFragment extends Fragment {
                 numFollowings = followingNameList.size();
                 btnFollower.setText(Integer.toString(numFollowers));
                 btnFollowing.setText(Integer.toString(numFollowings));
-                profilepic.setImageResource(usermodel.getProfilePic());
+                profilepic.setImageResource(Constants.PROFILE_PIC[usermodel.getProfilePic()]);
 
                 for(RecipeModelDB recipe : createdRecipes){
                     recipeName.add(recipe.getTitle());
@@ -222,7 +215,7 @@ public class UserProfileFragment extends Fragment {
                 View.OnClickListener profilepicOCL = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showEditPicDialog(v, usermodel, profilepics);
+                        showEditPicDialog(v, usermodel);
                     }
                 };
 
@@ -559,8 +552,8 @@ public class UserProfileFragment extends Fragment {
         void onCallBackUser(UserModelDB usermodel);
     }
 
-    private void showEditPicDialog(View view, UserModelDB currentUser, ArrayList<Integer> profilepics) {
-        EditProfilePicDialogFragment dialog = new EditProfilePicDialogFragment(profilepics, currentUser);
+    private void showEditPicDialog(View view, UserModelDB currentUser) {
+        EditProfilePicDialogFragment dialog = new EditProfilePicDialogFragment(currentUser);
         dialog.show(((FragmentActivity)getContext()).getSupportFragmentManager(), "dialog");
     }
 }
