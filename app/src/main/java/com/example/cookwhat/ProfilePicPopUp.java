@@ -20,7 +20,7 @@ public class ProfilePicPopUp extends DialogFragment {
     profilePicPopUpListener profilePicPopUpListener;
 
     public ProfilePicPopUp(int position, profilePicPopUpListener profilePicPopUpListener) {
-        this.position = position+1;
+        this.position = position;
         this.profilePicPopUpListener = profilePicPopUpListener;
 
     }
