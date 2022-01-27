@@ -38,21 +38,24 @@
             android:id="@+id/TVrecipeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
             android:text="Chickpea Soup"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/TVTag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="9dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
             android:drawableLeft="@drawable/ic_tag_svgrepo_com"
             android:drawablePadding="5dp"
-            android:text="Vegan" />
+            android:text="Vegan"
+            android:textSize="10sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="9dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="3dp"
                 android:background="@drawable/rounded_corner"
                 android:drawableLeft="@android:drawable/btn_star_big_on"
