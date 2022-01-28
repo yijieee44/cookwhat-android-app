@@ -44,6 +44,7 @@ import com.example.cookwhat.utils.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import android.widget.LinearLayout;
@@ -56,6 +57,7 @@ import com.example.cookwhat.models.IngredientModel;
 import com.example.cookwhat.models.UtensilModel;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -133,84 +135,199 @@ public class SearchActivity extends AppCompatActivity {
             utensilNameToSearch.add(utensil.getName());
         }
         if(ingredientNameToSearch.size() > 0){
-            firestoreDb.collection("recipe")
-                    .whereArrayContainsAny("ingName", ingredientNameToSearch)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d("SUCCESS", document.getId() + " => " + document.getData());
-                                    final ObjectMapper mapper = new ObjectMapper();
-                                    try{
-                                        RecipeModelDB queriedRecipe = mapper.convertValue(document.getData(), RecipeModelDB.class);
-                                        queriedRecipe.setId(document.getId());
-                                        queriedRecipes.add(queriedRecipe);
-
-
-                                    }
-                                    catch (Exception e){
-
-                                        Log.w("ERROR", e.toString());
-                                    }
-                                }
-                                organizeAndNavigateToResult(queriedRecipes, ingredientNameToSearch, utensilNameToSearch, new SearchFirestoreCallback() {
-                                    @Override
-                                    public void onCallBack(List<RecipeModelSearch> recipeModelArrayList, List<UserModelDB> userModelArrayList) {
-                                        firestoreCallback.onCallBack(recipeModelArrayList, userModelArrayList );
-                                    }
-                                });
-
-
-                            } else {
-                                loadingDialog.cancel();
-                                Log.w("ERROR", "Error getting documents.", task.getException());
+            List<Task<QuerySnapshot>> taskList = new ArrayList<>();
+            for(int i = 0; i < ingredientNameToSearch.size(); i+=10){
+                List<String> subList;
+                if(i+10<ingredientNameToSearch.size()){
+                    subList = ingredientNameToSearch.subList(i, i+10);
+                }
+                else{
+                    subList = ingredientNameToSearch.subList(i, ingredientNameToSearch.size());
+                }
+                Task<QuerySnapshot> dbTask = firestoreDb.collection("recipe")
+                        .whereArrayContainsAny("ingName", subList)
+                        .get();
+                taskList.add(dbTask);
+            }
+            Tasks.whenAllComplete(taskList).addOnCompleteListener(new OnCompleteListener<List<Task<?>>>() {
+                @Override
+                public void onComplete(@NonNull Task<List<Task<?>>> task) {
+                    if(task.isSuccessful()){
+                        List<DocumentSnapshot> documentList = new ArrayList<>();
+                        for(Task eachTask: task.getResult()){
+                            QuerySnapshot querySnapshot = (QuerySnapshot) eachTask.getResult();
+                            for(DocumentSnapshot document: querySnapshot.getDocuments()) {
+                                documentList.add(document);
                             }
                         }
-                    });
+
+                        for (DocumentSnapshot document : documentList) {
+                            Log.d("SUCCESS", document.getId() + " => " + document.getData());
+                            final ObjectMapper mapper = new ObjectMapper();
+                            try{
+                                RecipeModelDB queriedRecipe = mapper.convertValue(document.getData(), RecipeModelDB.class);
+                                queriedRecipe.setId(document.getId());
+                                queriedRecipes.add(queriedRecipe);
+
+
+                            }
+                            catch (Exception e){
+
+                                Log.w("ERROR", e.toString());
+                            }
+                        }
+                        organizeAndNavigateToResult(queriedRecipes, ingredientNameToSearch, utensilNameToSearch, new SearchFirestoreCallback() {
+                            @Override
+                            public void onCallBack(List<RecipeModelSearch> recipeModelArrayList, List<UserModelDB> userModelArrayList) {
+                                firestoreCallback.onCallBack(recipeModelArrayList, userModelArrayList );
+                            }
+                        });
+
+                    }
+                    else{
+                        loadingDialog.cancel();
+                        Log.w("ERROR", "Error getting documents.", task.getException());
+                    }
+                }
+            });
+//            firestoreDb.collection("recipe")
+//                    .whereArrayContainsAny("ingName", ingredientNameToSearch)
+//                    .get()
+//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                            if (task.isSuccessful()) {
+//                                for (QueryDocumentSnapshot document : task.getResult()) {
+//                                    Log.d("SUCCESS", document.getId() + " => " + document.getData());
+//                                    final ObjectMapper mapper = new ObjectMapper();
+//                                    try{
+//                                        RecipeModelDB queriedRecipe = mapper.convertValue(document.getData(), RecipeModelDB.class);
+//                                        queriedRecipe.setId(document.getId());
+//                                        queriedRecipes.add(queriedRecipe);
+//
+//
+//                                    }
+//                                    catch (Exception e){
+//
+//                                        Log.w("ERROR", e.toString());
+//                                    }
+//                                }
+//                                organizeAndNavigateToResult(queriedRecipes, ingredientNameToSearch, utensilNameToSearch, new SearchFirestoreCallback() {
+//                                    @Override
+//                                    public void onCallBack(List<RecipeModelSearch> recipeModelArrayList, List<UserModelDB> userModelArrayList) {
+//                                        firestoreCallback.onCallBack(recipeModelArrayList, userModelArrayList );
+//                                    }
+//                                });
+//
+//
+//                            } else {
+//                                loadingDialog.cancel();
+//                                Log.w("ERROR", "Error getting documents.", task.getException());
+//                            }
+//                        }
+//                    });
         }
         else if(utensilNameToSearch.size() > 0){
-            firestoreDb.collection("recipe")
-                    .whereArrayContainsAny("utName", utensilNameToSearch)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d("SUCCESS", document.getId() + " => " + document.getData());
-                                    final ObjectMapper mapper = new ObjectMapper();
-                                    try{
-                                        RecipeModelDB queriedRecipe = mapper.convertValue(document.getData(), RecipeModelDB.class);
-                                        queriedRecipe.setId(document.getId());
-                                        queriedRecipes.add(queriedRecipe);
 
-
-                                    }
-                                    catch (Exception e){
-
-                                        Log.w("ERROR", e.toString());
-                                    }
-                                }
-                                organizeAndNavigateToResult(queriedRecipes, ingredientNameToSearch, utensilNameToSearch, new SearchFirestoreCallback() {
-                                    @Override
-                                    public void onCallBack(List<RecipeModelSearch> recipeModelArrayList, List<UserModelDB> userModelArrayList) {
-                                        firestoreCallback.onCallBack(recipeModelArrayList, userModelArrayList );
-                                    }
-                                });
-
-
-                            } else {
-                                loadingDialog.cancel();
-                                Log.w("ERROR", "Error getting documents.", task.getException());
-                                Toast.makeText(SearchActivity.this,
-                                        "Fail to search, please try again",
-                                        Toast.LENGTH_SHORT)
-                                        .show();
+            List<Task<QuerySnapshot>> taskList = new ArrayList<>();
+            for(int i = 0; i < utensilNameToSearch.size(); i+=10){
+                List<String> subList;
+                if(i+10<utensilNameToSearch.size()){
+                    subList = utensilNameToSearch.subList(i, i+10);
+                }
+                else{
+                    subList = utensilNameToSearch.subList(i, utensilNameToSearch.size());
+                }
+                Task<QuerySnapshot> dbTask = firestoreDb.collection("recipe")
+                        .whereArrayContainsAny("utName", subList)
+                        .get();
+                taskList.add(dbTask);
+            }
+            Tasks.whenAllComplete(taskList).addOnCompleteListener(new OnCompleteListener<List<Task<?>>>() {
+                @Override
+                public void onComplete(@NonNull Task<List<Task<?>>> task) {
+                    if (task.isSuccessful()) {
+                        List<DocumentSnapshot> documentList = new ArrayList<>();
+                        for(Task eachTask: task.getResult()){
+                            QuerySnapshot querySnapshot = (QuerySnapshot) eachTask.getResult();
+                            for(DocumentSnapshot document: querySnapshot.getDocuments()) {
+                                documentList.add(document);
                             }
                         }
-                    });
+
+                        for (DocumentSnapshot document : documentList) {
+                            Log.d("SUCCESS", document.getId() + " => " + document.getData());
+                            final ObjectMapper mapper = new ObjectMapper();
+                            try{
+                                RecipeModelDB queriedRecipe = mapper.convertValue(document.getData(), RecipeModelDB.class);
+                                queriedRecipe.setId(document.getId());
+                                queriedRecipes.add(queriedRecipe);
+
+
+                            }
+                            catch (Exception e){
+
+                                Log.w("ERROR", e.toString());
+                            }
+                        }
+                        organizeAndNavigateToResult(queriedRecipes, ingredientNameToSearch, utensilNameToSearch, new SearchFirestoreCallback() {
+                            @Override
+                            public void onCallBack(List<RecipeModelSearch> recipeModelArrayList, List<UserModelDB> userModelArrayList) {
+                                firestoreCallback.onCallBack(recipeModelArrayList, userModelArrayList );
+                            }
+                        });
+
+                    }
+                    else{
+                        loadingDialog.cancel();
+                        Log.w("ERROR", "Error getting documents.", task.getException());
+                        Toast.makeText(SearchActivity.this,
+                                "Fail to search, please try again",
+                                Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }
+            });
+//            firestoreDb.collection("recipe")
+//                    .whereArrayContainsAny("utName", utensilNameToSearch)
+//                    .get()
+//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                            if (task.isSuccessful()) {
+//                                for (QueryDocumentSnapshot document : task.getResult()) {
+//                                    Log.d("SUCCESS", document.getId() + " => " + document.getData());
+//                                    final ObjectMapper mapper = new ObjectMapper();
+//                                    try{
+//                                        RecipeModelDB queriedRecipe = mapper.convertValue(document.getData(), RecipeModelDB.class);
+//                                        queriedRecipe.setId(document.getId());
+//                                        queriedRecipes.add(queriedRecipe);
+//
+//
+//                                    }
+//                                    catch (Exception e){
+//
+//                                        Log.w("ERROR", e.toString());
+//                                    }
+//                                }
+//                                organizeAndNavigateToResult(queriedRecipes, ingredientNameToSearch, utensilNameToSearch, new SearchFirestoreCallback() {
+//                                    @Override
+//                                    public void onCallBack(List<RecipeModelSearch> recipeModelArrayList, List<UserModelDB> userModelArrayList) {
+//                                        firestoreCallback.onCallBack(recipeModelArrayList, userModelArrayList );
+//                                    }
+//                                });
+//
+//
+//                            } else {
+//                                loadingDialog.cancel();
+//                                Log.w("ERROR", "Error getting documents.", task.getException());
+//                                Toast.makeText(SearchActivity.this,
+//                                        "Fail to search, please try again",
+//                                        Toast.LENGTH_SHORT)
+//                                        .show();
+//                            }
+//                        }
+//                    });
         }
         else{
             loadingDialog.cancel();
@@ -289,36 +406,83 @@ public class SearchActivity extends AppCompatActivity {
             }
             List<UserModelDB> tempUserModelArrayList = new ArrayList<>();
             List<UserModelDB> userModelList = new ArrayList<>();
-            firestoreDb.collection("user")
-                    .whereIn("userId", userIds)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d("SUCCESS", document.getId() + " => " + document.getData());
-                                    final ObjectMapper mapper = new ObjectMapper();
-                                    tempUserModelArrayList.add(mapper.convertValue(document.getData(), UserModelDB.class));
-                                }
-                                for (String userId: userIds){
-                                    for (UserModelDB userModel: tempUserModelArrayList){
-                                        String userId2 = userModel.getUserId();
-                                        if (userId.equals(userId2)){
-                                            userModelList.add(userModel);
-                                            break;
-                                        }
-                                    }
-                                }
-                                loadingDialog.dismiss();
-                                firestoreCallback.onCallBack(recipeModelSearchList, userModelList);
 
-                            } else {
-                                loadingDialog.cancel();
-                                Log.w("ERROR", "Error getting documents.", task.getException());
+            List<Task<QuerySnapshot>> taskList = new ArrayList<>();
+            for(int i = 0; i < userIds.size(); i+=10){
+                List<String> idSubList;
+                if(i+10<userIds.size()){
+                    idSubList = userIds.subList(i, i+10);
+                }
+                else{
+                    idSubList = userIds.subList(i, userIds.size());
+                }
+                Task<QuerySnapshot> dbTask = firestoreDb.collection("user").whereIn("userId", idSubList).get();
+                taskList.add(dbTask);
+            }
+            Tasks.whenAllComplete(taskList).addOnCompleteListener(new OnCompleteListener<List<Task<?>>>() {
+                @Override
+                public void onComplete(@NonNull Task<List<Task<?>>> task) {
+                    if(task.isSuccessful()){
+                        List<DocumentSnapshot> documentList = new ArrayList<>();
+                        for(Task eachTask: task.getResult()){
+                            QuerySnapshot querySnapshot = (QuerySnapshot) eachTask.getResult();
+                            for(DocumentSnapshot document: querySnapshot.getDocuments()) {
+                                documentList.add(document);
                             }
                         }
-                    });
+                        for (DocumentSnapshot document : documentList) {
+                            Log.d("SUCCESS", document.getId() + " => " + document.getData());
+                            final ObjectMapper mapper = new ObjectMapper();
+                            tempUserModelArrayList.add(mapper.convertValue(document.getData(), UserModelDB.class));
+                        }
+                        for (String userId: userIds){
+                            for (UserModelDB userModel: tempUserModelArrayList){
+                                String userId2 = userModel.getUserId();
+                                if (userId.equals(userId2)){
+                                    userModelList.add(userModel);
+                                    break;
+                                }
+                            }
+                        }
+                        loadingDialog.dismiss();
+                        firestoreCallback.onCallBack(recipeModelSearchList, userModelList);
+                    }
+                    else{
+                        loadingDialog.cancel();
+                        Log.w("ERROR", "Error getting documents.", task.getException());
+                    }
+                }
+            });
+//            firestoreDb.collection("user")
+//                    .whereIn("userId", userIds)
+//                    .get()
+//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                            if (task.isSuccessful()) {
+//                                for (QueryDocumentSnapshot document : task.getResult()) {
+//                                    Log.d("SUCCESS", document.getId() + " => " + document.getData());
+//                                    final ObjectMapper mapper = new ObjectMapper();
+//                                    tempUserModelArrayList.add(mapper.convertValue(document.getData(), UserModelDB.class));
+//                                }
+//                                for (String userId: userIds){
+//                                    for (UserModelDB userModel: tempUserModelArrayList){
+//                                        String userId2 = userModel.getUserId();
+//                                        if (userId.equals(userId2)){
+//                                            userModelList.add(userModel);
+//                                            break;
+//                                        }
+//                                    }
+//                                }
+//                                loadingDialog.dismiss();
+//                                firestoreCallback.onCallBack(recipeModelSearchList, userModelList);
+//
+//                            } else {
+//                                loadingDialog.cancel();
+//                                Log.w("ERROR", "Error getting documents.", task.getException());
+//                            }
+//                        }
+//                    });
         }
 
     }

@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -399,13 +400,35 @@ public class SearchKeywordResultActivity extends AppCompatActivity {
                                                                         }
                                                                     }
 
-                                                                    userdb.whereIn("userId", userids)
-                                                                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                    List<Task<QuerySnapshot>> taskList = new ArrayList<>();
+                                                                    for(int i = 0; i < userids.size(); i+=10){
+                                                                        List<String> idSubList;
+                                                                        if(i+10<userids.size()){
+                                                                            idSubList = userids.subList(i, i+10);
+                                                                        }
+                                                                        else{
+                                                                            idSubList = userids.subList(i, userids.size());
+                                                                        }
+                                                                        Task<QuerySnapshot> dbTask = userdb.whereIn("userId", idSubList).get();
+                                                                        taskList.add(dbTask);
+                                                                    }
+
+                                                                    Tasks.whenAllComplete(taskList).addOnCompleteListener(new OnCompleteListener<List<Task<?>>>() {
                                                                         @Override
-                                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                        public void onComplete(@NonNull Task<List<Task<?>>> task) {
                                                                             if(task.isSuccessful()){
+
+                                                                                List<DocumentSnapshot> documentList = new ArrayList<>();
+                                                                                for(Task eachTask: task.getResult()){
+                                                                                    QuerySnapshot querySnapshot = (QuerySnapshot) eachTask.getResult();
+                                                                                    for(DocumentSnapshot document: querySnapshot.getDocuments()) {
+                                                                                        documentList.add(document);
+                                                                                    }
+                                                                                }
+
+
                                                                                 List<UserModelDB> recipeUserArray = new ArrayList<>();
-                                                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                                for (DocumentSnapshot document : documentList) {
                                                                                     Log.d("SUCCESS", document.getId() + " => " + document.getData());
                                                                                     final ObjectMapper mapper = new ObjectMapper();
                                                                                     recipeUserArray.add(mapper.convertValue(document.getData(), UserModelDB.class));
@@ -428,10 +451,43 @@ public class SearchKeywordResultActivity extends AppCompatActivity {
                                                                                         "Fail to search, please try again",
                                                                                         Toast.LENGTH_SHORT)
                                                                                         .show();
-
                                                                             }
                                                                         }
                                                                     });
+
+//                                                                    userdb.whereIn("userId", userids)
+//                                                                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                                                        @Override
+//                                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                                                            if(task.isSuccessful()){
+//                                                                                List<UserModelDB> recipeUserArray = new ArrayList<>();
+//                                                                                for (QueryDocumentSnapshot document : task.getResult()) {
+//                                                                                    Log.d("SUCCESS", document.getId() + " => " + document.getData());
+//                                                                                    final ObjectMapper mapper = new ObjectMapper();
+//                                                                                    recipeUserArray.add(mapper.convertValue(document.getData(), UserModelDB.class));
+//                                                                                }
+//                                                                                List<UserModelDB> recipeUserModelList = new ArrayList<>();
+//                                                                                for (String userId: userids){
+//                                                                                    for (UserModelDB user: recipeUserArray){
+//                                                                                        if (userId.equals(user.getUserId())){
+//                                                                                            recipeUserModelList.add(user);
+//                                                                                            break;
+//                                                                                        }
+//                                                                                    }
+//                                                                                }
+//                                                                                firestoreCallback.onCallBack(new ArrayList<>(finalRecipeModelDB), new ArrayList<>(finalUserModelDB), new ArrayList<>(recipeUserModelList));
+//                                                                                loadingDialog.dismiss();
+//                                                                            }
+//                                                                            else{
+//                                                                                loadingDialog.cancel();
+//                                                                                Toast.makeText(SearchKeywordResultActivity.this,
+//                                                                                        "Fail to search, please try again",
+//                                                                                        Toast.LENGTH_SHORT)
+//                                                                                        .show();
+//
+//                                                                            }
+//                                                                        }
+//                                                                    });
                                                                 }
 
                                                             }

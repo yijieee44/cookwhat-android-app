@@ -37,9 +37,11 @@ import com.example.cookwhat.models.UserModelDB;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -319,35 +321,82 @@ public class HomeFragment extends Fragment {
                                 firestoreCallback.onCallBack(recipeModelsArray, userModelsArray);
                             }
                             else{
-                                userdb.whereIn("userId", userids)
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                                        Log.d("SUCCESS", document.getId() + " => " + document.getData());
-                                                        final ObjectMapper mapper = new ObjectMapper();
-                                                        tempUserModelArrayList.add(mapper.convertValue(document.getData(), UserModelDB.class));
-                                                    }
-                                                    for (int y=0;y<userids.size();y++){
-                                                        String userid = userids.get(y);
-                                                        for (int z=0;z<tempUserModelArrayList.size();z++){
-                                                            String userid2 = tempUserModelArrayList.get(z).getUserId();
-                                                            if (userid.equals(userid2)){
-                                                                userModelsArray.add(tempUserModelArrayList.get(z));
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                    loadingDialog.dismiss();
-                                                    firestoreCallback.onCallBack(recipeModelsArray, userModelsArray);
-                                                } else {
-                                                    loadingDialog.cancel();
-                                                    Log.w("ERROR", "Error getting documents.", task.getException());
+                                List<Task<QuerySnapshot>> taskList = new ArrayList<>();
+                                for(int i = 0; i < userids.size(); i+=10){
+                                    List<String> idSubList;
+                                    if(i+10<userids.size()){
+                                        idSubList = userids.subList(i, i+10);
+                                    }
+                                    else{
+                                        idSubList = userids.subList(i, userids.size());
+                                    }
+                                    Task<QuerySnapshot> dbTask = userdb.whereIn("userId", idSubList).get();
+                                    taskList.add(dbTask);
+                                }
+                                Tasks.whenAllComplete(taskList).addOnCompleteListener(new OnCompleteListener<List<Task<?>>>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<List<Task<?>>> task) {
+                                        if(task.isSuccessful()){
+                                            List<DocumentSnapshot> documentList = new ArrayList<>();
+                                            for(Task eachTask: task.getResult()){
+                                                QuerySnapshot querySnapshot = (QuerySnapshot) eachTask.getResult();
+                                                for(DocumentSnapshot document: querySnapshot.getDocuments()) {
+                                                    documentList.add(document);
                                                 }
                                             }
-                                        });
+                                            for (DocumentSnapshot document : documentList) {
+                                                Log.d("SUCCESS", document.getId() + " => " + document.getData());
+                                                final ObjectMapper mapper = new ObjectMapper();
+                                                tempUserModelArrayList.add(mapper.convertValue(document.getData(), UserModelDB.class));
+                                            }
+                                            for (int y=0;y<userids.size();y++){
+                                                String userid = userids.get(y);
+                                                for (int z=0;z<tempUserModelArrayList.size();z++){
+                                                    String userid2 = tempUserModelArrayList.get(z).getUserId();
+                                                    if (userid.equals(userid2)){
+                                                        userModelsArray.add(tempUserModelArrayList.get(z));
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            loadingDialog.dismiss();
+                                            firestoreCallback.onCallBack(recipeModelsArray, userModelsArray);
+                                        }
+                                        else {
+                                            loadingDialog.cancel();
+                                            Log.w("ERROR", "Error getting documents.", task.getException());
+                                        }
+                                    }
+                                });
+//                                userdb.whereIn("userId", userids)
+//                                        .get()
+//                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                            @Override
+//                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                                if (task.isSuccessful()) {
+//                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                                                        Log.d("SUCCESS", document.getId() + " => " + document.getData());
+//                                                        final ObjectMapper mapper = new ObjectMapper();
+//                                                        tempUserModelArrayList.add(mapper.convertValue(document.getData(), UserModelDB.class));
+//                                                    }
+//                                                    for (int y=0;y<userids.size();y++){
+//                                                        String userid = userids.get(y);
+//                                                        for (int z=0;z<tempUserModelArrayList.size();z++){
+//                                                            String userid2 = tempUserModelArrayList.get(z).getUserId();
+//                                                            if (userid.equals(userid2)){
+//                                                                userModelsArray.add(tempUserModelArrayList.get(z));
+//                                                                break;
+//                                                            }
+//                                                        }
+//                                                    }
+//                                                    loadingDialog.dismiss();
+//                                                    firestoreCallback.onCallBack(recipeModelsArray, userModelsArray);
+//                                                } else {
+//                                                    loadingDialog.cancel();
+//                                                    Log.w("ERROR", "Error getting documents.", task.getException());
+//                                                }
+//                                            }
+//                                        });
                             }
                       } else {
                             loadingDialog.cancel();

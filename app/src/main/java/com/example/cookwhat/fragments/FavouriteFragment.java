@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -196,11 +197,31 @@ public class FavouriteFragment extends Fragment   {
 
             loadingDialog.getWindow().setLayout(width, height);
             loadingDialog.show();
-            db.collection("recipe").whereIn(FieldPath.documentId(), recipeId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            List<Task<QuerySnapshot>> taskList = new ArrayList<>();
+            for(int i = 0; i < recipeId.size(); i+=10){
+                List<String> idSubList;
+                if(i+10<recipeId.size()){
+                    idSubList = recipeId.subList(i, i+10);
+                }
+                else{
+                    idSubList = recipeId.subList(i, recipeId.size());
+                }
+                Task<QuerySnapshot> dbTask = db.collection("recipe").whereIn(FieldPath.documentId(), idSubList).get();
+                taskList.add(dbTask);
+            }
+            Tasks.whenAllComplete(taskList).addOnCompleteListener(new OnCompleteListener<List<Task<?>>>() {
                 @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                public void onComplete(@NonNull Task<List<Task<?>>> task) {
                     if(task.isSuccessful()){
-                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                        List<DocumentSnapshot> documentList = new ArrayList<>();
+                        for(Task eachTask: task.getResult()){
+                            QuerySnapshot querySnapshot = (QuerySnapshot) eachTask.getResult();
+                            for(DocumentSnapshot document: querySnapshot.getDocuments()) {
+                                documentList.add(document);
+                            }
+                        }
+
+                        for (DocumentSnapshot documentSnapshot : documentList) {
                             Log.d("SUCCESS", documentSnapshot.getId() + " => " + documentSnapshot.getData());
                             final ObjectMapper mapper = new ObjectMapper();
                             RecipeModelDB recipemodel = new RecipeModelDB();
@@ -218,6 +239,29 @@ public class FavouriteFragment extends Fragment   {
                     }
                 }
             });
+
+//            db.collection("recipe").whereIn(FieldPath.documentId(), recipeId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                    if(task.isSuccessful()){
+//                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+//                            Log.d("SUCCESS", documentSnapshot.getId() + " => " + documentSnapshot.getData());
+//                            final ObjectMapper mapper = new ObjectMapper();
+//                            RecipeModelDB recipemodel = new RecipeModelDB();
+//                            recipemodel = documentSnapshot.toObject(RecipeModelDB.class);
+//                            recipeModel.add(recipemodel);
+//                            recipeName.add((String) documentSnapshot.get("title"));
+//                            recipeImage.add(getResources().getString(R.string.recipe_image_uri) + recipemodel.getSteps().get(0).getImage()+"?alt=media");
+//                            recipeTags.add(recipemodel.getTags());
+//                        }
+//                        firestoreOnCallBack.onCallBackRecipe(recipeModel, recipeName, recipeImage,recipeTags);
+//                        loadingDialog.dismiss();
+//                    }
+//                    else{
+//                        loadingDialog.cancel();
+//                    }
+//                }
+//            });
         }
         else{
             noFavourite.setVisibility(View.VISIBLE);

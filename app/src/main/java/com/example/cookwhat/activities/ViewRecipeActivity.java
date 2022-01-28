@@ -45,6 +45,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
@@ -414,23 +415,61 @@ public class ViewRecipeActivity extends AppCompatActivity {
 
 
     public void readUser (FirestoreCallback firestoreCallback){
-            userdb.whereIn("userId", userIds).get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d("SUCCESS", document.getId() + " => " + document.getData());
-                                    final ObjectMapper mapper = new ObjectMapper();
-                                    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                                    userModelDBArrayList.add(mapper.convertValue(document.getData(), UserModelDB.class));
-                                }
-                                firestoreCallback.onCallBack(userModelDBArrayList);
-                            } else {
-                                Log.w("ERROR", "Error getting documents.", task.getException());
-                            }
+        List<Task<QuerySnapshot>> taskList = new ArrayList<>();
+        for(int i = 0; i < userIds.size(); i+=10){
+            List<String> idSubList;
+            if(i+10<userIds.size()){
+                idSubList = userIds.subList(i, i+10);
+            }
+            else{
+                idSubList = userIds.subList(i, userIds.size());
+            }
+            Task<QuerySnapshot> dbTask = userdb.whereIn("userId", idSubList).get();
+            taskList.add(dbTask);
+        }
+        Tasks.whenAllComplete(taskList).addOnCompleteListener(new OnCompleteListener<List<Task<?>>>() {
+            @Override
+            public void onComplete(@NonNull Task<List<Task<?>>> task) {
+                if(task.isSuccessful()){
+                    List<DocumentSnapshot> documentList = new ArrayList<>();
+                    for(Task eachTask: task.getResult()){
+                        QuerySnapshot querySnapshot = (QuerySnapshot) eachTask.getResult();
+                        for(DocumentSnapshot document: querySnapshot.getDocuments()) {
+                            documentList.add(document);
                         }
-                    });
+                    }
+
+                    for (DocumentSnapshot document : documentList) {
+                        Log.d("SUCCESS", document.getId() + " => " + document.getData());
+                        final ObjectMapper mapper = new ObjectMapper();
+                        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                        userModelDBArrayList.add(mapper.convertValue(document.getData(), UserModelDB.class));
+                    }
+                    firestoreCallback.onCallBack(userModelDBArrayList);
+                }
+                else{
+                    Log.w("ERROR", "Error getting documents.", task.getException());
+                }
+            }
+        });
+
+//            userdb.whereIn("userId", userIds).get()
+//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                            if (task.isSuccessful()) {
+//                                for (QueryDocumentSnapshot document : task.getResult()) {
+//                                    Log.d("SUCCESS", document.getId() + " => " + document.getData());
+//                                    final ObjectMapper mapper = new ObjectMapper();
+//                                    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//                                    userModelDBArrayList.add(mapper.convertValue(document.getData(), UserModelDB.class));
+//                                }
+//                                firestoreCallback.onCallBack(userModelDBArrayList);
+//                            } else {
+//                                Log.w("ERROR", "Error getting documents.", task.getException());
+//                            }
+//                        }
+//                    });
     }
 
     public void readCurrentUser(FirestoreCallback2 firestoreCallback2) {
