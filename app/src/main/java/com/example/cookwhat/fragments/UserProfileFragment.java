@@ -473,8 +473,6 @@ public class UserProfileFragment extends Fragment {
        CollectionReference recipeCollection = db.collection("recipe");
        System.out.println("Userid readData:"+ userID);
 
-
-
        userCollection.whereEqualTo("userId", userID).get()
                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                    @Override

@@ -30,7 +30,6 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -52,6 +51,7 @@ public class FavouriteFragment extends Fragment   {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    ArrayList<String>findRecipeIdList = new ArrayList<>();
     static ArrayList<String> recipeIdList = new ArrayList<>();
     static FavouriteAdapter favouriteAdapter;
     static ListView listview;
@@ -62,6 +62,8 @@ public class FavouriteFragment extends Fragment   {
     static ArrayList<String> recipeName = new ArrayList<>();
     static ArrayList<String> recipeImage = new ArrayList<>();
     static ArrayList<List<String>> tags = new ArrayList<>();
+    static Context context;
+    static ArrayList<RecipeModelDB> recipeModelDB;
 
 
 
@@ -102,16 +104,20 @@ public class FavouriteFragment extends Fragment   {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        context = getContext();
+        getActivity().setTitle(selectedCategoryName);
         loadingDialog = new Dialog(getContext());
-        recipeIdList = (ArrayList<String>) userModelDB.getFavouriteCategory().get(selectedCategoryName);
+        findRecipeIdList = (ArrayList<String>) userModelDB.getFavouriteCategory().get(selectedCategoryName);
         listview =(ListView) view.findViewById(R.id.LV_FavouriteList);
         System.out.println("checkrecipeId"+ userModelDB.getFavouriteCategory());
         userId = userModelDB.getUserId();
         readData(new FirestoreOnCallBack(){
             @Override
-            public void onCallBackRecipe(ArrayList<RecipeModelDB> recipeModel, ArrayList<String> recipeNames, ArrayList<String> recipeImages, ArrayList<List<String>> tag) {
+            public void onCallBackRecipe(ArrayList<RecipeModelDB> recipeModel, ArrayList<String> recipeNames, ArrayList<String> recipeImages, ArrayList<List<String>> tag, ArrayList<String>recipeId) {
                 recipeName = recipeNames;
                 recipeImage = recipeImages;
+                recipeModelDB =recipeModel;
+                recipeIdList = recipeId;
                 tags = tag;
                 System.out.println("recipeSize"+recipeName.size());
                 favouriteAdapter = new FavouriteAdapter(getContext(),recipeIdList, recipeName, recipeImage, tags, userModelDB, recipeModel);
@@ -135,7 +141,7 @@ public class FavouriteFragment extends Fragment   {
 
             }
 
-        }, recipeIdList);
+        }, findRecipeIdList);
 
 
 
@@ -161,15 +167,23 @@ public class FavouriteFragment extends Fragment   {
         recipeName.remove(pos);
         recipeImage.remove(pos);
         tags.remove(pos);
+        recipeModelDB.remove(pos);
+        Map<String,ArrayList<String>> updatedFav = userModelDB.getFavouriteCategory();
+        updatedFav.get(selectedCategoryName).remove(id);
+        userModelDB.setFavouriteCategory(updatedFav);
+        favouriteAdapter = new FavouriteAdapter(context,recipeIdList, recipeName, recipeImage, tags, userModelDB, recipeModelDB);
         listview.setAdapter(favouriteAdapter);
+
         System.out.println("RecipeNames:"+recipeName);
         updateData(id);
+        System.out.println(userModelDB.getFavouriteCategory());
     }
 
-    public static void moveItem(Context context, UserModelDB usermodelDB, RecipeModelDB recipeModelDB){
-        System.out.println("here");
+    public static void moveItem(Context context, UserModelDB usermodelDB, RecipeModelDB recipeModel){
+        System.out.println("moveitem:"+userModelDB.getFavouriteCategory());
+        System.out.println("moveitem id:"+ recipeModelDB);
         FragmentActivity activity = (FragmentActivity)context;
-        MoveFavouriteDialogFragment favouriteCategoryDialogFragment = new MoveFavouriteDialogFragment(usermodelDB, recipeModelDB, selectedCategoryName);
+        MoveFavouriteDialogFragment favouriteCategoryDialogFragment = new MoveFavouriteDialogFragment(userModelDB, recipeModel, selectedCategoryName);
         favouriteCategoryDialogFragment.show(activity.getSupportFragmentManager(), "FavCatDialog");
 
     }
@@ -184,6 +198,7 @@ public class FavouriteFragment extends Fragment   {
         ArrayList<String>recipeName = new ArrayList<>();
         ArrayList<String>recipeImage =  new ArrayList<>();
         ArrayList<List<String>>recipeTags = new ArrayList<>();
+        ArrayList<String>recipeIdByOrder = new ArrayList<>();
         ArrayList<RecipeModelDB>recipeModel = new ArrayList<>();
 //        int recipeIdSize = recipeId.size();
 //        String lastRecipeID = recipeId.get(recipeIdSize-1);
@@ -230,8 +245,9 @@ public class FavouriteFragment extends Fragment   {
                             recipeName.add((String) documentSnapshot.get("title"));
                             recipeImage.add(getResources().getString(R.string.recipe_image_uri) + recipemodel.getSteps().get(0).getImage()+"?alt=media");
                             recipeTags.add(recipemodel.getTags());
+                            recipeIdByOrder.add(recipemodel.getId());
                         }
-                        firestoreOnCallBack.onCallBackRecipe(recipeModel, recipeName, recipeImage,recipeTags);
+                        firestoreOnCallBack.onCallBackRecipe(recipeModel, recipeName, recipeImage,recipeTags, recipeIdByOrder);
                         loadingDialog.dismiss();
                     }
                     else{
@@ -307,7 +323,7 @@ public class FavouriteFragment extends Fragment   {
     }
 
     public interface FirestoreOnCallBack{
-        void onCallBackRecipe(ArrayList<RecipeModelDB>recipeModel, ArrayList<String>recipeName, ArrayList<String>recipeImage, ArrayList<List<String>>tags);
+        void onCallBackRecipe(ArrayList<RecipeModelDB>recipeModel, ArrayList<String>recipeName, ArrayList<String>recipeImage, ArrayList<List<String>>tags, ArrayList<String>recipeId);
     }
 
 

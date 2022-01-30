@@ -136,7 +136,12 @@ public class FavouriteAdapter extends ArrayAdapter<String> {
             viewHolder.moveTo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    FavouriteFragment.moveItem(context,userModelDB,recipeModelDB.get(i));
+                    System.out.println("In favourite Adapter"+recipeId);
+
+                    System.out.println("In favourite Adapter"+recipeId.get(i));
+                    System.out.println("In fav Adapter"+ recipeModelDB.get(i));
+                    RecipeModelDB recipeModelMove = new RecipeModelDB();
+                FavouriteFragment.moveItem(context,userModelDB,recipeModelDB.get(i));
                 }
             });
 
@@ -153,7 +158,13 @@ public class FavouriteAdapter extends ArrayAdapter<String> {
 
     }
 
-    public void removeItem(int i){
+    public void remove(int i){
+        recipeId.remove(i);
+        recipeName.remove(i);
+        recipeImg.remove(i);
+        tags.remove(i);
+
+        notifyDataSetChanged();
 
 
     }
