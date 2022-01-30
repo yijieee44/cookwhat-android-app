@@ -50,11 +50,12 @@ public class FavouriteActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Log.d("FRAGMENTSTACK", ""+getSupportFragmentManager().getBackStackEntryCount());
+        int numPop = getSupportFragmentManager().getBackStackEntryCount();
         if (getSupportFragmentManager().getBackStackEntryCount() > 0 ) {
-            getSupportFragmentManager().popBackStack();
-            if(getSupportFragmentManager().getBackStackEntryCount()>0){
+            for(int i=0; i<numPop;i++){
                 getSupportFragmentManager().popBackStack();
             }
+
         }
         else {
             Intent intent = new Intent();
