@@ -113,6 +113,7 @@ public class RegisterFragment extends Fragment {
                 String username = editTextUsername.getText().toString();
                 if (username.isEmpty() || username.equals("")){
                     editTextUsername.setError("This field can not be blank");
+                    cond1 =false;
                 }
                 else if(username.length() > 20){
                     editTextUsername.setError("Username can only contain less than 20 characters");
@@ -124,9 +125,11 @@ public class RegisterFragment extends Fragment {
                 String email = editTextEmail.getText().toString();
                 if (email.trim().equalsIgnoreCase("")) {
                     editTextEmail.setError("This field can not be blank");
+                    cond1 = false;
                 }
                 else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
                     editTextEmail.setError("Invalid email address");
+                    cond1 =false;
                 }
                 else{
                     cond2 = true;
@@ -135,9 +138,11 @@ public class RegisterFragment extends Fragment {
                 String password = editTextPassword.getText().toString();
                 if (password.trim().equalsIgnoreCase("")) {
                     editTextPassword.setError("This field can not be blank");
+                    cond3= false;
                 }
                 else if (password.length()<6){
                     editTextPassword.setError("Password must contain at least 6 characters");
+                    cond3 = false;
                 }
                 else{
                     cond3 = true;
